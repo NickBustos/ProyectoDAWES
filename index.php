@@ -3,24 +3,22 @@
 <div class="container">
 
     <div class="row">
-        <div class="card-columns">
+        <div class="col-md-6">
+
+
             <div class="card">
-                <img class="card-img-top" src="holder.js/100x180/" alt="">
                 <div class="card-body">
-                
-                <!-- INSERTE FORMULARIO DE REGISTRO AQUÍ --> 
+
+            <!-- Inserte formulario de registro aquí -->
 
                 </div>
             </div>
-
-
-
+        </div>
+        <div class="col-md-6">
             <div class="card">
-                <img class="card-img-top" src="holder.js/100x180/" alt="">
                 <div class="card-body">
 
-                <!-- INSERTE FORMULARIO DE INICIO DE SESIÓN AQUÍ -->
-
+            <!-- Inserte formulario de inicio de sesión aquí -->
 
                 </div>
             </div>
