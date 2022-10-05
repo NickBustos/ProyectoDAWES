@@ -21,7 +21,7 @@
                                                     <div class="d-flex flex-row align-items-center mb-4">
 
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="text" id="form3Example1c" class="form-control" />
+                                                            <input type="text" id="form3Example1c" class="form-control" value="<?php echo $_nombreUsuario;?>" />
                                                             <label class="form-label" for="form3Example1c">Tu nombre</label>
                                                         </div>
                                                     </div>
