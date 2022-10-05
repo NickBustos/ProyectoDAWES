@@ -29,3 +29,10 @@
     <br></br>
 
     </div>
+
+
+    <?php 
+    $_nombreUsuario="";
+    
+    
+    ?>
