@@ -10,15 +10,21 @@
 
 <body>
     <?php
-        $avatar="";
-        if(empty($_POST) == false){
-            var_dump($_FILES);
-            $avatar = $_FILES;
-        }
+    require "functions.php";
+    if (empty($_FILES) == false) {
+        var_dump($_FILES);
+        $image = getImage($_FILES["avatar"]);
+        saveImage($_FILES["avatar"]);
+    }
     ?>
+    <?php
+    if (empty($image) == false) {
+        echo "<img src=" . $image . " width='100px'/>";
+    }
+    ?>
+
     <form action='register.php' method="post" enctype="multipart/form-data">
-        avatar:<input type="file" name="avatar" multiple accept ="image/png"
-            value="<?php echo $_FILES ?>"/>
+        avatar:<input type="file" name="avatar" multiple accept="image/png" />
         <br />
         mail:<input type="email" name="mail" value="" />
         <br />

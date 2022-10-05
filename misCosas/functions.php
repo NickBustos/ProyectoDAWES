@@ -1,17 +1,41 @@
 <?php
-    $lineas = recorrer("bbdd.txt");
-    echo sizeof($lineas);
-    echo "<br/>";
-    var_dump(getPassword($lineas[0]));
-    echo "<br/>";
-    var_dump($lineas);
-    echo "<br/>";
-    echo getUser($lineas[1]);
-    echo "<br/>";
-    echo "mario esta en uso: " . isUsed("mario");
-    echo "<br/>";
-    echo "mario/123: " . login("mario", "123");
+    //echo getNumberOfLogo();
+    // $lineas = recorrer("bbdd.txt");
+    // echo sizeof($lineas);
+    // echo "<br/>";
+    // var_dump(getPassword($lineas[0]));
+    // echo "<br/>";
+    // var_dump($lineas);
+    // echo "<br/>";
+    // echo getUser($lineas[1]);
+    // echo "<br/>";
+    // echo "mario esta en uso: " . isUsed("mario");
+    // echo "<br/>";
+    // echo "mario/123: " . login("mario", "123");
+
+    define("PATH_TO_IMAGES", '../files/');
     
+    function getImage($file){
+        if(empty($file) == false){
+            return "data:" . $file["type"] . ";base64," . 
+            base64_encode(file_get_contents($file["tmp_name"]));
+        }
+    }
+
+    function getNumberOfLogo(){
+        return count(glob(PATH_TO_IMAGES . '{*.png}', GLOB_BRACE));
+    }
+
+    function saveImage($file){
+        if(empty($file) == false){
+            if(is_uploaded_file($file["tmp_name"])){
+                //CREAR CAMINO
+                $finalpath= PATH_TO_IMAGES . getNumberOfLogo() . ".png";//se puede cambiar y sitio
+                return (move_uploaded_file($file["tmp_name"], $finalpath));
+                //GUARDAR
+            }
+        }
+    }
 
     function recorrer($txt){
         $contadorlinea=0;
