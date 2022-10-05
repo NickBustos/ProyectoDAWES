@@ -19,9 +19,9 @@
                                                 <form class="mx-1 mx-md-4">
 
                                                     <div class="d-flex flex-row align-items-center mb-4">
-                                                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="text" id="form3Example1c" class="form-control" />
+                                                            <input type="text" name= "nombreDeUsuario"  id="form3Example1c" class="form-control" value="<?php echo $_nombreUsuario;?>" />
                                                             <label class="form-label" for="form3Example1c">Tu nombre</label>
                                                         </div>
                                                     </div>
@@ -50,12 +50,26 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="form-check d-flex justify-content-center mb-5">
-                                                        <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                                                        <label class="form-check-label" for="form2Example3">
-                                                            Acepto los <a href="#!">términos y condiciones</a>
-                                                        </label>
-                                                    </div>
+                                                    <div class="form-outline flex-fill mb-4">
+                                                        <input type="text" id="form3Example1c" class="form-control" />
+                                                        <label class="form-label" for="form3Example1c">Tu fecha de nacimiento</label>
+                                                    </div>  
+                                            </div>
+
+                                            <div class="d-flex flex-row align-items-center mb-1">
+                                                <input class="form-control" type="file" id="formFile">
+                                            </div>
+
+
+                                            <label for="formFile" class="form-label">Ingresa tu Avatar</label>
+                                            <br><br>
+
+                                            <div class="form-check d-flex justify-content-center mb-5">
+                                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+                                                <label class="form-check-label" for="form2Example3">
+                                                    Acepto los <a href="#!">términos y condiciones</a>
+                                                </label>
+                                            </div>
 
                                                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                                         <button type="button" class="btn btn-primary btn-lg">Registrarse</button>

@@ -33,6 +33,10 @@
 
     <?php 
     $_nombreUsuario="";
-    
-    
+
+    if(!empty($_POST)){
+        include 'funcioones.php';
+        $_nombreUsuario = htmlspecialchars($_POST["nombreDeUsuario"]); 
+    }
+
     ?>
