@@ -10,17 +10,19 @@
 
 <body>
     <?php
-        $user = "";
+        $avatar="";
         if(empty($_POST) == false){
-            $user = $_POST["user"];
+            var_dump($_FILES);
+            $avatar = $_FILES;
         }
     ?>
-    <form action='register.php' method="post">
-        avatar:<input type="file" name="avatar" />
+    <form action='register.php' method="post" enctype="multipart/form-data">
+        avatar:<input type="file" name="avatar" multiple accept ="image/png"
+            value="<?php echo $_FILES ?>"/>
         <br />
         mail:<input type="email" name="mail" value="" />
         <br />
-        user:<input type="text" name="user" value="<?php echo $user ?>" />
+        user:<input type="text" name="user" value="" />
         <br />
         birth:<input type="date" name="birth" value="" />
         <br />
