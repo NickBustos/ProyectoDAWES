@@ -82,4 +82,33 @@
         </div>
     </div>
 </div>
-<?php include "templates/pie.php" ?>
+<?php
+    function validar_Password($password,&$error_password){
+        if(strlen($password) < 8){
+            $error_password = "La contraseña no puede tener menos de 8 caracteres";
+            return false;
+        }
+        if(strlen($password) > 64){
+            $error_password = "La contraseña no puede tener más de 64 caracteres";
+            return false;
+        }
+        if(!preg_match(`[a-z]`, $password)){
+            $error_password = "La contraseña debe contener al menos una letra minúscula";
+            return false;
+        }
+        if(!preg_match(`[A-Z]`, $password)){
+            $error_password = "La contraseña debe contener al menos una letra mayúscula";
+            return false;
+        }
+        if(!preg_match(`[0-9]`, $password)){
+            $error_password = "La contraseña debe contener al menos un carácter númerico";
+            return false;
+        }
+        $error_password = "";
+        return true;
+    }
+
+?>
+<?php include "templates/pie.php";?>
+
+    
