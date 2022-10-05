@@ -1,6 +1,9 @@
 <?php
-    $lineas = recorrer();
+    $lineas = recorrer("bbdd.txt");
     echo sizeof($lineas);
+    echo "<br/>";
+    var_dump(getPassword($lineas[0]));
+    echo "<br/>";
     var_dump($lineas);
     echo "<br/>";
     echo getUser($lineas[1]);
@@ -10,10 +13,10 @@
     echo "mario/123: " . login("mario", "123");
     
 
-    function recorrer(){
+    function recorrer($txt){
         $contadorlinea=0;
         $lineas=[];
-        $fichero = fopen("usuarios.txt", "r");
+        $fichero = fopen($txt, "r");
         while(!feof($fichero)){
             $linea = "";
             $linea = fgets($fichero);
@@ -31,7 +34,7 @@
     }
 
     function isUsed($user){
-        $lineas = recorrer();
+        $lineas = recorrer("bbdd.txt");
         
         for($linea = 0; $linea < sizeof($lineas); $linea++){
             if($user == getUser($lineas[$linea])){
@@ -42,11 +45,12 @@
     }
 
     function login($user, $password) {
-        $lineas = recorrer();
+        $lineas = recorrer("bbdd.txt");
         for($linea = 0; $linea < sizeof($lineas); $linea++){
             if($user == getUser($lineas[$linea])
                 && $password == getPassword($lineas[$linea])){
                 return true;//1
+                //se puede cambiar
             }
         }
         return false;//0
