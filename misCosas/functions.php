@@ -13,7 +13,7 @@
     // echo "<br/>";
     // echo "mario/123: " . login("mario", "123");
 
-    define("PATH_TO_IMAGES", '../files/');
+    define("PATH_TO_IMAGES", 'files/');
     
     function getImage($file){
         if(empty($file) == false){
