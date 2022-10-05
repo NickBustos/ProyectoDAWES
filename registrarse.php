@@ -1,5 +1,5 @@
-<?php include "templates/cabecera.php" ?>
-
+<?php include "templates/cabecera.php";?>
+    
 <div class="container">
 
     <div class="row d-flex justify-content-center">
