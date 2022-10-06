@@ -37,8 +37,8 @@
     $_nombreUsuario = "";
 
     if (!empty($_POST)) {
-        include 'config.php'; //creo que seria así = ../Configuraciones.config.php;
-        include 'funciones.php'; //creo que seria así = ../Configuraciones.funciones.php;
+        include 'Configuraciones/config.php'; //creo que seria así = ../Configuraciones.config.php;
+        include 'Configuraciones/funciones.php'; //creo que seria así = ../Configuraciones.funciones.php;
         $nombreUserPass = $avatar = "";
         $_nombreUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
         if (!empty($nombreDeUsuario)) {
