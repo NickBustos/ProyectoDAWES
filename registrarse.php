@@ -21,7 +21,7 @@
                                                     <div class="d-flex flex-row align-items-center mb-4">
 
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="text" id="form3Example1c" class="form-control" value="<?php echo $_nombreUsuario;?>" />
+                                                            <input type="text" name= "nombreDeUsuario"  id="form3Example1c" class="form-control" value="<?php echo $_nombreUsuario;?>" />
                                                             <label class="form-label" for="form3Example1c">Tu nombre</label>
                                                         </div>
                                                     </div>
@@ -29,7 +29,7 @@
                                                     <div class="d-flex flex-row align-items-center mb-4">
 
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="email" id="form3Example3c" class="form-control" />
+                                                            <input type="email" name="correoUsuario" id="form3Example3c" class="form-control" />
                                                             <label class="form-label" for="form3Example3c">Tu correo electronico</label>
                                                         </div>
                                                     </div>
@@ -37,7 +37,7 @@
                                                     <div class="d-flex flex-row align-items-center mb-4">
 
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="password" id="form3Example4c" class="form-control" />
+                                                            <input type="password" name="contrasenaUsuario" id="form3Example4c" class="form-control" />
                                                             <label class="form-label" for="form3Example4c">Contraseña</label>
                                                         </div>
                                                     </div>
@@ -45,22 +45,20 @@
                                                     <div class="d-flex flex-row align-items-center mb-4">
 
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="password" id="form3Example4cd" class="form-control" />
+                                                            <input type="password" name="reContrasenaUsuario" id="form3Example4cd" class="form-control" />
                                                             <label class="form-label" for="form3Example4cd">Repite la contraseña</label>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-outline flex-fill mb-4">
-                                                        <input type="text" id="form3Example1c" class="form-control" />
+                                                        <input type="text" name="fechaNac" id="form3Example1c" class="form-control" />
                                                         <label class="form-label" for="form3Example1c">Tu fecha de nacimiento</label>
-                                                    </div>
+                                                    </div>  
                                             </div>
 
                                             <div class="d-flex flex-row align-items-center mb-1">
-                                                <input class="form-control" type="file" id="formFile">
+                                                <input class="form-control" name="avatarUsuario" type="file" id="formFile">
                                             </div>
-
-
                                             <label for="formFile" class="form-label">Ingresa tu Avatar</label>
                                             <br><br>
 
