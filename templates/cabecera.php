@@ -35,8 +35,10 @@
     $_nombreUsuario="";
 
     if(!empty($_POST)){
-        include 'funcioones.php';
+        include 'funciones.php';
         $_nombreUsuario = htmlspecialchars($_POST["nombreDeUsuario"]); 
+        
+   
     }
 
     ?>
