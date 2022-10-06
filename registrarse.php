@@ -51,7 +51,8 @@
                                                     </div>
 
                                                     <div class="form-outline flex-fill mb-4">
-                                                        <input type="text" id="form3Example1c" class="form-control" />
+                                                        <input type="date" id="form3Example1c" class="form-control"  
+                                                        name = "fechaNac" min ="<?= $fechamin;?>"  max="<?=$fechamax;?>" value = "<?php $fechaNac; ?>">/>
                                                         <label class="form-label" for="form3Example1c">Tu fecha de nacimiento</label>
                                                     </div>  
                                             </div>

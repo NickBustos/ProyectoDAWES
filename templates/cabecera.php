@@ -37,6 +37,30 @@
     if(!empty($_POST)){
         include 'funcioones.php';
         $_nombreUsuario = htmlspecialchars($_POST["nombreDeUsuario"]); 
+    
+    
+    
+    //---------------------------- DATE --------------------------------
+    $_fechaNacError= "";
+    $fechamax = date("Y-m-d");
+    $fechamin = date("1900-01-01");
+     $fechaNac = "";
+        if(!empty($_fechaNac)){
+    
+            include "funciones.php";
+            if(calculaedad($_fechaNac)== false){
+                echo "Solo se pueden registrar mayores de edad";
+        
+            }else{
+                echo "fecha valida" ;      
+                $fechaNac = $_fechaNac;
+                
+            } 
+               
+            }
+
+    // -------------------- FIN DATE -----------------------------
     }
+
 
     ?>
