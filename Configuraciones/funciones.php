@@ -130,4 +130,18 @@ function login($user, $password) {
     return false;//0
 }
 
+function validacion($textoValidar, $dato) {
+    
+    if($dato = "email") {
+        if (filter_var($textoValidar, FILTER_VALIDATE_EMAIL)){
+            echo $textoValidar;
+            return $textoValidar;
+        } else {
+            echo "error";
+            return false;
+        }
+    }
+
+}
+
 ?>
