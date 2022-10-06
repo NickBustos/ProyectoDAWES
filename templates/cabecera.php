@@ -35,32 +35,21 @@
     $_nombreUsuario="";
 
     if(!empty($_POST)){
-        include 'funcioones.php';
+        include 'config.php';
+        include 'funciones.php';
+        $nombreUserPass = "";
         $_nombreUsuario = htmlspecialchars($_POST["nombreDeUsuario"]); 
-    
-    
-    
-    //---------------------------- DATE --------------------------------
-    $_fechaNacError= "";
-    $fechamax = date("Y-m-d");
-    $fechamin = date("1900-01-01");
-     $fechaNac = "";
-        if(!empty($_fechaNac)){
-    
-            include "funciones.php";
-            if(calculaedad($_fechaNac)== false){
-                echo "Solo se pueden registrar mayores de edad";
-        
+            if(!empty($nombreDeUsuario)){
+                if(!validar($nombreDeUsuario, VALIDA_NOMBREUSUARIO)){
+                    echo "Por favor, ingrese un nombre válido";
+
+                }else{
+                    $nombreUserPass = $_nombreUsuario;
+                }
             }else{
-                echo "fecha valida" ;      
-                $fechaNac = $_fechaNac;
-                
-            } 
-               
+            echo "el campo de nombre no puede estar vacío";
             }
-
-    // -------------------- FIN DATE -----------------------------
+   
     }
-
 
     ?>
