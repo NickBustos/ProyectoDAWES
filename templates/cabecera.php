@@ -67,7 +67,8 @@
             $errorFecha = ERROR_VACIO;
         }
         //---------------------------- FILE --------------------------------
-        if (empty($_FILES) == false && empty($_FILES["avatar"]) == false) {
+        if (empty($_FILES) == false && empty($_FILES["avatar"]) == false 
+            && $_FILES["avatar"]["tmp_name"] != "") {
             $avatar = getImage($_FILES["avatar"]);
             //saveImage($_FILES["avatar"]);
         } else {
