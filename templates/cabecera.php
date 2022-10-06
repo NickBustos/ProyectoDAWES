@@ -35,9 +35,20 @@
     $_nombreUsuario="";
 
     if(!empty($_POST)){
+        include 'config.php';
         include 'funciones.php';
+        $nombreUserPass = "";
         $_nombreUsuario = htmlspecialchars($_POST["nombreDeUsuario"]); 
-        
+            if(!empty($nombreDeUsuario)){
+                if(!validar($nombreDeUsuario, VALIDA_NOMBREUSUARIO)){
+                    echo "Por favor, ingrese un nombre válido";
+
+                }else{
+                    $nombreUserPass = $_nombreUsuario;
+                }
+            }else{
+            echo "el campo de nombre no puede estar vacío";
+            }
    
     }
 
