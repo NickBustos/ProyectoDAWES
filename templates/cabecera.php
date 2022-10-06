@@ -50,12 +50,31 @@
         } else {
             echo "el campo de nombre no puede estar vacío";
         }
-        if(empty($_FILES) == false && empty($_FILES["avatar"]) == false){
+        if (empty($_FILES) == false && empty($_FILES["avatar"]) == false) {
             $avatar = getImage($_FILES["avatar"]);
             //saveImage($_FILES["avatar"]);
-        }else{
+        } else {
             echo "introduce una imagen .png";
         }
+        //---------------------------- DATE --------------------------------
+        $_fechaNacError = "";
+        $fechamax = date("Y-m-d");
+        $fechamin = date("1900-01-01");
+        $fechaNac = "";
+        if (!empty($_fechaNac)) {
+
+            include "funciones.php";
+            if (calculaedad($_fechaNac) == false) {
+                echo "Solo se pueden registrar mayores de edad";
+            } else {
+                echo "fecha valida";
+                $fechaNac = $_fechaNac;
+            }
+        }
+
+        // -------------------- FIN DATE -----------------------------
+
     }
+
 
     ?>
