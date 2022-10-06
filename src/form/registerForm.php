@@ -10,6 +10,7 @@ if(isset($_POST['email'])) {
     $email = Validaciones::validacion($_POST['email'], "email");
 
     
+    
 
 }
 
