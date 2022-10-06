@@ -1,5 +1,0 @@
-mario;mario
-victor;victor
-nicolas;nicolas
-gabriel;gabriel
-sergio;sergio

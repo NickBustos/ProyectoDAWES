@@ -54,7 +54,7 @@ function getImage($file){
  * Cuenta numero de imagenes.png en carpeta files
  */
 function getNumberOfLogo(){
-    return count(glob(PATH_TO_IMAGES . '{*.png}', GLOB_BRACE));
+    return count(glob(PATH_TO_IMAGENES . '{*.png}', GLOB_BRACE));
 }
 
 /**
@@ -64,7 +64,7 @@ function saveImage($file){
     if(empty($file) == false){
         if(is_uploaded_file($file["tmp_name"])){
             //CREAR CAMINO
-            $finalpath= PATH_TO_IMAGES . getNumberOfLogo() . ".png";//se puede cambiar y sitio
+            $finalpath= PATH_TO_IMAGENES . getNumberOfLogo() . ".png";//se puede cambiar y sitio
             return (move_uploaded_file($file["tmp_name"], $finalpath));
             //GUARDAR
         }
