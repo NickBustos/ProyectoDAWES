@@ -16,7 +16,7 @@
                                             <div>
                                                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrarse</p>
 
-                                                <form class="mx-1 mx-md-4">
+                                                <form class="mx-1 mx-md-4" method="post">
 
                                                     <div class="d-flex flex-row align-items-center mb-4">
 

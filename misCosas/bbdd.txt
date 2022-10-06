@@ -1,2 +1,5 @@
-mario;123
-victor;reputo
+mario;mario
+victor;victor
+nicolas;nicolas
+gabriel;gabriel
+sergio;sergio
