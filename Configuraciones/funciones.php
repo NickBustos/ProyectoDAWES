@@ -34,6 +34,7 @@ function calculaedad($fechanacimiento){
     $dia_diferencia   = date("d") - $dia;
     if ($dia_diferencia < 0 || $mes_diferencia < 0)
       $ano_diferencia--;
+      echo $ano_diferencia;
     if($ano_diferencia >= 18){
         return true;
     }else{

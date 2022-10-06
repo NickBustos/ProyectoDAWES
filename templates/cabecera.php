@@ -34,46 +34,45 @@
 
 
     <?php
-    $_nombreUsuario = "";
+    include 'Configuraciones\funciones.php';
+
+    $_nombreUsuario = $_fechaNac = "";
+    $fechamax = date("Y-m-d");
+    $fechamin = date("1900-01-01");
+
+    $errorNombre = $errorFile = $errorFecha = "";
 
     if (!empty($_POST)) {
-        include 'Configuraciones/config.php'; //creo que seria así = ../Configuraciones.config.php;
-        include 'Configuraciones/funciones.php'; //creo que seria así = ../Configuraciones.funciones.php;
-        $nombreUserPass = $avatar = "";
+        $nombreUserPass = $avatar = $fechaNac = "";
         $_nombreUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
+        //---------------------------- USER --------------------------------
         if (!empty($nombreDeUsuario)) {
             if (!validar($nombreDeUsuario, VALIDA_NOMBREUSUARIO)) {
-                echo "Por favor, ingrese un nombre válido";
+                $errorNombre = "Por favor, ingrese un nombre válido";
             } else {
                 $nombreUserPass = $_nombreUsuario;
             }
         } else {
-            echo "el campo de nombre no puede estar vacío";
+            $errorNombre = ERROR_VACIO;
         }
+        //---------------------------- DATE --------------------------------
+        $_fechaNac = htmlspecialchars($_POST["fechaNac"]);
+        if (!empty($_fechaNac)) {
+            if (calculaedad($_fechaNac)) {
+                $fechaNac = $_fechaNac;
+            } else {
+                $errorFecha = "Solo se pueden registrar mayores de edad";
+            }
+        }else{
+            $errorFecha = ERROR_VACIO;
+        }
+        //---------------------------- FILE --------------------------------
         if (empty($_FILES) == false && empty($_FILES["avatar"]) == false) {
             $avatar = getImage($_FILES["avatar"]);
             //saveImage($_FILES["avatar"]);
         } else {
-            echo "introduce una imagen .png";
+            $errorFile = ERROR_VACIO;
         }
-        //---------------------------- DATE --------------------------------
-        $_fechaNacError = "";
-        $fechamax = date("Y-m-d");
-        $fechamin = date("1900-01-01");
-        $fechaNac = "";
-        if (!empty($_fechaNac)) {
-
-            include "funciones.php";
-            if (calculaedad($_fechaNac) == false) {
-                echo "Solo se pueden registrar mayores de edad";
-            } else {
-                echo "fecha valida";
-                $fechaNac = $_fechaNac;
-            }
-        }
-
-        // -------------------- FIN DATE -----------------------------
-
     }
 
 

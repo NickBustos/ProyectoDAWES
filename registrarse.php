@@ -16,13 +16,15 @@
                                             <div>
                                                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrarse</p>
 
-                                                <form class="mx-1 mx-md-4" method="post">
+                                                <form class="mx-1 mx-md-4" method="post" enctype="multipart/form-data">
 
                                                     <div class="d-flex flex-row align-items-center mb-4">
 
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="text" name= "nombreDeUsuario"  id="form3Example1c" class="form-control" value="<?php echo $_nombreUsuario;?>" />
+                                                            <input type="text" name= "nombreDeUsuario"  id="form3Example1c" class="form-control" 
+                                                                value="<?php echo $_nombreUsuario;?>" />
                                                             <label class="form-label" for="form3Example1c">Tu nombre</label>
+                                                            <span><?php echo $errorNombre ?></span>
                                                         </div>
                                                     </div>
 
@@ -52,15 +54,18 @@
 
                                                     <div class="form-outline flex-fill mb-4">
                                                         <input type="date" id="form3Example1c" class="form-control"  
-                                                        name = "fechaNac" min ="<?= $fechamin;?>"  max="<?=$fechamax;?>" value = "<?php $fechaNac; ?>">/>
+                                                            name = "fechaNac" min ="<?= $fechamin;?>"  max="<?=$fechamax;?>" 
+                                                            value = "<?php $fechaNac; ?>">
                                                         <label class="form-label" for="form3Example1c">Tu fecha de nacimiento</label>
+                                                        <span><?php echo $errorFecha ?></span>
                                                     </div>  
                                             </div>
 
                                             <div class="d-flex flex-row align-items-center mb-1">
-                                                <input class="form-control" name="avatarUsuario" type="file" id="formFile">
+                                                <input class="form-control" name="avatar" type="file" id="formFile" multiple accept="image/png">
                                             </div>
                                             <label for="formFile" class="form-label">Ingresa tu Avatar</label>
+                                            <span><?php echo $errorFile ?></span>
                                             <br><br>
 
                                             <div class="form-check d-flex justify-content-center mb-5">
