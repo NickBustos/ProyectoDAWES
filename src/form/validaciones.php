@@ -1,6 +1,6 @@
 <?php
 
-namespace src\controller\form\Validaciones;
+namespace Nickbustos\Proyectodawes\form;
 
 class Validaciones {
 
@@ -8,10 +8,8 @@ class Validaciones {
     
         if($dato = "email") {
             if (filter_var($textoValidar, FILTER_VALIDATE_EMAIL)){
-                echo $textoValidar;
                 return $textoValidar;
             } else {
-                echo "error";
                 return false;
             }
         }

@@ -3,7 +3,7 @@
     "description": "Proyecto de DAWES",
     "type": "project",
     "require": {
-        "phpmailer/phpmailer": "*"
+        "phpmailer/phpmailer": "^6.6"
     },
     "autoload": {
         "psr-4": {

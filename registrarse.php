@@ -1,4 +1,10 @@
-<?php include "templates/cabecera.php" ?>
+<?php
+
+require("vendor/autoload.php");
+
+include "templates/cabecera.php";
+
+?>
 
 <div class="container">
 
