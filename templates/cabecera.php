@@ -36,21 +36,23 @@
     <?php
     include 'Configuraciones\funciones.php';
 
-    $_nombreUsuario = $_fechaNac = "";
+    $nombreUser = $avatar = $fechaNac = "";
+    $_nombreDeUsuario = $_fechaNac = "";
     $fechamax = date("Y-m-d");
     $fechamin = date("1900-01-01");
 
     $errorNombre = $errorFile = $errorFecha = "";
 
+    $registrado = false;
+
     if (!empty($_POST)) {
-        $nombreUserPass = $avatar = $fechaNac = "";
-        $_nombreUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
+        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
         //---------------------------- USER --------------------------------
-        if (!empty($nombreDeUsuario)) {
-            if (!validar($nombreDeUsuario, VALIDA_NOMBREUSUARIO)) {
-                $errorNombre = "Por favor, ingrese un nombre válido";
+        if (!empty($_nombreDeUsuario)) {
+            if (!validar($_nombreDeUsuario, VALIDA_NOMBREUSUARIO)) {
+                $errorNombre = "<span style='color:red'>Por favor, ingrese un nombre válido</span>";
             } else {
-                $nombreUserPass = $_nombreUsuario;
+                $nombreUser = $_nombreDeUsuario;
             }
         } else {
             $errorNombre = ERROR_VACIO;
@@ -61,18 +63,30 @@
             if (calculaedad($_fechaNac)) {
                 $fechaNac = $_fechaNac;
             } else {
-                $errorFecha = "Solo se pueden registrar mayores de edad";
+                $errorFecha = "<span style='color:red'>Solo se pueden registrar mayores de edad</span>";
             }
-        }else{
+        } else {
             $errorFecha = ERROR_VACIO;
         }
         //---------------------------- FILE --------------------------------
-        if (empty($_FILES) == false && empty($_FILES["avatar"]) == false 
-            && $_FILES["avatar"]["tmp_name"] != "") {
-            $avatar = getImage($_FILES["avatar"]);
+        if (
+            empty($_FILES) == false && empty($_FILES["avatar"]) == false
+            && $_FILES["avatar"]["tmp_name"] != ""
+        ) {
+            if ($_FILES['avatar']['size'] < 1000000) {//1 mega
+                $avatar = getImage($_FILES["avatar"]);
             //saveImage($_FILES["avatar"]);
+            }else{
+                $errorFile = "<span style='color:red'>El archivo no puede ocupar más de un mega</span>";
+            }
+            
         } else {
             $errorFile = ERROR_VACIO;
+        }
+        //---------------------------- RGST --------------------------------
+        if (!empty($nombreUser) && !empty($fechaNac) && !empty($avatar)) {
+            //REGISTRAR (GUARDAR DATOS)
+            $registrado = true;
         }
     }
 
