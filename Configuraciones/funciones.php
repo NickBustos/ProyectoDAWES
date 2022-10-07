@@ -8,7 +8,7 @@ function validar($datoAValidar, $expresionRegular) {
 
 
 if (preg_match($expresionRegular, $datoAValidar))   {
-    $valida = true; // lo mismo que hacer "return true;"
+    $valida = true;
 } else {
     $valida = false;
 }
