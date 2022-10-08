@@ -1,8 +1,6 @@
 <?php
 
-require("vendor/autoload.php");
-
-include "templates/cabecera.php";
+require(__DIR__ . "/../vendor/autoload.php");
 
 ?>
 
@@ -22,7 +20,7 @@ include "templates/cabecera.php";
                                             <div>
                                                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrarse</p>
 
-                                                <form class="mx-1 mx-md-4" method="post" action="src/form/registerForm.php">
+                                                <form class="mx-1 mx-md-4" method="post" action="../src/form/registerForm.php">
 
                                                     <div class="d-flex flex-row align-items-center mb-4">
 
@@ -102,4 +100,3 @@ include "templates/cabecera.php";
     </div>
 </div>
 </div>
-<?php include "templates/pie.php" ?>

@@ -1,8 +1,4 @@
-<?php include "templates/cabecera.php" ?>
-
-
-
- <div class="col-md-6">
+<div class="col-md-6">
             <div class="card">
                 <div class="card-body">
                     <div class="container h-100">
@@ -56,7 +52,3 @@
                 </div>
             </div>
         </div>
-
-
-
-        <?php include "templates/pie.php" ?>
