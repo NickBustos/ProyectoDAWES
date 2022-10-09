@@ -112,11 +112,11 @@ function isUsed($user){
     $lineas = recorrer(PATH_TO_BD);
     
     for($linea = 0; $linea < sizeof($lineas); $linea++){
-        if($user == getUser($lineas[$linea])){
-            return true;//1
+        if(strcmp($user, getUser($lineas[$linea])) == 0){
+            return $linea;
         }
     }
-    return false;//0
+    return -1;
 }
 
 /**
@@ -125,8 +125,8 @@ function isUsed($user){
 function login($user, $password) {
     $lineas = recorrer(PATH_TO_BD);
     for($linea = 0; $linea < sizeof($lineas); $linea++){
-        if($user == getUser($lineas[$linea])
-            && $password == getPassword($lineas[$linea])){
+        if(strcmp($user, getUser($lineas[$linea])) == 0
+            && strcmp($password, getPassword($lineas[$linea])) == 0){
             return true;//1
             //se puede cambiar
         }
