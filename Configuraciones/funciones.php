@@ -102,7 +102,7 @@ function getUser($linea){
  * Coger password de una línea de recorrer
  */
 function getPassword($linea){
-    return md5(explode(';', $linea)[1]);
+    return explode(';', $linea)[1];
 }
 
 /**

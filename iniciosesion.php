@@ -12,17 +12,16 @@
                                     if ($registrado) {
                                         echo
                                         "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
-                                                        Usuario entró correctamente
-                                                    </p>";
+                                            Bienvenido $nombreUser
+                                        </p>" .
+                                        "<img src='multimedia/imagenes/$nombreUser.png' class='img-mario'>";
                                         exit();
                                     }
                                     ?>
 
-
-
                                     <div>
                                         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Iniciar Sesion</p>
-                                        <form method="post" >
+                                        <form method="post">
                                             <!-- User -->
                                             <div class="form-outline mb-4">
                                                 <?php echo $errorNombre ?>

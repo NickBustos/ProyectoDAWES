@@ -54,7 +54,6 @@
                 $nombreUser = $_nombreDeUsuario;
                 //---------------------------- PASS --------------------------------
                 $_password = htmlspecialchars($_POST["password"]);
-                var_dump($_password);
                 if (!empty($_password)) {
                     if (strcmp($_password, getPassword(recorrer(PATH_TO_BD)[$linea])) == 0){
                         $registrado = true;

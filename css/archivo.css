@@ -603,6 +603,11 @@ progress {
     content: "\2014\00A0"
 }
 
+ .img-mario { /*NO SE CAMBIA */
+    max-height: 100;
+    max-width: auto;
+}
+
 .img-fluid {
     max-width: 100%;
     height: auto
