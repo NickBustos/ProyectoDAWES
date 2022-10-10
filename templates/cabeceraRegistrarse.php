@@ -36,18 +36,18 @@
     <?php
     include 'Configuraciones\funciones.php';
 
-    $nombreUser = $avatar = $fechaNac = $mail = "";
-    $_nombreDeUsuario = $_fechaNac = $_mail = "";
+    $nombreUser = $avatar = $fechaNac = $mail = $pass = "";
+    $_nombreDeUsuario = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
     $fechamax = date("Y-m-d");
     $fechamin = date("1900-01-01");
 
-    $errorNombre = $errorFile = $errorFecha = $errorMail = "";
+    $errorNombre = $errorFile = $errorFecha = $errorMail = $errorPass1 = $errorPass2 = "";
 
     $registrado = false;
 
     if (!empty($_POST)) {
-        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
         //---------------------------- USER --------------------------------
+        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
         if (!empty($_nombreDeUsuario)) {
             if (!validar($_nombreDeUsuario, VALIDA_NOMBREUSUARIO)) {
                 $errorNombre = "<span style='color:red'>Por favor, ingrese un nombre válido</span>";
@@ -56,6 +56,26 @@
             }
         } else {
             $errorNombre = ERROR_VACIO;
+        }
+        //---------------------------- PASS --------------------------------
+        $_pass1 = htmlspecialchars($_POST["password1"]);
+        $_pass2 = htmlspecialchars($_POST["password2"]);
+        if(!empty($_pass1)) {
+            if(validar($_pass1, VALIDA_PASSWORD)){
+                if(!empty($_pass2)) {
+                    if($_pass1 == $_pass2){
+                        $pass = $_pass1;
+                    }else{
+                        $errorPass2 = "<span style='color:red'>Las contraseñas no coinciden</span>";
+                    }
+                }else{
+                    $errorPass2 = ERROR_VACIO;
+                }
+            }else{
+                $errorPass1 = "<span style='color:red'>Ingrese una contraseña válida</span>";
+            }
+        }else{
+            $errorPass1 = ERROR_VACIO;
         }
         //---------------------------- DATE --------------------------------
         $_fechaNac = htmlspecialchars($_POST["fechaNac"]);

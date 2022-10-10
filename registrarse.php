@@ -49,7 +49,8 @@
                                                     <div class="d-flex flex-row align-items-center mb-4">
 
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="password" name="contrasenaUsuario" id="form3Example4c" class="form-control" />
+                                                            <?php echo $errorPass1 ?>
+                                                            <input type="password" name="password1" id="form3Example4c" class="form-control" />
                                                             <label class="form-label" for="form3Example4c">Contraseña</label>
                                                         </div>
                                                     </div>
@@ -57,7 +58,8 @@
                                                     <div class="d-flex flex-row align-items-center mb-4">
                                                         
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="password" name="reContrasenaUsuario" id="form3Example4cd" class="form-control" />
+                                                            <?php echo $errorPass2 ?>
+                                                            <input type="password" name="password2" id="form3Example4cd" class="form-control" />
                                                             <label class="form-label" for="form3Example4cd">Repite la contraseña</label>
                                                         </div>
                                                     </div>
