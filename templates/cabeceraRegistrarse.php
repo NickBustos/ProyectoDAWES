@@ -36,12 +36,12 @@
     <?php
     include 'Configuraciones\funciones.php';
 
-    $nombreUser = $avatar = $fechaNac = "";
-    $_nombreDeUsuario = $_fechaNac = "";
+    $nombreUser = $avatar = $fechaNac = $mail = "";
+    $_nombreDeUsuario = $_fechaNac = $_mail = "";
     $fechamax = date("Y-m-d");
     $fechamin = date("1900-01-01");
 
-    $errorNombre = $errorFile = $errorFecha = "";
+    $errorNombre = $errorFile = $errorFecha = $errorMail = "";
 
     $registrado = false;
 
@@ -68,6 +68,17 @@
         } else {
             $errorFecha = ERROR_VACIO;
         }
+        //---------------------------- MAIL --------------------------------
+        $_mail = htmlspecialchars($_POST["correoUsuario"]);
+        if(!empty($_mail)){
+            if(validarMail($_mail)){
+                $mail = $_mail;
+            }else{
+                $errorMail = "<span style='color:red'>Introduce un Mail válido</span>";
+            }
+        }else{
+            $errorMail = ERROR_VACIO;
+        }
         //---------------------------- FILE --------------------------------
         if (
             empty($_FILES) == false && empty($_FILES["avatar"]) == false
@@ -84,7 +95,7 @@
             $errorFile = ERROR_VACIO;
         }
         //---------------------------- RGST --------------------------------
-        if (!empty($nombreUser) && !empty($fechaNac) && !empty($avatar)) {
+        if (!empty($nombreUser) && !empty($fechaNac) && !empty($avatar) && !empty($mail)) {
             //REGISTRAR (GUARDAR DATOS)
             $registrado = true;
         }

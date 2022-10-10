@@ -1,4 +1,4 @@
-<?php include "templates/cabecera.php" ?>
+<?php include "templates/cabeceraRegistrarse.php" ?>
 
 <div class="container">
 
@@ -40,6 +40,7 @@
                                                     <div class="d-flex flex-row align-items-center mb-4">
 
                                                         <div class="form-outline flex-fill mb-0">
+                                                            <?php echo $errorMail ?>
                                                             <input type="email" name="correoUsuario" id="form3Example3c" class="form-control" />
                                                             <label class="form-label" for="form3Example3c">Tu correo electronico</label>
                                                         </div>
