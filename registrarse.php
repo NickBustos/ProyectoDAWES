@@ -1,4 +1,4 @@
-<?php include "templates/cabecera.php" ?>
+<?php include "templates/cabeceraRegistrarse.php" ?>
 
 <div class="container">
 
@@ -13,9 +13,19 @@
                                 <div class="card text-black" style="border-radius: 25px;">
                                     <div class="card-body p-md-5">
                                         <div class="row justify-content-center">
+                                            <?php
+                                                if($registrado){
+                                                    echo 
+                                                    "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
+                                                        Usuario registrado correctamente
+                                                    </p>";
+                                                    exit();
+                                                }
+                                            ?>
                                             <div>
                                                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrarse</p>
 
+                                                <form class="mx-1 mx-md-4" method="post" enctype="multipart/form-data">
 
                                                 <!-- INICIO DE FORMULARIO -->
 
@@ -26,7 +36,9 @@
                                                         <!-- Nombre del usuario -->
 
                                                         <div class="form-outline flex-fill mb-0">
-                                                            <input type="text" name="nombreDeUsuario" id="form3Example1c" class="form-control" value="<?php echo $_nombreUsuario; ?>" />
+                                                            <?php echo $errorNombre ?>
+                                                            <input type="text" name= "nombreDeUsuario"  id="form3Example1c" class="form-control" 
+                                                                value="<?php echo $nombreUser;?>" />
                                                             <label class="form-label" for="form3Example1c">Tu nombre</label>
                                                         </div>
                                                     </div>
@@ -36,6 +48,7 @@
 
                                                     <div class="d-flex flex-row align-items-center mb-4">
                                                         <div class="form-outline flex-fill mb-0">
+                                                            <?php echo $errorMail ?>
                                                             <input type="email" name="correoUsuario" id="form3Example3c" class="form-control" />
                                                             <label class="form-label" for="form3Example3c">Tu correo electronico</label>
                                                         </div>
@@ -55,6 +68,7 @@
                                                     <!-- Repetir contraseña -->
 
                                                     <div class="d-flex flex-row align-items-center mb-4">
+                                                        
                                                         <div class="form-outline flex-fill mb-0">
                                                             <input type="password" name="reContrasenaUsuario" id="form3Example4cd" class="form-control" />
                                                             <label class="form-label" for="form3Example4cd">Repite la contraseña</label>
@@ -66,18 +80,16 @@
 
 
                                                     <div class="form-outline flex-fill mb-4">
-                                                        <input type="text" name="fechaNac" id="form3Example1c" class="form-control" />
+                                                        <?php echo $errorFecha ?>
+                                                        <input type="date" id="form3Example1c" class="form-control"  
+                                                            name = "fechaNac" min ="<?= $fechamin;?>"  max="<?=$fechamax;?>" 
+                                                            value = "<?php echo $fechaNac; ?>">
                                                         <label class="form-label" for="form3Example1c">Tu fecha de nacimiento</label>
                                                     </div>
                                             </div>
-
-
-
-                                            <!-- Avatar -->
-
-
+                                            <?php echo $errorFile ?>
                                             <div class="d-flex flex-row align-items-center mb-1">
-                                                <input class="form-control" name="avatarUsuario" type="file" id="formFile">
+                                                <input class="form-control" name="avatar" type="file" id="formFile" multiple accept="image/png">
                                             </div>
                                             <label for="formFile" class="form-label">Ingresa tu Avatar</label>
                                             <br><br>
@@ -95,8 +107,7 @@
                                             <!-- Botón registrarse -->
 
                                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                               <!-- <button type="button" class="btn btn-primary btn-lg">Registrarse</button>-->
-                                               <input type="submit" class="btn btn-primary btn-lg" value="Registrarse">
+                                                <input type="submit" class="btn btn-primary btn-lg">
                                             </div>
 
 
