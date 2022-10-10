@@ -112,11 +112,11 @@ function isUsed($user){
     $lineas = recorrer(PATH_TO_BD);
     
     for($linea = 0; $linea < sizeof($lineas); $linea++){
-        if($user == getUser($lineas[$linea])){
-            return true;//1
+        if(strcmp($user, getUser($lineas[$linea])) == 0){
+            return $linea;
         }
     }
-    return false;//0
+    return -1;
 }
 
 /**
@@ -125,13 +125,27 @@ function isUsed($user){
 function login($user, $password) {
     $lineas = recorrer(PATH_TO_BD);
     for($linea = 0; $linea < sizeof($lineas); $linea++){
-        if($user == getUser($lineas[$linea])
-            && $password == getPassword($lineas[$linea])){
+        if(strcmp($user, getUser($lineas[$linea])) == 0
+            && strcmp($password, getPassword($lineas[$linea])) == 0){
             return true;//1
             //se puede cambiar
         }
     }
     return false;//0
+}
+
+function validacion($textoValidar, $dato) {
+    
+    if($dato = "email") {
+        if (filter_var($textoValidar, FILTER_VALIDATE_EMAIL)){
+            echo $textoValidar;
+            return $textoValidar;
+        } else {
+            echo "error";
+            return false;
+        }
+    }
+
 }
 
 ?>

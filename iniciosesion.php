@@ -1,4 +1,4 @@
-<?php include "templates/cabecera.php" ?>
+<?php include "templates/cabeceraInicio.php" ?>
 <div class="col-md-6">
     <div class="card">
         <div class="card-body">
@@ -9,16 +9,18 @@
                             <div class="row justify-content-center">
                                 <div>
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Iniciar Sesion</p>
-                                    <form>
-                                        <!-- Email -->
+                                    <form method="post">
+                                        <!-- User -->
                                         <div class="form-outline mb-4">
-                                            <input type="email" id="form2Example1" class="form-control" />
-                                            <label class="form-label" for="form2Example1">Correo eléctronico</label>
+                                            <?php echo $errorNombre ?>
+                                            <input type="text" id="form2Example1" class="form-control" name="nombreDeUsuario"/>
+                                            <label class="form-label" for="form2Example1">Nombre usuario</label>
                                         </div>
 
                                         <!-- Contraseña -->
                                         <div class="form-outline mb-4">
-                                            <input type="password" id="form2Example2" class="form-control" />
+                                            <?php echo $errorPassword ?>
+                                            <input type="password" id="form2Example2" class="form-control" name="password"/>
                                             <label class="form-label" for="form2Example2">Contraseña</label>
                                         </div>
 
@@ -40,10 +42,10 @@
                                             <br><br>
                                             <!-- Submit button -->
                                             <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-primary btn-lg">Iniciar Sesion</button>
+                                                <input type="submit" class="btn btn-primary btn-lg">
                                             </div>
                                         </div>
-
+                                    </form>
                                 </div>
                             </div>
                         </div>
