@@ -10,7 +10,7 @@ class Mailer {
 
         $remitente = "El grupo más guay del mundo";
         $asunto = 'Su cuenta ha sido creada';
-        $enlaceActivacionCuenta = "//" . $_SERVER['HTTP_HOST'] . "/ENLACE ACTIVACION CUENTA";
+        $enlaceActivacionCuenta = "http://" . $_SERVER['HTTP_HOST'] . "/ENLACE ACTIVACION CUENTA";
         $mensaje = <<<EOT
 <p>La creacion de su cuenta se a realizado con exito</p>
 <p>
@@ -24,21 +24,21 @@ EOT;
         $mail = new PHPMailer\PHPMailer();
 
         $mail->isSMTP();                        // Utilizar SMTP
-        $mail->Host       = 'NOMBRE DEL SERVIDOR SMTP';    // Servidor SMTP
+        $mail->Host       = 'smtp.gmail.com';    // Servidor SMTP
         $mail->SMTPAuth   = true;               // Autenticacion SMTP
-        $mail->Username   = 'USUARIO SMTP';     // Usuario SMTP
-        $mail->Password   = 'PASSWORD SMTP';         // Password SMTP
+        $mail->Username   = 'proyectodawes@gmail.com';     // Usuario SMTP
+        $mail->Password   = 'elvtzchdckrgqxkr';         // Password SMTP
         $mail->SMTPSecure = 'ssl';              // encriptado tls o ssl
-        $mail->Port       = 345;                // Puerto smtp
+        $mail->Port       = 465;                // Puerto smtp
 
-        $mail->setFrom('remitente@gmail.com', $remitente);           // Correo y nombre del remitente
+        $mail->setFrom('proyectodawes@gmail.com', $remitente);           // Correo y nombre del remitente
         $mail->addAddress($email);           // Correo del destinatario
 
         $mail->isHTML(true);                                  
         $mail->Subject = $asunto;
         $mail->Body = $mensaje;
 
-        //$mail->send();
+        $mail->send();
 
         return $mail;
 
