@@ -15,7 +15,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="">Inicio</a>
+                <a class="nav-link" href="iniciosesion.php">Inicio</a>
             </li>
 
             <li class="nav-item">
@@ -36,26 +36,48 @@
     <?php
     include 'Configuraciones\funciones.php';
 
-    $nombreUser = $avatar = $fechaNac = $mail = "";
-    $_nombreDeUsuario = $_fechaNac = $_mail = "";
+    $nombreUser = $avatar = $fechaNac = $mail = $pass = "";
+    $_nombreDeUsuario = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
     $fechamax = date("Y-m-d");
     $fechamin = date("1900-01-01");
 
-    $errorNombre = $errorFile = $errorFecha = $errorMail = "";
+    $errorNombre = $errorFile = $errorFecha = $errorMail = $errorPass1 = $errorPass2 = "";
 
     $registrado = false;
 
     if (!empty($_POST)) {
-        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
         //---------------------------- USER --------------------------------
+        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
         if (!empty($_nombreDeUsuario)) {
             if (!validar($_nombreDeUsuario, VALIDA_NOMBREUSUARIO)) {
                 $errorNombre = "<span style='color:red'>Por favor, ingrese un nombre válido</span>";
             } else {
-                $nombreUser = $_nombreDeUsuario;
+                if(strlen($_nombreDeUsuario) >= 3 && strlen($_nombreDeUsuario) <= 32){
+                    $nombreUser = $_nombreDeUsuario;
+                }else{
+                    $errorNombre = "<span style='color:red'>Tiene que tener entre 8-16 caracteres</span>";
+                }
             }
         } else {
             $errorNombre = ERROR_VACIO;
+        }
+        //---------------------------- PASS --------------------------------
+        $_pass1 = htmlspecialchars($_POST["password1"]);
+        $_pass2 = htmlspecialchars($_POST["password2"]);
+        if(!empty($_pass1)) {
+            if(validarPassword($_pass1, $errorPass1)){
+                if(!empty($_pass2)) {
+                    if($_pass1 == $_pass2){
+                        $pass = $_pass1;
+                    }else{
+                        $errorPass2 = "<span style='color:red'>Las contraseñas no coinciden</span>";
+                    }
+                }else{
+                    $errorPass2 = ERROR_VACIO;
+                }
+            }
+        }else{
+            $errorPass1 = ERROR_VACIO;
         }
         //---------------------------- DATE --------------------------------
         $_fechaNac = htmlspecialchars($_POST["fechaNac"]);
