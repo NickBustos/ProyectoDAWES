@@ -40,6 +40,8 @@
 
     $errorNombre = $errorPassword = "";
 
+    $registrado = false;
+
 
     if (!empty($_POST)) {
         $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
@@ -54,7 +56,7 @@
                 $_password = htmlspecialchars($_POST["password"]);
                 if (!empty($_password)) {
                     if (strcmp($_password, getPassword(recorrer(PATH_TO_BD)[$linea])) == 0){
-                        echo "entraste";
+                        $registrado = true;
                     } else {
                         $errorPassword = "<span style='color:red'>La contraseña no es correcta</span>";
                     }
