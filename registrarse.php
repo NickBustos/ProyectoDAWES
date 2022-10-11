@@ -19,7 +19,7 @@
                                                 "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
                                                         Bienvenido $nombreUser
                                                     </p>" .
-                                                    "<img class='img-mario' src='$avatar'";
+                                                    "<img src='$avatar'>";
                                                 exit();
                                             }
                                             ?>
@@ -77,12 +77,12 @@
                                             <label for="formFile" class="form-label">Ingresa tu Avatar</label>
                                             <br><br>
 
-                                            <div class="form-check d-flex justify-content-center mb-5">
+                                            <!-- <div class="form-check d-flex justify-content-center mb-5">
                                                 <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
                                                 <label class="form-check-label" for="form2Example3">
                                                     Acepto los <a href="#!">términos y condiciones</a>
                                                 </label>
-                                            </div>
+                                            </div> -->
 
                                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                                 <input type="submit" class="btn btn-primary btn-lg">

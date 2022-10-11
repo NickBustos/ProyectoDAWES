@@ -6,7 +6,6 @@ include 'config.php';
 //Validar Nombre del usuario
 function validar($datoAValidar, $expresionRegular) {
 
-
 if (preg_match($expresionRegular, $datoAValidar))   {
     $valida = true; // lo mismo que hacer "return true;"
 } else {
@@ -14,6 +13,34 @@ if (preg_match($expresionRegular, $datoAValidar))   {
 }
 
 return $valida;
+}
+
+/*
+* Valida la contraseña a la hora de crear el usuario
+*/
+function validarPassword($password,&$errorPassword){
+    if(strlen($password) < 8){
+        $errorPassword = "<span style='color:red'>La contraseña no puede tener menos de 8 caracteres</span>";
+        return false;
+    }
+    if(strlen($password) > 16){
+        $errorPassword = "<span style='color:red'>La contraseña no puede tener más de 64 caracteres</span>";
+        return false;
+    }
+    if(!preg_match('@[a-z]@', $password)){
+        $errorPassword = "<span style='color:red'>La contraseña debe contener al menos una letra minúscula</span>";
+        return false;
+    }
+    if(!preg_match('@[A-Z]@', $password)){
+        $errorPassword = "<span style='color:red'>La contraseña debe contener al menos una letra mayúscula</span>";
+        return false;
+    }
+    if(!preg_match('@[0-9]@', $password)){
+        $errorPassword = "<span style='color:red'>La contraseña debe contener al menos un carácter númerico</span>";
+        return false;
+    }
+    $errorPassword = "";
+    return true;
 }
 
 
@@ -141,5 +168,3 @@ function validarMail($textoValidar) {
             return false;
         }
 }
-
-?>

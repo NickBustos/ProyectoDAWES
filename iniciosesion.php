@@ -14,10 +14,13 @@
                                         "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
                                             Bienvenido $nombreUser
                                         </p>" .
-                                        "<img src='multimedia/imagenes/$nombreUser.png' class='img-mario'>";
+                                        "
+                                        <img src='multimedia/imagenes/$nombreUser.png'>
+                                        ";
                                         exit();
                                     }
                                     ?>
+                                    
 
                                     <div>
                                         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Iniciar Sesion</p>
@@ -36,21 +39,18 @@
                                                 <label class="form-label" for="form2Example2">Contraseña</label>
                                             </div>
 
-                                            <!-- Recordar contraseña -->
-                                            <div class="row mb-4">
+                                            <!-- <div class="row mb-4">
                                                 <div class="col d-flex justify-content-center">
-                                                    <!-- Checkbox -->
                                                     <div class="form-check">
                                                         <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
                                                         <label class="form-check-label" for="form2Example31"> Recuerdame </label>
                                                     </div>
-                                                </div>
+                                                </div> -->
 
 
-                                                <div class="col">
-                                                    <!-- Simple link -->
+                                                <!-- <div class="col">
                                                     <a href="#!">Olvidé la contraseña</a>
-                                                </div>
+                                                </div> -->
                                                 <br><br>
 
                                                 <!-- Submit button -->
