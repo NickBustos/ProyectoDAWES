@@ -55,7 +55,7 @@
                 if(strlen($_nombreDeUsuario) >= 3 && strlen($_nombreDeUsuario) <= 32){
                     $nombreUser = $_nombreDeUsuario;
                 }else{
-                    $errorNombre = "<span style='color:red'>Tiene que tener entre 8-16 caracteres</span>";
+                    $errorNombre = "<span style='color:red'>Tiene que tener entre 3-32 caracteres</span>";
                 }
             }
         } else {
