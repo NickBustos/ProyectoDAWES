@@ -37,9 +37,7 @@
     include 'Configuraciones\funciones.php';
 
     $user = $password = $linea = "";
-
     $errorUser = $errorPassword = "";
-
     $registrado = false;
 
 
@@ -52,9 +50,7 @@
             if(empty($errorPassword)){
                 $registrado = true;
             }
-        }
-            
-            
+        } 
     }
 
 
