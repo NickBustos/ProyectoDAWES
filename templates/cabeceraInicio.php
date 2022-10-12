@@ -36,22 +36,24 @@
     <?php
     include 'Configuraciones\funciones.php';
 
-    $nombreUser = $password = $linea = "";
+    $user = $password = $linea = "";
 
-    $errorNombre = $errorPassword = "";
+    $errorUser = $errorPassword = "";
 
     $registrado = false;
 
 
     if (!empty($_POST)) {
-        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
         //---------------------------- USER --------------------------------
-        if (!empty($_nombreDeUsuario)) {
-            $linea = isUsed($_nombreDeUsuario);
+        $_user = htmlspecialchars($_POST["user"]);
+        
+//CAmbiar
+        if (!empty($_user)) {
+            $linea = isUsed($_user);
             if ($linea == -1) {
-                $errorNombre = "<span style='color:red'>El nombre no existe</span>";
+                $errorUser = "<span style='color:red'>El nombre no existe</span>";
             } else {
-                $nombreUser = $_nombreDeUsuario;
+                $nombreUser = $_user;
                 //---------------------------- PASS --------------------------------
                 $_password = htmlspecialchars($_POST["password"]);
                 if (!empty($_password)) {
