@@ -44,7 +44,7 @@
     if (!empty($_POST)) {
         $_user = htmlspecialchars($_POST["user"]);
         $_password = htmlspecialchars($_POST["password"]);
-        login($_user, $_password, $errorUser, $errorPassword);
+        puedoEntrar($_user, $_password, $errorUser, $errorPassword);
         if(empty($errorUser)){
             $user = $_user;
             if(empty($errorPassword)){

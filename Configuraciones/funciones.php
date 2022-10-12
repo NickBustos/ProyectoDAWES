@@ -3,6 +3,10 @@ include 'config.php';
 
 //************************************************* */
 
+/**
+ * Comprueba que una variable no está vacía.
+ * En ese caso return true, sino, false, transmitiendo un mensaje de error.
+ */
 function vacio($cosa, &$errorCosa)
 {
     if (empty($cosa)) {
@@ -12,9 +16,10 @@ function vacio($cosa, &$errorCosa)
     return false;
 }
 
-/*
-* Valida el usuario a la hora de crear el usuario
-*/
+/**
+ * Comprueba que un string es un nombre válido.
+ * En ese caso return true, sino, false, transmitiendo un mensaje de error.
+ */
 function validarUser($user, &$errorUser)
 {
     if (vacio($user, $errorUser)) {
@@ -27,7 +32,11 @@ function validarUser($user, &$errorUser)
     return true;
 }
 
-function login($user, $pass, &$errorUser, &$errorPass)
+/**
+ * Comprueba que un usuario y una contraseña son válidos para entrar al sistema.
+ * En ese caso return true, sino, false, llenando el mensaje de error correspondiente.
+ */
+function puedoEntrar($user, $pass, &$errorUser, &$errorPass)
 {
     if (vacio($user, $errorUser)) {
         return false;
@@ -47,9 +56,12 @@ function login($user, $pass, &$errorUser, &$errorPass)
     return true;
 }
 
-/*
-* Valida la contraseña a la hora de crear el usuario
-*/
+/**
+ * Confirma que un string ($password) tiene:
+ * un length válido, un número, una máyuscula y una minúscula.
+ * Si tiene todo return true, sino false y llena error
+ * 
+ */
 function validarPassword($password, &$errorPassword)
 {
     if (strlen($password) < MIN_PASS_LENGTH) {
@@ -75,6 +87,10 @@ function validarPassword($password, &$errorPassword)
     return true;
 }
 
+/**
+ * Confirma que 2 strigns tienen el formato de contraseña y son iguales.
+ * En ese caso return true, sino, false, llenando el error correspondiente.
+ */
 function validarBothPasswords($password1, $password2, &$errorPassword1, &$errorPassword2)
 {
     if (vacio($password1, $errorPassword1)) {
@@ -116,6 +132,11 @@ function mayorEdad($fechanacimiento)
     }
 }
 
+/**
+ * Confirma que un dato es una fecha adecuada para el programa.
+ * En ese caso return true, sino, false, llenando el error con un mensaje.
+ */
+
 function validarFechaNac($fechaNac, &$errorFecha)
 {
     if (vacio($fechaNac, $errorFecha)) {
@@ -128,6 +149,10 @@ function validarFechaNac($fechaNac, &$errorFecha)
     return true;
 }
 
+/**
+ * Confirma que un string tiene el formato de un mail.
+ * En ese caso return true, sino, false, llenando el error con un mensaje.
+ */
 function validarMail($mail, &$errorMail)
 {
     if (vacio($mail, $errorMail)) {
@@ -140,6 +165,10 @@ function validarMail($mail, &$errorMail)
     return true;
 }
 
+/**
+ * Confirma que "$_FILES" tiene una imagen "avatar" válida.
+ * En ese caso return true, sino, false, llenando el error con un mensaje.
+ */
 function validarAvatar($files, &$errorFile)
 {
     if (
@@ -170,22 +199,14 @@ function getImage($file)
 }
 
 /**
- * Cuenta numero de imagenes.png en carpeta files
- */
-function getNumberOfLogo()
-{
-    return count(glob(PATH_TO_IMAGENES . '{*.png}', GLOB_BRACE));
-}
-
-/**
  * Guardar imagen en carpeta files
  */
-function saveImage($file)
+function saveImage($file, $name)
 {
     if (empty($file) == false) {
         if (is_uploaded_file($file["tmp_name"])) {
             //CREAR CAMINO
-            $finalpath = PATH_TO_IMAGENES . getNumberOfLogo() . ".png"; //se puede cambiar y sitio
+            $finalpath = PATH_TO_IMAGENES . $name . ".png";
             return (move_uploaded_file($file["tmp_name"], $finalpath));
             //GUARDAR
         }
