@@ -27,6 +27,26 @@ function validarUser($user, &$errorUser)
     return true;
 }
 
+function login($user, $pass, &$errorUser, &$errorPass)
+{
+    if (vacio($user, $errorUser)) {
+        return false;
+    }
+    $linea = isUsed($user);
+    if ($linea == -1) {
+        $errorUser = ERROR_LOGIN_USER;
+        return false;
+    }
+    if(vacio($pass, $errorPass)){
+        return false;
+    }
+    if (strcmp($pass, getPassword(recorrer(PATH_TO_BD)[$linea])) != 0){
+        $errorPass = ERROR_LOGIN_PASS;
+        return false;
+    }
+    return true;
+}
+
 /*
 * Valida la contraseña a la hora de crear el usuario
 */
@@ -129,13 +149,12 @@ function validarAvatar($files, &$errorFile)
         $errorFile = ERROR_VACIO;
         return false;
     }
-    if ($files['avatar']['size'] > 1000000) {//1 mega
+    if ($files['avatar']['size'] > 1000000) { //1 mega
         $errorFile = ERROR_FILE_SIZE;
         return false;
     }
     return true;
 }
-
 
 /**
  * Recoge imagen de un file
@@ -219,22 +238,4 @@ function isUsed($user)
         }
     }
     return -1;
-}
-
-/**
- * Verifica que un usuario y contraseña se encuentran en file bbdd
- */
-function login($user, $password)
-{
-    $lineas = recorrer(PATH_TO_BD);
-    for ($linea = 0; $linea < sizeof($lineas); $linea++) {
-        if (
-            strcmp($user, getUser($lineas[$linea])) == 0
-            && strcmp($password, getPassword($lineas[$linea])) == 0
-        ) {
-            return true; //1
-            //se puede cambiar
-        }
-    }
-    return false; //0
 }

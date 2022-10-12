@@ -44,31 +44,17 @@
 
 
     if (!empty($_POST)) {
-        //---------------------------- USER --------------------------------
         $_user = htmlspecialchars($_POST["user"]);
-        
-//CAmbiar
-        if (!empty($_user)) {
-            $linea = isUsed($_user);
-            if ($linea == -1) {
-                $errorUser = "<span style='color:red'>El nombre no existe</span>";
-            } else {
-                $nombreUser = $_user;
-                //---------------------------- PASS --------------------------------
-                $_password = htmlspecialchars($_POST["password"]);
-                if (!empty($_password)) {
-                    if (strcmp($_password, getPassword(recorrer(PATH_TO_BD)[$linea])) == 0){
-                        $registrado = true;
-                    } else {
-                        $errorPassword = "<span style='color:red'>La contraseña no es correcta</span>";
-                    }
-                } else {
-                    $errorPassword = ERROR_VACIO;
-                }
+        $_password = htmlspecialchars($_POST["password"]);
+        login($_user, $_password, $errorUser, $errorPassword);
+        if(empty($errorUser)){
+            $user = $_user;
+            if(empty($errorPassword)){
+                $registrado = true;
             }
-        } else {
-            $errorNombre = ERROR_VACIO;
         }
+            
+            
     }
 
 
