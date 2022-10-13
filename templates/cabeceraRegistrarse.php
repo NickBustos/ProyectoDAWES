@@ -88,88 +88,40 @@ $confirmacionCorreo = wordwrap($confirmacionCorreo, 70, "\r\n");
 
     include 'Configuraciones\funciones.php';
 
-    $nombreUser = $avatar = $fechaNac = $mail = $pass = "";
-    $_nombreDeUsuario = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
-    $fechamax = date("Y-m-d");
-    $fechamin = date("1900-01-01");
-
-    $errorNombre = $errorFile = $errorFecha = $errorMail = $errorPass1 = $errorPass2 = "";
-
+    $user = $avatar = $fechaNac = $mail = $pass = "";
+    $_user = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
+    $errorUser = $errorAvatar = $errorFecha = $errorMail = $errorPass1 = $errorPass2 = "";
     $registrado = false;
 
     if (!empty($_POST)) {
         //---------------------------- USER --------------------------------
-        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
-        if (!empty($_nombreDeUsuario)) {
-            if (!validar($_nombreDeUsuario, VALIDA_NOMBREUSUARIO)) {
-                $errorNombre = "<span style='color:red'>Por favor, ingrese un nombre válido</span>";
-            } else {
-                if(strlen($_nombreDeUsuario) >= 3 && strlen($_nombreDeUsuario) <= 32){
-                    $nombreUser = $_nombreDeUsuario;
-                }else{
-                    $errorNombre = "<span style='color:red'>Tiene que tener entre 3-32 caracteres</span>";
-                }
-            }
-        } else {
-            $errorNombre = ERROR_VACIO;
+        $_user = htmlspecialchars($_POST["user"]);
+        if(validarUser($_user, $errorUser)){
+            $user = $_user;
         }
         //---------------------------- PASS --------------------------------
         $_pass1 = htmlspecialchars($_POST["password1"]);
         $_pass2 = htmlspecialchars($_POST["password2"]);
-        if(!empty($_pass1)) {
-            if(validarPassword($_pass1, $errorPass1)){
-                if(!empty($_pass2)) {
-                    if($_pass1 == $_pass2){
-                        $pass = $_pass1;
-                    }else{
-                        $errorPass2 = "<span style='color:red'>Las contraseñas no coinciden</span>";
-                    }
-                }else{
-                    $errorPass2 = ERROR_VACIO;
-                }
-            }
-        }else{
-            $errorPass1 = ERROR_VACIO;
+        if(validarBothPasswords($_pass1, $_pass2, $errorPass1, $errorPass2)){
+            $pass = $_pass1;
         }
         //---------------------------- DATE --------------------------------
         $_fechaNac = htmlspecialchars($_POST["fechaNac"]);
-        if (!empty($_fechaNac)) {
-            if (calculaedad($_fechaNac)) {
-                $fechaNac = $_fechaNac;
-            } else {
-                $errorFecha = "<span style='color:red'>Solo se pueden registrar mayores de edad</span>";
-            }
-        } else {
-            $errorFecha = ERROR_VACIO;
+        if(validarFechaNac($_fechaNac, $errorFecha)){
+            $fechaNac = $_fechaNac;
         }
         //---------------------------- MAIL --------------------------------
         $_mail = htmlspecialchars($_POST["correoUsuario"]);
-        if(!empty($_mail)){
-            if(validarMail($_mail)){
-                $mail = $_mail;
-            }else{
-                $errorMail = "<span style='color:red'>Introduce un Mail válido</span>";
-            }
-        }else{
-            $errorMail = ERROR_VACIO;
+        if(validarMail($_mail, $errorMail)){
+            $mail = $_mail;
         }
         //---------------------------- FILE --------------------------------
-        if (
-            empty($_FILES) == false && empty($_FILES["avatar"]) == false
-            && $_FILES["avatar"]["tmp_name"] != ""
-        ) {
-            if ($_FILES['avatar']['size'] < 1000000) {//1 mega
-                $avatar = getImage($_FILES["avatar"]);
-            //saveImage($_FILES["avatar"]);
-            }else{
-                $errorFile = "<span style='color:red'>El archivo no puede ocupar más de un mega</span>";
-            }
-            
-        } else {
-            $errorFile = ERROR_VACIO;
+        if(validarAvatar($_FILES, $errorAvatar)){
+            $avatar = getImage($_FILES["avatar"]);
+            //GUARDAR
         }
         //---------------------------- RGST --------------------------------
-        if (!empty($nombreUser) && !empty($fechaNac) && !empty($avatar) && !empty($mail)) {
+        if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
             //REGISTRAR (GUARDAR DATOS)
             $registrado = true;
             mail('$mail',

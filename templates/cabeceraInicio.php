@@ -41,37 +41,21 @@
     <?php
     include 'Configuraciones\funciones.php';
 
-    $nombreUser = $password = $linea = "";
-
-    $errorNombre = $errorPassword = "";
-
+    $user = $password = $linea = "";
+    $errorUser = $errorPassword = "";
     $registrado = false;
 
 
     if (!empty($_POST)) {
-        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
-        //---------------------------- USER --------------------------------
-        if (!empty($_nombreDeUsuario)) {
-            $linea = isUsed($_nombreDeUsuario);
-            if ($linea == -1) {
-                $errorNombre = "<span style='color:red'>El nombre no existe</span>";
-            } else {
-                $nombreUser = $_nombreDeUsuario;
-                //---------------------------- PASS --------------------------------
-                $_password = htmlspecialchars($_POST["password"]);
-                if (!empty($_password)) {
-                    if (strcmp($_password, getPassword(recorrer(PATH_TO_BD)[$linea])) == 0) {
-                        $registrado = true;
-                    } else {
-                        $errorPassword = "<span style='color:red'>La contraseña no es correcta</span>";
-                    }
-                } else {
-                    $errorPassword = ERROR_VACIO;
-                }
+        $_user = htmlspecialchars($_POST["user"]);
+        $_password = htmlspecialchars($_POST["password"]);
+        puedoEntrar($_user, $_password, $errorUser, $errorPassword);
+        if(empty($errorUser)){
+            $user = $_user;
+            if(empty($errorPassword)){
+                $registrado = true;
             }
-        } else {
-            $errorNombre = ERROR_VACIO;
-        }
+        } 
     }
 
 

@@ -13,10 +13,10 @@
                                     if ($registrado) {
                                         echo
                                         "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
-                                            Bienvenido $nombreUser
+                                            Bienvenido $user
                                         </p>" .
-                                            "
-                                        <img src='multimedia/imagenes/$nombreUser.png'>
+                                        "
+                                        <img src='multimedia/imagenes/$user.png'>
                                         ";
                                         exit();
                                     }
@@ -28,8 +28,9 @@
                                         <form method="post">
                                             <!-- User -->
                                             <div class="form-outline mb-4">
-                                                <?php echo $errorNombre ?>
-                                                <input type="text" id="form2Example1" class="form-control" name="nombreDeUsuario" value="<?php echo $nombreUser; ?>" />
+                                                <?php echo $errorUser ?>
+                                                <input type="text" id="form2Example1" class="form-control" name="user" 
+                                                value="<?php echo $user; ?>" />
                                                 <label class="form-label" for="form2Example1">Nombre usuario</label>
                                             </div>
 
