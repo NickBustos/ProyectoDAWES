@@ -1,4 +1,5 @@
 <?php include "templates/cabeceraInicio.php" ?>
+<br><br>
 <div class="row d-flex justify-content-center">
     <div class="col-md-6">
         <div class="card">
@@ -14,13 +15,13 @@
                                         "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
                                             Bienvenido $nombreUser
                                         </p>" .
-                                        "
+                                            "
                                         <img src='multimedia/imagenes/$nombreUser.png'>
                                         ";
                                         exit();
                                     }
                                     ?>
-                                    
+
 
                                     <div>
                                         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Iniciar Sesion</p>
@@ -48,27 +49,34 @@
                                                 </div> -->
 
 
-                                                <!-- <div class="col">
+                                            <!-- <div class="col">
                                                     <a href="#!">Olvidé la contraseña</a>
                                                 </div> -->
-                                                <br><br>
+                                            <br>
 
-                                                <!-- Submit button -->
-                                                <div class="d-flex justify-content-center">
-                                                    <input type="submit" class="btn btn-primary btn-lg">
-                                                </div>
+                                            <!-- Submit button -->
+                                            <div class="d-flex justify-content-center">
+                                                <input type="submit" class="btn btn-primary btn-lg">
                                             </div>
-                                        </form>
+                                            <br>
+                                            <br>
                                     </div>
+                                    <div class="d-flex justify-content-center">
+                                        <p class="form-text text-muted">
+                                            ¿No tienes cuenta? Haz clíck <a href="registrarse.php">aquí</a>
+                                        </p>
+                                    </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
+
         </div>
     </div>
+</div>
 </div>
 
 

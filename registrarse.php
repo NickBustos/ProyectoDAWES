@@ -92,7 +92,7 @@
                                                 <input class="form-control" name="avatar" type="file" id="formFile" multiple accept="image/png">
                                             </div>
                                             <label for="formFile" class="form-label">Ingresa tu Avatar</label>
-                                            <br><br>
+                                            <br>
 
                                             <!-- <div class="form-check d-flex justify-content-center mb-5">
                                                 <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
@@ -111,7 +111,7 @@
 
                                             <!-- Inicio de sesión -->
 
-                                            <div class="d-flex">
+                                            <div class="d-flex justify-content-center">
                                                 <p class="form-text text-muted">
                                                     ¿Ya tienes una cuenta? Haz clíck <a href="iniciosesion.php">aquí</a>
                                                 </p>

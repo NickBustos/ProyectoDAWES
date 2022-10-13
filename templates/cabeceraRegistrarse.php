@@ -14,16 +14,21 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
+            <li>
+        <a href="#" class="navbar-brand">
+                <img src="multimedia/imagenes/logo.png" alt="Mom or Dad">
+            </a>
+            </li>
             <li class="nav-item active">
                 <a class="nav-link" href="iniciosesion.php">Inicio</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="">Acerca de</a>
+                <a class="nav-link" href="acercade.php">Acerca de</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="">Contacto</a>
+                <a class="nav-link" href="contacto.php">Contacto</a>
             </li>
         </ul>
     </nav>
