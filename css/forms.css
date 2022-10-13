@@ -1,0 +1,14 @@
+form {
+    display: flex;
+    flex-direction: column;
+
+    width: 60%;
+    margin: 4rem auto;
+    padding: 2rem;
+    border: solid #000 1px;
+    border-radius: 32px;
+}
+
+form * {
+    margin: .5rem 0;
+}
