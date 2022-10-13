@@ -133,4 +133,6 @@
     </div>
 </div>
 </div>
+<br>
+<br>
 <?php include "templates/pie.php" ?>

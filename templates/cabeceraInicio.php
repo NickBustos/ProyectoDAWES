@@ -14,21 +14,26 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="iniciosesion.php">Inicio</a>
+            <li>
+                <a href="#" class="navbar-brand">
+                    <img src="multimedia/imagenes/logo2.png.png" alt="Logo">
+                </a>
+            </li>
+            <li class="nav-item active " style="margin: auto;">
+                <a class="nav-link" href="index.php">Inicio</a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item" style="margin: auto;">
                 <a class="nav-link" href="acercade.php">Acerca de</a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item" style="margin: auto;">
                 <a class="nav-link" href="contacto.php">Contacto</a>
             </li>
         </ul>
     </nav>
     <div class="container">
-        
+
 
     </div>
 
@@ -55,7 +60,7 @@
                 //---------------------------- PASS --------------------------------
                 $_password = htmlspecialchars($_POST["password"]);
                 if (!empty($_password)) {
-                    if (strcmp($_password, getPassword(recorrer(PATH_TO_BD)[$linea])) == 0){
+                    if (strcmp($_password, getPassword(recorrer(PATH_TO_BD)[$linea])) == 0) {
                         $registrado = true;
                     } else {
                         $errorPassword = "<span style='color:red'>La contraseña no es correcta</span>";
