@@ -11,14 +11,7 @@
                                 <div class="row justify-content-center">
                                     <?php
                                     if ($registrado) {
-                                        echo
-                                        "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
-                                            Bienvenido $user
-                                        </p>" .
-                                        "
-                                        <img src='multimedia/imagenes/$user.png'>
-                                        ";
-                                        exit();
+                                        bienvenido($user, 'multimedia/imagenes/'.$user.'.png');
                                     }
                                     ?>
 

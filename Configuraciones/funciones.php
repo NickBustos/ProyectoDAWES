@@ -46,10 +46,10 @@ function puedoEntrar($user, $pass, &$errorUser, &$errorPass)
         $errorUser = ERROR_LOGIN_USER;
         return false;
     }
-    if(vacio($pass, $errorPass)){
+    if (vacio($pass, $errorPass)) {
         return false;
     }
-    if (strcmp($pass, getPassword(recorrer(PATH_TO_BD)[$linea])) != 0){
+    if (strcmp($pass, getPassword(recorrer(PATH_TO_BD)[$linea])) != 0) {
         $errorPass = ERROR_LOGIN_PASS;
         return false;
     }
@@ -259,4 +259,16 @@ function isUsed($user)
         }
     }
     return -1;
+}
+
+function bienvenido($user, $path)
+{
+    echo
+    "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
+        Bienvenido $user
+    </p>" .
+    "
+        <img src='$path'>
+    ";
+    exit();
 }
