@@ -59,6 +59,10 @@
   text-transform: uppercase;
 }
 
+.fondo{
+    background: linear-gradient(180deg, rgba(253,93,20,1) 0%, rgba(253,93,20,1) 35%, rgba(255,255,255,1) 100%);
+}
+
 .main {
     width: 100%;
     height: 100%;
@@ -414,13 +418,12 @@ textarea.input1+.shadow-input1 {
         opacity: 1;
     }
 }
-
 .carta {
 
     display: table-cell;
     flex-direction: column;
     min-width: 0;
-    margin: 10px;
+    
     background-color: #fff;
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, 0.125);
@@ -4637,6 +4640,7 @@ fieldset:disabled .btn {
     border-radius: 10px;
     margin-left: -12px;
     background: #FD5D14;
+    box-shadow: 0px 5px #00000038;
 }
 
 .btn-group>.btn:not(:last-child):not(.dropdown-toggle),
@@ -4644,6 +4648,7 @@ fieldset:disabled .btn {
     background: #FD5D14;
     border-radius: 10px;
     margin-right: -12px;
+    box-shadow: 0px 5px #00000038;
 }
 
 .btn-group>.btn:nth-child(n+3),
@@ -8821,7 +8826,11 @@ fieldset:disabled .btn {
 }
 
 .rounded-circle {
-    border-radius: 50% !important
+    border-radius: 60% !important;
+    background: #FFFFFF;
+    width: 500px;
+    height: 500px;
+    box-shadow: 0px 13px #0404045c;
 }
 
 .rounded-pill {
