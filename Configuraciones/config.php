@@ -25,6 +25,15 @@ define("ERROR_PASS_MINUS",  ERROR_IN . "La contraseña debe contener al menos un
 define("ERROR_PASS_MAYUS",  ERROR_IN . "La contraseña debe contener al menos una letra mayúscula" . ERROR_OUT);
 define("ERROR_PASS_NUMBER",  ERROR_IN . "La contraseña debe contener al menos un número" . ERROR_OUT);
 define("ERROR_PASS_MATCH",  ERROR_IN . "Las contraseñas no coinciden" . ERROR_OUT);
+define("ERROR_PASS_FORMAT", 
+ERROR_IN . "La contraseña debe tener mínimo:
+<ul>
+    <li>" . MIN_PASS_LENGTH . " carácteres</li>
+    <li>1 minúscula</li>
+    <li>1 mayúscula</li>
+    <li>1 número</li>
+</ul>" . 
+ERROR_OUT);
 //USER
 define("ERROR_USER_PATRON",  ERROR_IN . "Por favor, ingrese un nombre válido" . ERROR_OUT);
 //DATE
@@ -33,6 +42,7 @@ define("ERROR_DATE_YEAR", ERROR_IN . "Solo se pueden registrar mayores de edad" 
 define("ERROR_MAIL", ERROR_IN . "Introduce un mail válido" . ERROR_OUT);
 //FILE
 define("ERROR_FILE_SIZE", ERROR_IN . "El archivo no puede ocupar más de un mega" . ERROR_OUT);
+define("ERROR_FILE_TYPE", ERROR_IN . "El archivo debe ser .png" . ERROR_OUT);
 //LOGIN
 define("ERROR_LOGIN_USER", ERROR_IN . "El nombre no existe" . ERROR_OUT);
 define("ERROR_LOGIN_PASS", ERROR_IN . "La contraseña no es correcta" . ERROR_OUT);
