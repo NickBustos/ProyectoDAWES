@@ -1,4 +1,4 @@
-<?php include 'templates/cabeceraInicio.php' ?>
+<?php include 'templates/cabecera.php' ?>
 <div class="row-center">
     <div class="col-md-3">
         <div class="card">

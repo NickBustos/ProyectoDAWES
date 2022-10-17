@@ -1,4 +1,4 @@
-<?php include "templates/cabeceraInicio.php" ?>
+<?php include "templates/cabecera.php" ?>
 <section class="fondo">
   <div class="container-fluid main">
     <br>

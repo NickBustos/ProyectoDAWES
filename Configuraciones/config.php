@@ -19,21 +19,16 @@ define("PATRON_PASS_MAYUS", '@[A-Z]@');
 define("PATRON_PASS_NUMBER", '@[0-9]@');
 define("MIN_PASS_LENGTH", 8);
 define("MAX_PASS_LENGTH", 16);
-define("ERROR_PASS_MIN",  ERROR_IN . "La contraseña no puede tener menos de " . MIN_PASS_LENGTH . " caracteres" . ERROR_OUT);
-define("ERROR_PASS_MAX",  ERROR_IN . "La contraseña no puede tener mas de " . MAX_PASS_LENGTH . " caracteres" . ERROR_OUT);
-define("ERROR_PASS_MINUS",  ERROR_IN . "La contraseña debe contener al menos una letra minúscula" . ERROR_OUT);
-define("ERROR_PASS_MAYUS",  ERROR_IN . "La contraseña debe contener al menos una letra mayúscula" . ERROR_OUT);
-define("ERROR_PASS_NUMBER",  ERROR_IN . "La contraseña debe contener al menos un número" . ERROR_OUT);
-define("ERROR_PASS_MATCH",  ERROR_IN . "Las contraseñas no coinciden" . ERROR_OUT);
 define("ERROR_PASS_FORMAT", 
 ERROR_IN . "La contraseña debe tener mínimo:
 <ul>
-    <li>" . MIN_PASS_LENGTH . " carácteres</li>
+    <li>" . MIN_PASS_LENGTH . " carácteres (Max " . MAX_PASS_LENGTH . ")</li>
     <li>1 minúscula</li>
     <li>1 mayúscula</li>
     <li>1 número</li>
 </ul>" . 
 ERROR_OUT);
+define("ERROR_PASS_MATCH",  ERROR_IN . "Las contraseñas no coinciden" . ERROR_OUT);
 //USER
 define("ERROR_USER_PATRON",  ERROR_IN . "Por favor, ingrese un nombre válido" . ERROR_OUT);
 //DATE
@@ -46,6 +41,10 @@ define("ERROR_FILE_TYPE", ERROR_IN . "El archivo debe ser .png" . ERROR_OUT);
 //LOGIN
 define("ERROR_LOGIN_USER", ERROR_IN . "El nombre no existe" . ERROR_OUT);
 define("ERROR_LOGIN_PASS", ERROR_IN . "La contraseña no es correcta" . ERROR_OUT);
+
+
+
+
 
 //NO SUBIR 13/10/2022
 define("CONFIRMACION_CORREO", '<body style="background-color: #f8f8f9; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">

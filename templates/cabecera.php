@@ -15,11 +15,11 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
             <li>
-        <a href="#" class="navbar-brand">
-                <img src="multimedia/imagenes/logo2.png.png" alt="Logo">
-            </a>
+                <a href="#" class="navbar-brand">
+                    <img src="multimedia/imagenes/logo2.png.png" alt="Logo">
+                </a>
             </li>
-            <li class="nav-item active" style="margin: auto;">
+            <li class="nav-item active " style="margin: auto;">
                 <a class="nav-link" href="index.php">Inicio</a>
             </li>
 
@@ -32,7 +32,3 @@
             </li>
         </ul>
     </nav>
-    <div class="container">
-        <br></br>
-
-    </div>

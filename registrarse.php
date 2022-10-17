@@ -1,4 +1,51 @@
-<?php include "templates/cabeceraRegistrarse.php" ?>
+<?php
+include "templates/cabecera.php";
+include 'Configuraciones\funciones.php';
+//ESTRUCTURA HTML DE UN MENSAJE DE CONFIRMACIÓN. *****************
+$confirmacionCorreo = CONFIRMACION_CORREO;
+//ESTRUCTURA HTML DE UN MENSAJE DE CONFIRMACIÓN POR CORREO. *****************
+$confirmacionCorreo = wordwrap($confirmacionCorreo, 70, "\r\n");
+
+$user = $avatar = $fechaNac = $mail = $pass = "";
+$_user = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
+$errorUser = $errorAvatar = $errorFecha = $errorMail = $errorPass1 = $errorPass2 = "";
+$registrado = false;
+
+if (!empty($_POST)) {
+    //---------------------------- USER --------------------------------
+    $_user = htmlspecialchars($_POST["user"]);
+    if (validarUser($_user, $errorUser)) {
+        $user = $_user;
+    }
+    //---------------------------- PASS --------------------------------
+    $_pass1 = htmlspecialchars($_POST["password1"]);
+    $_pass2 = htmlspecialchars($_POST["password2"]);
+    if (validarBothPasswords($_pass1, $_pass2, $errorPass1, $errorPass2)) {
+        $pass = $_pass1;
+    }
+    //---------------------------- DATE --------------------------------
+    $_fechaNac = htmlspecialchars($_POST["fechaNac"]);
+    if (validarFechaNac($_fechaNac, $errorFecha)) {
+        $fechaNac = $_fechaNac;
+    }
+    //---------------------------- MAIL --------------------------------
+    $_mail = htmlspecialchars($_POST["correoUsuario"]);
+    if (validarMail($_mail, $errorMail)) {
+        $mail = $_mail;
+    }
+    //---------------------------- FILE --------------------------------
+    if (validarAvatar($_FILES, $errorAvatar)) {
+        $avatar = getImage($_FILES["avatar"]);
+        //GUARDAR
+    }
+    //---------------------------- RGST --------------------------------
+    if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
+        //REGISTRAR (GUARDAR DATOS)
+        $registrado = true;
+        //mail($mail, 'Confirmar cuenta',$confirmacionCorreo);
+    }
+}
+?>
 
 <div class="container">
 
@@ -23,66 +70,64 @@
 
                                                 <form class="mx-1 mx-md-4" method="post" enctype="multipart/form-data">
 
-                                                <!-- INICIO DE FORMULARIO -->
+                                                    <!-- INICIO DE FORMULARIO -->
 
-                                                <form class="mx-1 mx-md-4" action='<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>' method="post">
-                                                    <div class="d-flex flex-row align-items-center mb-4">
+                                                    <form class="mx-1 mx-md-4" action='<?php htmlspecialchars($_SERVER["PHP_SELF"]) ?>' method="post">
+                                                        <div class="d-flex flex-row align-items-center mb-4">
 
 
-                                                        <!-- Nombre del usuario -->
+                                                            <!-- Nombre del usuario -->
 
-                                                        <div class="form-outline flex-fill mb-0">
-                                                            <?php echo $errorUser ?>
-                                                            <input type="text" name="user" id="form3Example1c" class="form-control" value="<?php echo $user; ?>" />
-                                                            <label class="form-label" for="form3Example1c">Tu nombre</label>
+                                                            <div class="form-outline flex-fill mb-0">
+                                                                <?php echo $errorUser ?>
+                                                                <input type="text" name="user" id="form3Example1c" class="form-control" value="<?php echo $user; ?>" />
+                                                                <label class="form-label" for="form3Example1c">Tu nombre</label>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                    <!-- Correo electronico -->
+                                                        <!-- Correo electronico -->
 
-                                                    <div class="d-flex flex-row align-items-center mb-4">
-                                                        <div class="form-outline flex-fill mb-0">
-                                                            <?php echo $errorMail ?>
-                                                            <input type="email" name="correoUsuario" id="form3Example3c" class="form-control" 
-                                                            value="<?php echo $mail; ?>"/>
-                                                            <label class="form-label" for="form3Example3c">Tu correo electronico</label>
+                                                        <div class="d-flex flex-row align-items-center mb-4">
+                                                            <div class="form-outline flex-fill mb-0">
+                                                                <?php echo $errorMail ?>
+                                                                <input type="email" name="correoUsuario" id="form3Example3c" class="form-control" value="<?php echo $mail; ?>" />
+                                                                <label class="form-label" for="form3Example3c">Tu correo electronico</label>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                    <!-- Contraseña -->
+                                                        <!-- Contraseña -->
 
-                                                    <div class="d-flex flex-row align-items-center mb-4">
-                                                        <div class="form-outline flex-fill mb-0">
-                                                            <?php echo $errorPass1 ?>
-                                                            <input type="password" name="password1" id="form3Example4c" class="form-control" />
-                                                            <label class="form-label" for="form3Example4c">Contraseña</label>
+                                                        <div class="d-flex flex-row align-items-center mb-4">
+                                                            <div class="form-outline flex-fill mb-0">
+                                                                <?php echo $errorPass1 ?>
+                                                                <input type="password" name="password1" id="form3Example4c" class="form-control" />
+                                                                <label class="form-label" for="form3Example4c">Contraseña</label>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                    <!-- Repetir contraseña -->
+                                                        <!-- Repetir contraseña -->
 
-                                                    <div class="d-flex flex-row align-items-center mb-4">
+                                                        <div class="d-flex flex-row align-items-center mb-4">
 
-                                                        <div class="form-outline flex-fill mb-0">
-                                                            <?php echo $errorPass2 ?>
-                                                            <input type="password" name="password2" id="form3Example4cd" class="form-control" />
-                                                            <label class="form-label" for="form3Example4cd">Repite la contraseña</label>
+                                                            <div class="form-outline flex-fill mb-0">
+                                                                <?php echo $errorPass2 ?>
+                                                                <input type="password" name="password2" id="form3Example4cd" class="form-control" />
+                                                                <label class="form-label" for="form3Example4cd">Repite la contraseña</label>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
 
-                                                    <!-- Fecha de nacimiento -->
+                                                        <!-- Fecha de nacimiento -->
 
 
-                                                    <div class="form-outline flex-fill mb-4">
-                                                        <?php echo $errorFecha ?>
-                                                        <input type="date" id="form3Example1c" class="form-control" name="fechaNac" 
-                                                        min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>" value="<?php echo $fechaNac; ?>">
-                                                        <label class="form-label" for="form3Example1c">Tu fecha de nacimiento</label>
-                                                    </div>
+                                                        <div class="form-outline flex-fill mb-4">
+                                                            <?php echo $errorFecha ?>
+                                                            <input type="date" id="form3Example1c" class="form-control" name="fechaNac" min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>" value="<?php echo $fechaNac; ?>">
+                                                            <label class="form-label" for="form3Example1c">Tu fecha de nacimiento</label>
+                                                        </div>
                                             </div>
                                             <?php echo $errorAvatar ?>
                                             <div class="d-flex flex-row align-items-center mb-1">
