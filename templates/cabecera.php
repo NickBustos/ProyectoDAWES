@@ -30,33 +30,6 @@
             <li class="nav-item" style="margin: auto;">
                 <a class="nav-link" href="contacto.php">Contacto</a>
             </li>
+            
         </ul>
     </nav>
-    <div class="container">
-
-
-    </div>
-
-
-    <?php
-    include 'Configuraciones\funciones.php';
-
-    $user = $password = $linea = "";
-    $errorUser = $errorPassword = "";
-    $registrado = false;
-
-
-    if (!empty($_POST)) {
-        $_user = htmlspecialchars($_POST["user"]);
-        $_password = htmlspecialchars($_POST["password"]);
-        puedoEntrar($_user, $_password, $errorUser, $errorPassword);
-        if(empty($errorUser)){
-            $user = $_user;
-            if(empty($errorPassword)){
-                $registrado = true;
-            }
-        } 
-    }
-
-
-    ?>

@@ -1,4 +1,4 @@
-<?php include 'templates/cabeceraInicio.php'?>
+<?php include 'templates/cabecera.php'?>
 <div class="contact1">
     <div class="container-contact1">
         <div class="contact1-pic js-tilt" data-tilt>

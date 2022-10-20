@@ -64,24 +64,14 @@ function puedoEntrar($user, $pass, &$errorUser, &$errorPass)
  */
 function validarPassword($password, &$errorPassword)
 {
-    if (strlen($password) < MIN_PASS_LENGTH) {
-        $errorPassword = ERROR_PASS_MIN;
-        return false;
-    }
-    if (strlen($password) > MAX_PASS_LENGTH) {
-        $errorPassword = ERROR_PASS_MAX;
-        return false;
-    }
-    if (!preg_match(PATRON_PASS_MINUS, $password)) {
-        $errorPassword = ERROR_PASS_MINUS;
-        return false;
-    }
-    if (!preg_match(PATRON_PASS_MAYUS, $password)) {
-        $errorPassword = ERROR_PASS_MAYUS;
-        return false;
-    }
-    if (!preg_match(PATRON_PASS_NUMBER, $password)) {
-        $errorPassword = ERROR_PASS_NUMBER;
+    if (
+        strlen($password) < MIN_PASS_LENGTH || 
+        strlen($password) > MAX_PASS_LENGTH || 
+        !preg_match(PATRON_PASS_MINUS, $password) ||
+        !preg_match(PATRON_PASS_MAYUS, $password) ||
+        !preg_match(PATRON_PASS_NUMBER, $password)
+    ) {
+        $errorPassword = ERROR_PASS_FORMAT;
         return false;
     }
     return true;
@@ -178,6 +168,10 @@ function validarAvatar($files, &$errorFile)
         $errorFile = ERROR_VACIO;
         return false;
     }
+    if ($files["avatar"]["type"] != "image/png") {
+        $errorFile = ERROR_FILE_TYPE;
+        return false;
+    }
     if ($files['avatar']['size'] > 1000000) { //1 mega
         $errorFile = ERROR_FILE_SIZE;
         return false;
@@ -267,7 +261,7 @@ function bienvenido($user, $path)
     "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
         Bienvenido $user
     </p>" .
-    "
+        "
         <img src='$path'>
     ";
     exit();
