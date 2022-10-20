@@ -30,5 +30,6 @@
             <li class="nav-item" style="margin: auto;">
                 <a class="nav-link" href="contacto.php">Contacto</a>
             </li>
+            
         </ul>
     </nav>

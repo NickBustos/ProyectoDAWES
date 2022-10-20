@@ -35,7 +35,6 @@ if (!empty($_POST)) {
                                     }
                                     ?>
 
-
                                     <div>
                                         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Iniciar Sesion</p>
                                         <form method="post">
