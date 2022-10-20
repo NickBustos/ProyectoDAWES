@@ -4,11 +4,12 @@ namespace Nickbustos\Proyectodawes\controller;
 
 use PHPMailer\PHPMailer;
 
+
 class Mailer {
 
     static function sendMail($email){
 
-        $remitente = "El grupo más guay del mundo";
+        $remitente = "El grupo mas guay del mundo";
         $asunto = 'Su cuenta ha sido creada';
         $enlaceActivacionCuenta = "http://" . $_SERVER['HTTP_HOST'] . "/ENLACE ACTIVACION CUENTA";
         $mensaje = <<<EOT
@@ -31,7 +32,7 @@ EOT;
         $mail->SMTPSecure = 'ssl';              // encriptado tls o ssl
         $mail->Port       = 465;                // Puerto smtp
 
-        $mail->setFrom('proyectodawes@gmail.com', $remitente);           // Correo y nombre del remitente
+        $mail->setFrom('proyectodawes@gmail.com', $remitente);// Correo y nombre del remitente
         $mail->addAddress($email);           // Correo del destinatario
 
         $mail->isHTML(true);                                  
@@ -46,3 +47,4 @@ EOT;
 
 
 }
+

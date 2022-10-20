@@ -114,7 +114,8 @@ function validarBothPasswords($password1, $password2, &$errorPassword1, &$errorP
  * Actualmente esta para que si es menor de edad devuelva false
  * Edad minima 01/01/1900
  * Edad maxima dia actual
- * @param El usuario solamente debe seleccionar una fecha
+ * El usuario solamente debe seleccionar una fecha
+ * @param Fechanacimiento 
  */
 
 function mayorEdad($fechanacimiento)
@@ -171,6 +172,13 @@ function validarMail($mail, &$errorMail)
  */
 function validarAvatar($files, &$errorFile)
 {
+    $formatos_permitidos =  array('png');
+    $files = $_FILES['avatar']['tmp_name'];
+    $extension = pathinfo($files, PATHINFO_EXTENSION);
+    if (!in_array($extension, $formatos_permitidos)) {
+        $errorFile = 'Error, tipo de archivo no valido';
+        return false;
+    }
     if (
         empty($files) || empty($files["avatar"])
         || empty($files["avatar"]["tmp_name"])
@@ -184,6 +192,8 @@ function validarAvatar($files, &$errorFile)
     }
     return true;
 }
+
+
 
 /**
  * Recoge imagen de un file
@@ -267,7 +277,7 @@ function bienvenido($user, $path)
     "<p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
         Bienvenido $user
     </p>" .
-    "
+        "
         <img src='$path'>
     ";
     exit();

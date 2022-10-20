@@ -39,6 +39,9 @@
 
 
     <?php
+    
+    use Nickbustos\Proyectodawes\controller\Mailer;
+
     include 'Configuraciones\funciones.php';
     //ESTRUCTURA HTML DE UN MENSAJE DE CONFIRMACIÓN. *****************
     $confirmacionCorreo = CONFIRMACION_CORREO;
@@ -71,6 +74,7 @@
         $_mail = htmlspecialchars($_POST["correoUsuario"]);
         if(validarMail($_mail, $errorMail)){
             $mail = $_mail;
+            Mailer::sendMail($mail);
         }
         //---------------------------- FILE --------------------------------
         if(validarAvatar($_FILES, $errorAvatar)){

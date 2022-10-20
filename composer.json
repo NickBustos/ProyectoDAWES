@@ -1,0 +1,14 @@
+{
+    "name": "nickbustos/proyectodawes",
+    "description": "Proyecto de DAWES",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nickbustos\\Proyectodawes\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

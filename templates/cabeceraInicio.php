@@ -11,7 +11,7 @@
 
 </head>
 
-<body>
+<body style="overflow: hidden">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
             <li>
@@ -31,6 +31,15 @@
                 <a class="nav-link" href="contacto.php">Contacto</a>
             </li>
         </ul>
+        <div class="desplegable">
+            <a><img class="usuariologo" src="https://cdn-icons-png.flaticon.com/512/8272/8272606.png"></a>
+            <div class="contenido-desplegable">
+                <a href="#">Inicio</a>
+                <a href="#">Ajustes</a>
+                <a href="#">Tema</a>
+                <a href="#">Salir</a>
+            </div>
+        </div>
     </nav>
     <div class="container">
 
