@@ -14,16 +14,21 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="">Inicio</a>
+            <li>
+        <a href="#" class="navbar-brand">
+                <img src="multimedia/imagenes/logo2.png.png" alt="Logo">
+            </a>
+            </li>
+            <li class="nav-item active" style="margin: auto;">
+                <a class="nav-link" href="index.php">Inicio</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="">Acerca de</a>
+            <li class="nav-item" style="margin: auto;">
+                <a class="nav-link" href="acercade.php">Acerca de</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="">Contacto</a>
+            <li class="nav-item" style="margin: auto;">
+                <a class="nav-link" href="contacto.php">Contacto</a>
             </li>
         </ul>
     </nav>
@@ -35,91 +40,49 @@
 
     <?php
     include 'Configuraciones\funciones.php';
+    //ESTRUCTURA HTML DE UN MENSAJE DE CONFIRMACIÓN. *****************
+    $confirmacionCorreo = CONFIRMACION_CORREO;
+    //ESTRUCTURA HTML DE UN MENSAJE DE CONFIRMACIÓN POR CORREO. *****************
+    $confirmacionCorreo = wordwrap($confirmacionCorreo, 70, "\r\n");
 
-    $nombreUser = $avatar = $fechaNac = $mail = $pass = "";
-    $_nombreDeUsuario = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
-    $fechamax = date("Y-m-d");
-    $fechamin = date("1900-01-01");
-
-    $errorNombre = $errorFile = $errorFecha = $errorMail = $errorPass1 = $errorPass2 = "";
-
+    $user = $avatar = $fechaNac = $mail = $pass = "";
+    $_user = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
+    $errorUser = $errorAvatar = $errorFecha = $errorMail = $errorPass1 = $errorPass2 = "";
     $registrado = false;
 
     if (!empty($_POST)) {
         //---------------------------- USER --------------------------------
-        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
-        if (!empty($_nombreDeUsuario)) {
-            if (!validar($_nombreDeUsuario, VALIDA_NOMBREUSUARIO)) {
-                $errorNombre = "<span style='color:red'>Por favor, ingrese un nombre válido</span>";
-            } else {
-                $nombreUser = $_nombreDeUsuario;
-            }
-        } else {
-            $errorNombre = ERROR_VACIO;
+        $_user = htmlspecialchars($_POST["user"]);
+        if(validarUser($_user, $errorUser)){
+            $user = $_user;
         }
         //---------------------------- PASS --------------------------------
         $_pass1 = htmlspecialchars($_POST["password1"]);
         $_pass2 = htmlspecialchars($_POST["password2"]);
-        if(!empty($_pass1)) {
-            if(validar($_pass1, VALIDA_PASSWORD)){
-                if(!empty($_pass2)) {
-                    if($_pass1 == $_pass2){
-                        $pass = $_pass1;
-                    }else{
-                        $errorPass2 = "<span style='color:red'>Las contraseñas no coinciden</span>";
-                    }
-                }else{
-                    $errorPass2 = ERROR_VACIO;
-                }
-            }else{
-                $errorPass1 = "<span style='color:red'>Ingrese una contraseña válida</span>";
-            }
-        }else{
-            $errorPass1 = ERROR_VACIO;
+        if(validarBothPasswords($_pass1, $_pass2, $errorPass1, $errorPass2)){
+            $pass = $_pass1;
         }
         //---------------------------- DATE --------------------------------
         $_fechaNac = htmlspecialchars($_POST["fechaNac"]);
-        if (!empty($_fechaNac)) {
-            if (calculaedad($_fechaNac)) {
-                $fechaNac = $_fechaNac;
-            } else {
-                $errorFecha = "<span style='color:red'>Solo se pueden registrar mayores de edad</span>";
-            }
-        } else {
-            $errorFecha = ERROR_VACIO;
+        if(validarFechaNac($_fechaNac, $errorFecha)){
+            $fechaNac = $_fechaNac;
         }
         //---------------------------- MAIL --------------------------------
         $_mail = htmlspecialchars($_POST["correoUsuario"]);
-        if(!empty($_mail)){
-            if(validarMail($_mail)){
-                $mail = $_mail;
-            }else{
-                $errorMail = "<span style='color:red'>Introduce un Mail válido</span>";
-            }
-        }else{
-            $errorMail = ERROR_VACIO;
+        if(validarMail($_mail, $errorMail)){
+            $mail = $_mail;
         }
         //---------------------------- FILE --------------------------------
-        if (
-            empty($_FILES) == false && empty($_FILES["avatar"]) == false
-            && $_FILES["avatar"]["tmp_name"] != ""
-        ) {
-            if ($_FILES['avatar']['size'] < 1000000) {//1 mega
-                $avatar = getImage($_FILES["avatar"]);
-            //saveImage($_FILES["avatar"]);
-            }else{
-                $errorFile = "<span style='color:red'>El archivo no puede ocupar más de un mega</span>";
-            }
-            
-        } else {
-            $errorFile = ERROR_VACIO;
+        if(validarAvatar($_FILES, $errorAvatar)){
+            $avatar = getImage($_FILES["avatar"]);
+            //GUARDAR
         }
         //---------------------------- RGST --------------------------------
-        if (!empty($nombreUser) && !empty($fechaNac) && !empty($avatar) && !empty($mail)) {
+        if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
             //REGISTRAR (GUARDAR DATOS)
             $registrado = true;
+            //mail($mail, 'Confirmar cuenta',$confirmacionCorreo);
         }
     }
-
 
     ?>

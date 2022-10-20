@@ -14,21 +14,26 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="">Inicio</a>
+            <li>
+                <a href="#" class="navbar-brand">
+                    <img src="multimedia/imagenes/logo2.png.png" alt="Logo">
+                </a>
+            </li>
+            <li class="nav-item active " style="margin: auto;">
+                <a class="nav-link" href="index.php">Inicio</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="">Acerca de</a>
+            <li class="nav-item" style="margin: auto;">
+                <a class="nav-link" href="acercade.php">Acerca de</a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="">Contacto</a>
+            <li class="nav-item" style="margin: auto;">
+                <a class="nav-link" href="contacto.php">Contacto</a>
             </li>
         </ul>
     </nav>
     <div class="container">
-        <br></br>
+
 
     </div>
 
@@ -36,37 +41,21 @@
     <?php
     include 'Configuraciones\funciones.php';
 
-    $nombreUser = $password = $linea = "";
-
-    $errorNombre = $errorPassword = "";
-
+    $user = $password = $linea = "";
+    $errorUser = $errorPassword = "";
     $registrado = false;
 
 
     if (!empty($_POST)) {
-        $_nombreDeUsuario = htmlspecialchars($_POST["nombreDeUsuario"]);
-        //---------------------------- USER --------------------------------
-        if (!empty($_nombreDeUsuario)) {
-            $linea = isUsed($_nombreDeUsuario);
-            if ($linea == -1) {
-                $errorNombre = "<span style='color:red'>El nombre no existe</span>";
-            } else {
-                $nombreUser = $_nombreDeUsuario;
-                //---------------------------- PASS --------------------------------
-                $_password = htmlspecialchars($_POST["password"]);
-                if (!empty($_password)) {
-                    if (strcmp($_password, getPassword(recorrer(PATH_TO_BD)[$linea])) == 0){
-                        $registrado = true;
-                    } else {
-                        $errorPassword = "<span style='color:red'>La contraseña no es correcta</span>";
-                    }
-                } else {
-                    $errorPassword = ERROR_VACIO;
-                }
+        $_user = htmlspecialchars($_POST["user"]);
+        $_password = htmlspecialchars($_POST["password"]);
+        puedoEntrar($_user, $_password, $errorUser, $errorPassword);
+        if(empty($errorUser)){
+            $user = $_user;
+            if(empty($errorPassword)){
+                $registrado = true;
             }
-        } else {
-            $errorNombre = ERROR_VACIO;
-        }
+        } 
     }
 
 
