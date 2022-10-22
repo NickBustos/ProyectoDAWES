@@ -1,6 +1,6 @@
 <?php
-include "templates/cabeceraInicio.php";
-include 'Configuraciones\funciones.php';
+include "templates/cabecera.php";
+include 'Configuraciones/funciones.php';
 
 $user = $password = $linea = "";
 $errorUser = $errorPassword = "";
@@ -10,7 +10,8 @@ $registrado = false;
 if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
     $_password = htmlspecialchars($_POST["password"]);
-    puedoEntrar($_user, $_password, $errorUser, $errorPassword);
+    
+    login($_user, $_password, $errorUser, $errorPassword);
     if (empty($errorUser)) {
         $user = $_user;
         if (empty($errorPassword)) {

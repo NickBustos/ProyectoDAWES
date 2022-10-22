@@ -25,8 +25,8 @@ function validarUser($user, &$errorUser)
     if (vacio($user, $errorUser)) {
         return false;
     }
-    if (preg_match(PATRON_USER, $user) == false) {
-        $errorUser = ERROR_USER_PATRON;
+    if (preg_match(PATTERN_USER, $user) == false) {
+        $errorUser = ERROR_USER_PATTERN;
         return false;
     }
     return true;
@@ -36,12 +36,13 @@ function validarUser($user, &$errorUser)
  * Comprueba que un usuario y una contraseña son válidos para entrar al sistema.
  * En ese caso return true, sino, false, llenando el mensaje de error correspondiente.
  */
-function puedoEntrar($user, $pass, &$errorUser, &$errorPass)
+function login($user, $pass, &$errorUser, &$errorPass)
 {
     if (vacio($user, $errorUser)) {
         return false;
     }
-    $linea = isUsed($user);
+    $bbdd = getArrayDeFichero(PATH_TO_BD);
+    $linea = userExists($user, $bbdd);
     if ($linea == -1) {
         $errorUser = ERROR_LOGIN_USER;
         return false;
@@ -49,7 +50,7 @@ function puedoEntrar($user, $pass, &$errorUser, &$errorPass)
     if (vacio($pass, $errorPass)) {
         return false;
     }
-    if (strcmp($pass, getPassword(recorrer(PATH_TO_BD)[$linea])) != 0) {
+    if (strcmp($pass, getPassword($bbdd[$linea])) != 0) {
         $errorPass = ERROR_LOGIN_PASS;
         return false;
     }
@@ -65,11 +66,7 @@ function puedoEntrar($user, $pass, &$errorUser, &$errorPass)
 function validarPassword($password, &$errorPassword)
 {
     if (
-        strlen($password) < MIN_PASS_LENGTH || 
-        strlen($password) > MAX_PASS_LENGTH || 
-        !preg_match(PATRON_PASS_MINUS, $password) ||
-        !preg_match(PATRON_PASS_MAYUS, $password) ||
-        !preg_match(PATRON_PASS_NUMBER, $password)
+        !preg_match(PATTERN_PASS, $password)
     ) {
         $errorPassword = ERROR_PASS_FORMAT;
         return false;
@@ -81,19 +78,19 @@ function validarPassword($password, &$errorPassword)
  * Confirma que 2 strigns tienen el formato de contraseña y son iguales.
  * En ese caso return true, sino, false, llenando el error correspondiente.
  */
-function validarBothPasswords($password1, $password2, &$errorPassword1, &$errorPassword2)
+function validarBothPasswords($password1, $password2, &$errorPassword)
 {
-    if (vacio($password1, $errorPassword1)) {
+    if (vacio($password1, $errorPassword)) {
         return false;
     }
-    if (validarPassword($password1, $errorPassword1) == false) {
+    if (validarPassword($password1, $errorPassword) == false) {
         return false;
     }
-    if (vacio($password2, $errorPassword2)) {
+    if (vacio($password2, $errorPassword)) {
         return false;
     }
     if ($password1 != $password2) {
-        $errorPassword2 = ERROR_PASS_MATCH;
+        $errorPassword = ERROR_PASS_MATCH;
         return false;
     }
     return true;
@@ -208,19 +205,12 @@ function saveImage($file, $name)
 }
 
 /**
- * Recorrer un file un txt
+ * Mete un txt en un array (linea = index)
  * @param path con nombre del archivo
  */
-function recorrer($txt = PATH_TO_BD)
+function getArrayDeFichero($txt)
 {
-    $contadorlinea = 0;
-    $lineas = [];
-    $fichero = fopen($txt, "r");
-    while (!feof($fichero)) {
-        $linea = "";
-        $linea = fgets($fichero);
-        $lineas[$contadorlinea++] = $linea;
-    }
+    $lineas = file($txt);
     return $lineas;
 }
 
@@ -243,12 +233,10 @@ function getPassword($linea)
 /**
  * Averigua si un nombre de usuario esta usado en file bbdd
  */
-function isUsed($user)
+function userExists($user, $bbdd)
 {
-    $lineas = recorrer(PATH_TO_BD);
-
-    for ($linea = 0; $linea < sizeof($lineas); $linea++) {
-        if (strcmp($user, getUser($lineas[$linea])) == 0) {
+    for ($linea = 0; $linea < sizeof($bbdd); $linea++) {
+        if (strcmp($user, getUser($bbdd[$linea])) == 0) {
             return $linea;
         }
     }
