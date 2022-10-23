@@ -1,4 +1,4 @@
-<?php include 'templates/cabecera.php'?>
+<?php include 'admin/templates/cabecera.php'?>
 <div class="contact1">
     <div class="container-contact1">
         <div class="contact1-pic js-tilt" data-tilt>
@@ -41,4 +41,4 @@
     </div>
 </div>
 
-<?php include 'templates/pie.php' ?>
+<?php include 'admin/templates/pie.php' ?>

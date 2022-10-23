@@ -1,6 +1,6 @@
 <?php
-include "templates/cabecera.php";
-include 'Configuraciones/funciones.php';
+include "admin/templates/cabecera.php";
+include 'admin/configuraciones/funciones.php';
 
 $user = $avatar = $fechaNac = $mail = $pass = "";
 $_user = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
@@ -32,10 +32,11 @@ if (!empty($_POST)) {
     //---------------------------- FILE --------------------------------
     if (validarAvatar($_FILES, $errorAvatar)) {
         $avatar = getImage($_FILES["avatar"]);
-        //GUARDAR
     }
     //---------------------------- RGST --------------------------------
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
+        $userData=[$user, md5($pass), $mail, $fechaNac, $avatar];
+        registerUser($userData);
         $registrado = true;
     }
 }
@@ -56,7 +57,7 @@ if (!empty($_POST)) {
                                         <div class="row justify-content-center">
                                             <?php
                                             if ($registrado) {
-                                                bienvenido($user, $avatar);
+                                                bienvenido($user, getDato(LINE_FILE, $userData));
                                             }
                                             ?>
                                             <div>
@@ -170,4 +171,4 @@ if (!empty($_POST)) {
 </div>
 <br>
 <br>
-<?php include "templates/pie.php" ?>
+<?php include "admin/templates/pie.php" ?>

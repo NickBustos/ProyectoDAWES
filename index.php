@@ -1,4 +1,4 @@
-<?php include "templates/cabecera.php" ?>
+<?php include "admin/templates/cabecera.php" ?>
 <section class="fondo">
   <div class="container-fluid main">
     <br>
@@ -44,4 +44,4 @@
   <br>
 </section>
 
-<?php include "templates/pie.php" ?>
+<?php include "admin/templates/pie.php" ?>

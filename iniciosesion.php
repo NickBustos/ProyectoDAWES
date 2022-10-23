@@ -1,21 +1,20 @@
 <?php
-include "templates/cabecera.php";
-include 'Configuraciones/funciones.php';
+include "admin/templates/cabecera.php";
+include 'admin/configuraciones/funciones.php';
 
 $user = $password = $linea = "";
 $errorUser = $errorPassword = "";
-$registrado = false;
 
 
 if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
-    $_password = htmlspecialchars($_POST["password"]);
-    
-    login($_user, $_password, $errorUser, $errorPassword);
-    if (empty($errorUser)) {
+    $_password = md5(htmlspecialchars($_POST["password"]));
+
+    $linea = getLineaFrom($_user, $errorUser);
+    if ($linea != "") {
         $user = $_user;
-        if (empty($errorPassword)) {
-            $registrado = true;
+        if (validarLoginPass($_password, $errorPassword, $linea)) {
+            iniciarSesion($linea);
         }
     }
 }
@@ -31,8 +30,9 @@ if (!empty($_POST)) {
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
                                     <?php
-                                    if ($registrado) {
-                                        bienvenido($user, 'multimedia/imagenes/' . $user . '.png');
+                                    if (isset($_SESSION)) {
+                                        //header("location: index.php"); redirigir
+                                        bienvenido($_SESSION[SESSION_USER], $_SESSION[SESSION_FILE]);
                                     }
                                     ?>
 
@@ -91,9 +91,8 @@ if (!empty($_POST)) {
     </div>
 </div>
 </div>
-
 <br>
 <br>
 <br>
 <br>
-<?php include "templates/pie.php" ?>
+<?php include "admin/templates/pie.php" ?>
