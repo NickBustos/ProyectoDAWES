@@ -5,7 +5,6 @@ include 'admin/configuraciones/funciones.php';
 $user = $avatar = $fechaNac = $mail = $pass = "";
 $_user = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
 $errorUser = $errorAvatar = $errorFecha = $errorMail = $errorPass = "";
-$registrado = false;
 
 if (!empty($_POST)) {
     //---------------------------- USER --------------------------------
@@ -37,7 +36,7 @@ if (!empty($_POST)) {
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
         $userData=[$user, md5($pass), $mail, $fechaNac, $avatar];
         registerUser($userData);
-        $registrado = true;
+        iniciarSesion(join(";", $userData));
     }
 }
 ?>
@@ -56,8 +55,8 @@ if (!empty($_POST)) {
                                     <div class="card-body p-md-5">
                                         <div class="row justify-content-center">
                                             <?php
-                                            if ($registrado) {
-                                                bienvenido($user, getDato(LINE_FILE, $userData));
+                                            if (isset($_SESSION[SESSION_USER])) {
+                                                include "admin/templates/sesionIniciada.php";
                                             }
                                             ?>
                                             <div>

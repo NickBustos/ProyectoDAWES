@@ -1,4 +1,7 @@
-<?php include "admin/templates/cabecera.php" ?>
+<?php
+include "admin/templates/cabecera.php";
+include "admin/configuraciones/funciones.php";
+?>
 <section class="fondo">
   <div class="container-fluid main">
     <br>
@@ -7,6 +10,11 @@
     <br>
     <br>
     <div class="row d-flex justify-content-center">
+      <?php
+      if (isset($_SESSION[SESSION_USER])) {
+        include "admin/templates/sesionIniciada.php";
+      }
+      ?>
       <div class="rounded-circle">
         <br><br><br><br><br><br>
         <div class="card-body">
