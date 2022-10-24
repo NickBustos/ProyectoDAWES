@@ -44,7 +44,7 @@ if (!empty($_POST)) {
                                 <div class="row justify-content-center">
                                     <?php
                                     if (isset($_SESSION[SESSION_USER])) {
-                                        include "admin/templates/sesionIniciada.php";
+                                        include "admin/templates/sesioniniciada.php";
                                     }
                                     ?>
 

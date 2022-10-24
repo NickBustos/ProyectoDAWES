@@ -86,8 +86,8 @@ if (!empty($_POST)) {
     //---------------------------- RGST --------------------------------
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
         $userData=[$user, md5($pass), $mail, $fechaNac, $avatar];
-        //registerUser($userData);
-        //iniciarSesion(join(";", $userData));
+        registerUser($userData);
+        iniciarSesion(join(LINE_SEPARATOR, $userData));
     }
 }
 ?>
@@ -107,7 +107,7 @@ if (!empty($_POST)) {
                                         <div class="row justify-content-center">
                                             <?php
                                             if (isset($_SESSION[SESSION_USER])) {
-                                                include "admin/templates/sesionIniciada.php";
+                                                include "admin/templates/sesioniniciada.php";
                                             }
                                             ?>
                                             <div>
