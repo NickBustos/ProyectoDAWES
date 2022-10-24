@@ -1,21 +1,34 @@
 <?php
 include "admin/templates/cabecera.php";
-include 'admin/configuraciones/funciones.php';
+include getIdioma("iniciosesion.php");
 
 $user = $password = $linea = "";
 $errorUser = $errorPassword = "";
 
-
 if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
-    $_password = md5(htmlspecialchars($_POST["password"]));
+    $_password = htmlspecialchars($_POST["password"]);
+    $linea;
 
-    $linea = getLineaFrom($_user, $errorUser);
-    if ($linea != "") {
-        $user = $_user;
-        if (validarLoginPass($_password, $errorPassword, $linea)) {
-            iniciarSesion($linea);
+    if(!empty($_user)){
+        $linea = getLineaFrom($_user);
+        if($linea !== ""){
+            $user = $_user;
+            if(!empty($_password)){
+                $_password = md5($_password);
+                if($_password === getDato(LINE_PASS, $linea)){
+                    iniciarSesion($linea);
+                }else{
+                    $errorPassword = $lang["error_login_pass"];
+                }
+            }else{
+                $errorPassword = $lang["error_vacio"];
+            }
+        }else{
+            $errorUser = $lang["error_login_user"];
         }
+    }else{
+        $errorUser = $lang["error_vacio"];
     }
 }
 ?>
@@ -31,27 +44,25 @@ if (!empty($_POST)) {
                                 <div class="row justify-content-center">
                                     <?php
                                     if (isset($_SESSION[SESSION_USER])) {
-                                        //header("location: index.php"); redirigir
-                                        //bienvenido($_SESSION[SESSION_USER], $_SESSION[SESSION_FILE]);
                                         include "admin/templates/sesionIniciada.php";
                                     }
                                     ?>
 
                                     <div>
-                                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Iniciar Sesion</p>
+                                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo $lang["iniciosesion"]; ?></p>
                                         <form method="post">
                                             <!-- User -->
                                             <div class="form-outline mb-4">
                                                 <?php echo $errorUser ?>
                                                 <input type="text" id="form2Example1" class="form-control" name="user" value="<?php echo $user; ?>" />
-                                                <label class="form-label" for="form2Example1">Nombre usuario</label>
+                                                <label class="form-label" for="form2Example1"><?php echo $lang["username"]; ?></label>
                                             </div>
 
                                             <!-- Contraseña -->
                                             <div class="form-outline mb-4">
                                                 <?php echo $errorPassword ?>
                                                 <input type="password" id="form2Example2" class="form-control" name="password" />
-                                                <label class="form-label" for="form2Example2">Contraseña</label>
+                                                <label class="form-label" for="form2Example2"><?php echo $lang["password"]; ?></label>
                                             </div>
 
                                             <!-- <div class="row mb-4">
@@ -77,7 +88,7 @@ if (!empty($_POST)) {
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <p class="form-text text-muted">
-                                            ¿No tienes cuenta? Haz clíck <a href="registrarse.php">aquí</a>
+                                        <?php echo $lang["noregistrado"]; ?>
                                         </p>
                                     </div>
                                     </form>
