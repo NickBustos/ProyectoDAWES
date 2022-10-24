@@ -1,4 +1,4 @@
-<?php include 'templates/cabecera.php' ?>
+<?php include 'admin/templates/cabecera.php' ?>
 <div class="row-center">
     <div class="col-md-3">
         <div class="card">
@@ -32,4 +32,4 @@
     </div>
 </div>
 <br><br><br><br><br><br><br>
-<?php include 'templates/pie.php' ?>
+<?php include 'admin/templates/pie.php' ?>

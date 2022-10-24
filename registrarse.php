@@ -1,14 +1,10 @@
 <?php
-include "templates/cabecera.php";
-include 'Configuraciones\funciones.php';
-//ESTRUCTURA HTML DE UN MENSAJE DE CONFIRMACIÓN. *****************
-$confirmacionCorreo = CONFIRMACION_CORREO;
-//ESTRUCTURA HTML DE UN MENSAJE DE CONFIRMACIÓN POR CORREO. *****************
-$confirmacionCorreo = wordwrap($confirmacionCorreo, 70, "\r\n");
+include "admin/templates/cabecera.php";
+include 'admin/configuraciones/funciones.php';
 
 $user = $avatar = $fechaNac = $mail = $pass = "";
 $_user = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
-$errorUser = $errorAvatar = $errorFecha = $errorMail = $errorPass1 = $errorPass2 = "";
+$errorUser = $errorAvatar = $errorFecha = $errorMail = $errorPass = "";
 $registrado = false;
 
 if (!empty($_POST)) {
@@ -20,7 +16,7 @@ if (!empty($_POST)) {
     //---------------------------- PASS --------------------------------
     $_pass1 = htmlspecialchars($_POST["password1"]);
     $_pass2 = htmlspecialchars($_POST["password2"]);
-    if (validarBothPasswords($_pass1, $_pass2, $errorPass1, $errorPass2)) {
+    if (validarBothPasswords($_pass1, $_pass2, $errorPass)) {
         $pass = $_pass1;
     }
     //---------------------------- DATE --------------------------------
@@ -36,13 +32,12 @@ if (!empty($_POST)) {
     //---------------------------- FILE --------------------------------
     if (validarAvatar($_FILES, $errorAvatar)) {
         $avatar = getImage($_FILES["avatar"]);
-        //GUARDAR
     }
     //---------------------------- RGST --------------------------------
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
-        //REGISTRAR (GUARDAR DATOS)
+        $userData=[$user, md5($pass), $mail, $fechaNac, $avatar];
+        registerUser($userData);
         $registrado = true;
-        //mail($mail, 'Confirmar cuenta',$confirmacionCorreo);
     }
 }
 ?>
@@ -62,7 +57,7 @@ if (!empty($_POST)) {
                                         <div class="row justify-content-center">
                                             <?php
                                             if ($registrado) {
-                                                bienvenido($user, $avatar);
+                                                bienvenido($user, getDato(LINE_FILE, $userData));
                                             }
                                             ?>
                                             <div>
@@ -101,7 +96,7 @@ if (!empty($_POST)) {
 
                                                         <div class="d-flex flex-row align-items-center mb-4">
                                                             <div class="form-outline flex-fill mb-0">
-                                                                <?php echo $errorPass1 ?>
+                                                                <?php echo $errorPass ?>
                                                                 <input type="password" name="password1" id="form3Example4c" class="form-control" />
                                                                 <label class="form-label" for="form3Example4c">Contraseña</label>
                                                             </div>
@@ -113,7 +108,6 @@ if (!empty($_POST)) {
                                                         <div class="d-flex flex-row align-items-center mb-4">
 
                                                             <div class="form-outline flex-fill mb-0">
-                                                                <?php echo $errorPass2 ?>
                                                                 <input type="password" name="password2" id="form3Example4cd" class="form-control" />
                                                                 <label class="form-label" for="form3Example4cd">Repite la contraseña</label>
                                                             </div>
@@ -177,4 +171,4 @@ if (!empty($_POST)) {
 </div>
 <br>
 <br>
-<?php include "templates/pie.php" ?>
+<?php include "admin/templates/pie.php" ?>
