@@ -30,9 +30,10 @@ if (!empty($_POST)) {
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
                                     <?php
-                                    if (isset($_SESSION)) {
+                                    if (isset($_SESSION[SESSION_USER])) {
                                         //header("location: index.php"); redirigir
-                                        bienvenido($_SESSION[SESSION_USER], $_SESSION[SESSION_FILE]);
+                                        //bienvenido($_SESSION[SESSION_USER], $_SESSION[SESSION_FILE]);
+                                        include "admin/templates/sesionIniciada.php";
                                     }
                                     ?>
 

@@ -12,6 +12,11 @@
 </head>
 
 <body>
+    <?php
+    if (!isset($_SESSION)) {
+        session_start();
+    }
+    ?>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
             <li>

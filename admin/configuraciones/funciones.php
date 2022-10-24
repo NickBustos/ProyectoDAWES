@@ -251,7 +251,6 @@ function getImage($file)
  */
 function iniciarSesion($linea)
 {
-    session_start();
     $_SESSION[SESSION_USER] = getDato(LINE_USER, $linea);
     $_SESSION[SESSION_PASS] = getDato(LINE_PASS, $linea);
     $_SESSION[SESSION_MAIL] = getDato(LINE_MAIL, $linea);
@@ -259,7 +258,12 @@ function iniciarSesion($linea)
     $_SESSION[SESSION_FILE] = getDato(LINE_FILE, $linea);
 }
 
-/**
+function finalizarSesion($linea)
+{
+    session_destroy();
+}
+
+/** NO HACE FALTA SI SE PONE TEMPLATE
  * Mensaje mostrado al entrar o registrarse
  */
 function bienvenido($user, $file)
