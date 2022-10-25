@@ -1,12 +1,17 @@
-<?php include 'admin/templates/cabecera.php' ?>
+<?php
+include 'admin/templates/cabecera.php';
+include getIdioma("acercade.php");
+?>
 <div class="row-center">
     <div class="col-md-3">
         <div class="card">
             <img class="card-img-top" src="https://cdn-icons-png.flaticon.com/512/2422/2422601.png" alt="">
             <div class="card-body">
-                <h4 class="card-title">Registrate</h4>
-                <p class="card-text">Registrate en nuestra página para poder votar</p>
-                <a name="" id="" class="btn btn-primary" href="registrarse.php" role="button"> Registrarse</a>
+                <h4 class="card-title"><?php echo $lang["registrate"]; ?></h4>
+                <p class="card-text"><?php echo $lang["paravotar"]; ?></p>
+                <a name="" id="" class="btn btn-primary" href="registrarse.php" role="button">
+                <?php echo $lang["registrarse"]; ?>
+                </a>
             </div>
         </div>
     </div>
@@ -14,9 +19,10 @@
         <div class="card">
             <img class="card-img-top" src="https://cdn-icons-png.flaticon.com/512/977/977597.png" alt="">
             <div class="card-body">
-                <h4 class="card-title">Navega</h4>
-                <p class="card-text">Navega por nuestra web, encuentra diferentes encuestas</p>
-                <a name="" id="" class="btn btn-primary" href="iniciosesion.php" role="button"> Navega</a>
+                <h4 class="card-title"><?php echo $lang["navega"]; ?></h4>
+                <p class="card-text"><?php echo $lang["encuestas"]; ?></p>
+                <a name="" id="" class="btn btn-primary" href="iniciosesion.php" role="button">
+                    <?php echo $lang["navega"]; ?></a>
             </div>
         </div>
     </div>
@@ -24,9 +30,9 @@
         <div class="card">
             <img class="card-img-top" src="https://cdn-icons-png.flaticon.com/512/2633/2633926.png" alt="">
             <div class="card-body">
-                <h4 class="card-title">¡Vota!</h4>
-                <p class="card-text">Vota difrentes encuestas ¡Diviertete!</p>
-                <a name="" id="" class="btn btn-primary" href="#" role="button"> Vota</a>
+                <h4 class="card-title"><?php echo $lang["vota"]; ?></h4>
+                <p class="card-text"><?php echo $lang["votarencuestas"]; ?></p>
+                <a name="" id="" class="btn btn-primary" href="#" role="button"><?php echo $lang["votar"]; ?></a>
             </div>
         </div>
     </div>

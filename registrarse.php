@@ -1,43 +1,92 @@
 <?php
 include "admin/templates/cabecera.php";
-include 'admin/configuraciones/funciones.php';
+include getIdioma("registrarse.php");
 
 $user = $avatar = $fechaNac = $mail = $pass = "";
 $_user = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
 $errorUser = $errorAvatar = $errorFecha = $errorMail = $errorPass = "";
-$registrado = false;
 
 if (!empty($_POST)) {
     //---------------------------- USER --------------------------------
     $_user = htmlspecialchars($_POST["user"]);
-    if (validarUser($_user, $errorUser)) {
-        $user = $_user;
+    if(!empty($_user)){
+        if (preg_match(PATTERN_USER, $_user)) {
+            if(!preg_match(PATTERN_CHARACTER_SEPARATOR, $_user)){
+                $user = $_user;
+            }else{
+                $errorUser = $lang["error_character_separator"];
+            }
+        }else{
+            $errorUser = $lang["error_user_pattern"];
+        }
+    }else{
+        $errorUser = $lang["error_vacio"];
     }
     //---------------------------- PASS --------------------------------
     $_pass1 = htmlspecialchars($_POST["password1"]);
     $_pass2 = htmlspecialchars($_POST["password2"]);
-    if (validarBothPasswords($_pass1, $_pass2, $errorPass)) {
-        $pass = $_pass1;
+    if(!empty($_pass1)){
+        if(preg_match(PATTERN_PASS, $_pass1)){
+            if(!empty($_pass2) && $_pass1 === $_pass2){
+                $pass = $_pass1;
+            }else{
+                $errorPass = $lang["error_pass_match"];
+            }
+        }else{
+            $errorPass = $lang["error_pass_pattern"];
+        }
+    }else{
+        $errorPass = $lang["error_vacio"];
     }
     //---------------------------- DATE --------------------------------
     $_fechaNac = htmlspecialchars($_POST["fechaNac"]);
-    if (validarFechaNac($_fechaNac, $errorFecha)) {
-        $fechaNac = $_fechaNac;
+    if(!empty($_fechaNac)){
+        if(validarMayorEdad($_fechaNac)){
+            $fechaNac = $_fechaNac;
+        }else{
+            $errorFecha = $lang["error_date_year"];
+        }
+    }else{
+        $errorFecha = $lang["error_vacio"];
     }
     //---------------------------- MAIL --------------------------------
     $_mail = htmlspecialchars($_POST["correoUsuario"]);
-    if (validarMail($_mail, $errorMail)) {
-        $mail = $_mail;
+    if(!empty($_mail)){
+        if (filter_var($_mail, FILTER_VALIDATE_EMAIL)) {
+            if(!preg_match(PATTERN_CHARACTER_SEPARATOR, $_mail)){
+                $mail = $_mail;
+            }else{
+                $errorMail = $lang["error_character_separator"];
+            }
+        }else{
+            $errorMail=$lang["error_mail"];
+        }
+    }else{
+        $errorMail=$lang["error_vacio"];
     }
     //---------------------------- FILE --------------------------------
-    if (validarAvatar($_FILES, $errorAvatar)) {
-        $avatar = getImage($_FILES["avatar"]);
+
+    if (
+        !empty($_FILES) && !empty($_FILES["avatar"])
+        && !empty($_FILES["avatar"]["tmp_name"])
+    ) {
+        if ($_FILES["avatar"]["type"] === "image/png") {
+            if ($_FILES['avatar']['size'] <= 1000000) { //1 mega
+                $avatar = getImage($_FILES["avatar"]);
+            }else{
+                $errorAvatar=$lang["error_file_size"];
+            }
+        }else{
+            $errorAvatar=$lang["error_file_type"];
+        }
+    }else{
+        $errorAvatar=$lang["error_vacio"];
     }
     //---------------------------- RGST --------------------------------
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
         $userData=[$user, md5($pass), $mail, $fechaNac, $avatar];
         registerUser($userData);
-        $registrado = true;
+        iniciarSesion(join(LINE_SEPARATOR, $userData));
     }
 }
 ?>
@@ -56,12 +105,12 @@ if (!empty($_POST)) {
                                     <div class="card-body p-md-5">
                                         <div class="row justify-content-center">
                                             <?php
-                                            if ($registrado) {
-                                                bienvenido($user, getDato(LINE_FILE, $userData));
+                                            if (isset($_SESSION[SESSION_USER])) {
+                                                include "admin/templates/sesioniniciada.php";
                                             }
                                             ?>
                                             <div>
-                                                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrarse</p>
+                                                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo $lang["registrarse"]; ?></p>
 
                                                 <form class="mx-1 mx-md-4" method="post" enctype="multipart/form-data">
 
@@ -76,7 +125,7 @@ if (!empty($_POST)) {
                                                             <div class="form-outline flex-fill mb-0">
                                                                 <?php echo $errorUser ?>
                                                                 <input type="text" name="user" id="form3Example1c" class="form-control" value="<?php echo $user; ?>" />
-                                                                <label class="form-label" for="form3Example1c">Tu nombre</label>
+                                                                <label class="form-label" for="form3Example1c"><?php echo $lang["username"]; ?></label>
                                                             </div>
                                                         </div>
 
@@ -87,7 +136,7 @@ if (!empty($_POST)) {
                                                             <div class="form-outline flex-fill mb-0">
                                                                 <?php echo $errorMail ?>
                                                                 <input type="email" name="correoUsuario" id="form3Example3c" class="form-control" value="<?php echo $mail; ?>" />
-                                                                <label class="form-label" for="form3Example3c">Tu correo electronico</label>
+                                                                <label class="form-label" for="form3Example3c"><?php echo $lang["correo"]; ?></label>
                                                             </div>
                                                         </div>
 
@@ -98,7 +147,7 @@ if (!empty($_POST)) {
                                                             <div class="form-outline flex-fill mb-0">
                                                                 <?php echo $errorPass ?>
                                                                 <input type="password" name="password1" id="form3Example4c" class="form-control" />
-                                                                <label class="form-label" for="form3Example4c">Contraseña</label>
+                                                                <label class="form-label" for="form3Example4c"><?php echo $lang["password"]; ?></label>
                                                             </div>
                                                         </div>
 
@@ -109,7 +158,7 @@ if (!empty($_POST)) {
 
                                                             <div class="form-outline flex-fill mb-0">
                                                                 <input type="password" name="password2" id="form3Example4cd" class="form-control" />
-                                                                <label class="form-label" for="form3Example4cd">Repite la contraseña</label>
+                                                                <label class="form-label" for="form3Example4cd"><?php echo $lang["passwordrepetida"]; ?></label>
                                                             </div>
                                                         </div>
 
@@ -120,14 +169,14 @@ if (!empty($_POST)) {
                                                         <div class="form-outline flex-fill mb-4">
                                                             <?php echo $errorFecha ?>
                                                             <input type="date" id="form3Example1c" class="form-control" name="fechaNac" min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>" value="<?php echo $fechaNac; ?>">
-                                                            <label class="form-label" for="form3Example1c">Tu fecha de nacimiento</label>
+                                                            <label class="form-label" for="form3Example1c"><?php echo $lang["fecha"]; ?></label>
                                                         </div>
                                             </div>
                                             <?php echo $errorAvatar ?>
                                             <div class="d-flex flex-row align-items-center mb-1">
                                                 <input class="form-control" name="avatar" type="file" id="formFile" multiple accept="image/png">
                                             </div>
-                                            <label for="formFile" class="form-label">Ingresa tu Avatar</label>
+                                            <label for="formFile" class="form-label"><?php echo $lang["avatar"]; ?></label>
                                             <br>
 
                                             <!-- <div class="form-check d-flex justify-content-center mb-5">
@@ -149,7 +198,7 @@ if (!empty($_POST)) {
 
                                             <div class="d-flex justify-content-center">
                                                 <p class="form-text text-muted">
-                                                    ¿Ya tienes una cuenta? Haz clíck <a href="iniciosesion.php">aquí</a>
+                                                <?php echo $lang["registrado"]; ?>
                                                 </p>
                                             </div>
                                             </form>
