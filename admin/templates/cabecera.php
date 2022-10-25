@@ -52,7 +52,7 @@
                 ?>">
             <div class="contenido-desplegable">
                 <a href="index.html"><?php echo $lang["inicio"]; ?></a>
-                <a href="cambiarTema.php"><?php echo $lang["Modo"]; ?></button>
+                <a href="cambiarTema.php"><?php echo $lang["modo"]; ?></button>
                     <a href="cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
                     <a href="cerrarsesion.php"><?php echo $lang["cerrar"]; ?></a>
             </div>

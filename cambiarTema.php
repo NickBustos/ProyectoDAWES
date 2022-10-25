@@ -5,5 +5,5 @@ if ($_SESSION['id']['tema'] == 'claro') {
 } else {
     $_SESSION['id']['tema'] = 'claro';
 }
-header('location: index.php');
+header('Location: ' . $_SERVER["HTTP_REFERER"]);
 ?>
