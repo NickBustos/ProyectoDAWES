@@ -43,105 +43,6 @@
     }
 }
 
-.desplegable {
-    display: inline-block;
-    position: relative;
-}
-
-.contenido-desplegable {
-    display: none;
-    position: absolute;
-    width: 100%;
-    overflow: auto;
-    box-shadow: 0px 10px 0px 0px;
-
-}
-
-.desplegable:hover .contenido-desplegable {
-    display: block;
-
-}
-
-.contenido-desplegable a {
-    display: block;
-    color: #000000;
-    padding: 5px;
-    text-decoration: none;
-}
-
-.contenido-desplegable a:hover {
-    color: #FFFFFF;
-    background-color: #00A4BD;
-}
-
-.cuerpoInicial {
-    background-image: (to bottom, #FD5D14, #ffffffda);
-}
-
-.btn-circle,
-#to-top {
-    border-radius: 50%;
-    background: #FD5D14;
-    padding: 16px;
-    font-size: 14px;
-    /* border-radius: 50%; */
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
-    color: #fff;
-    text-align: center;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.fondo {
-    background: linear-gradient(180deg, rgba(253, 93, 20, 1) 0%, rgba(253, 93, 20, 1) 35%, rgba(255, 255, 255, 1) 100%);
-}
-
-.main {
-    width: 100%;
-    height: 100%;
-    position: relative;
-    color: #111e6c;
-    background-image: (to bottom, #FD5D14, #ffffffda);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    transition: all 1s ease;
-    padding-top: 70px;
-}
-
-.main:before {
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
-    position: absolute;
-    content: "";
-    width: 100%;
-    height: 100%;
-    /*background: #111e6c;*/
-    opacity: 0.2;
-    filter: alpha(opacity=90);
-}
-
-.main-text {
-    top: 20%;
-    left: auto;
-    right: auto;
-    position: relative;
-    color: #111e6c;
-}
-
-
-
-
-.pie {
-
-    bottom: 0;
-    width: 100%;
-    height: 60px;
-    background: #ffffff;
-}
-
 .row-center {
     --bs-gutter-x: 1.5rem;
     --bs-gutter-y: 0;
@@ -454,42 +355,15 @@ textarea.input1+.shadow-input1 {
     }
 }
 
-.desplegable {
-    display: inline-block;
-    position: relative;
-    margin-right: 35px;
-}
-
-.contenido-desplegable {
-    display: none;
-    position: absolute;
-    padding: 15px;
-    background: #444343;
-}
-
-.desplegable:hover .contenido-desplegable {
-    display: block;
-    position: absolute;
-
-}
-
 .carta {
 
     display: table-cell;
     flex-direction: column;
     min-width: 0;
-
+    margin: 10px;
     background-color: #fff;
     background-clip: border-box;
     border: 1px solid rgba(0, 0, 0, 0.125);
-}
-
-.usuariologo {
-    border-radius: 60% !important;
-    background: #FFFFFF;
-    width: 50px;
-    height: 50px;
-    box-shadow: 0px 8px #0404045c;
 }
 
 body {
@@ -499,9 +373,9 @@ body {
     font-weight: 400;
     line-height: 1.5;
     color: #777;
-    background-color: #fff;
+    background-color: rgb(0, 0, 0);
     -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
 }
 
 hr {
@@ -533,7 +407,7 @@ h6,
     font-family: "Roboto", sans-serif;
     font-weight: 700;
     line-height: 1.2;
-    color: #040F28
+    color: #ffffff
 }
 
 h1,
@@ -600,7 +474,8 @@ h6,
 
 p {
     margin-top: 0;
-    margin-bottom: 1rem
+    margin-bottom: 1rem;
+    color:white;
 }
 
 abbr[title],
@@ -3495,7 +3370,7 @@ textarea.form-control.is-invalid {
     display: inline-block;
     font-weight: 400;
     line-height: 1.5;
-    color: rgb(255, 255, 255);
+    color: #777;
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
@@ -3515,7 +3390,7 @@ textarea.form-control.is-invalid {
 }
 
 .btn:hover {
-    color: rgb(0, 0, 0)
+    color: #777
 }
 
 .btn-check:focus+.btn,
@@ -3532,15 +3407,15 @@ fieldset:disabled .btn {
 }
 
 .btn-primary {
-    color: #000;
-    background-color: #FD5D14;
-    border-color: #FD5D14
+    color: #FD5D14;
+    background-color: #000000;
+    border-color: #000000
 }
 
 .btn-primary:hover {
-    color: #000;
-    background-color: #fd7537;
-    border-color: #fd6d2c
+    color: #ffffff;
+    background-color: #000000;
+    border-color: #000000
 }
 
 .btn-check:focus+.btn-primary,
@@ -3577,19 +3452,15 @@ fieldset:disabled .btn {
 }
 
 .btn-secondary {
-    /*color: #000;
+    color: #000;
     background-color: #FDBE33;
-    border-color: #FDBE33*/
-    background-color: #FFFFFF;
-    border-color: #FD5D14;
-    color: #FD5D14;
+    border-color: #FDBE33
 }
 
 .btn-secondary:hover {
     color: #000;
-    /*background-color: #fdc852;
-    border-color: #fdc547*/
-    /*background-color: #fd7537;*/
+    background-color: #fdc852;
+    border-color: #fdc547
 }
 
 .btn-check:focus+.btn-secondary,
@@ -4234,8 +4105,7 @@ fieldset:disabled .btn {
 .btn-group-lg>.btn {
     padding: .5rem 1rem;
     font-size: 1.25rem;
-    border-radius: .3rem;
-    margin-right: -10px;
+    border-radius: .3rem
 }
 
 .btn-sm,
@@ -4702,20 +4572,13 @@ fieldset:disabled .btn {
 
 .btn-group>.btn:not(:first-child),
 .btn-group>.btn-group:not(:first-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-radius: 10px;
-    margin-left: -12px;
-    background: #FD5D14;
-    box-shadow: 0px 5px #00000038;
+    margin-left: -1px
 }
 
 .btn-group>.btn:not(:last-child):not(.dropdown-toggle),
 .btn-group>.btn-group:not(:last-child)>.btn {
-    background: #FD5D14;
-    border-radius: 10px;
-    margin-right: -12px;
-    box-shadow: 0px 5px #00000038;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
 }
 
 .btn-group>.btn:nth-child(n+3),
@@ -5280,9 +5143,9 @@ fieldset:disabled .btn {
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #fff;
+    background-color: rgb(0, 0, 0);
     background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.125);
+    border: 1px solid rgba(255, 255, 255, 1);
     border-radius: false
 }
 
@@ -8258,9 +8121,7 @@ fieldset:disabled .btn {
 }
 
 .mb-4 {
-    margin-bottom: 1.5rem !important;
-    display: block;
-
+    margin-bottom: 1.5rem !important
 }
 
 .mb-5 {
@@ -8895,11 +8756,7 @@ fieldset:disabled .btn {
 }
 
 .rounded-circle {
-    border-radius: 60% !important;
-    background: #FFFFFF;
-    width: 500px;
-    height: 500px;
-    box-shadow: 0px 13px #0404045c;
+    border-radius: 50% !important
 }
 
 .rounded-pill {
@@ -13003,3 +12860,7 @@ fieldset:disabled .btn {
         display: none !important
     }
 }
+
+
+
+

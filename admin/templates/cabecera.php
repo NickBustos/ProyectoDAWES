@@ -7,17 +7,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MumORDad</title>
     <link rel="stylesheet" href="./css/archivo.css" />
-    <link rel="stylesheet" href="./css/style.css" />
     <?php
     include "admin/configuraciones/funciones.php";
     include getIdioma("cabecera.php");
     ?>
+
+
 </head>
 
 <body>
     <?php
     if (!isset($_SESSION)) {
         session_start();
+        $_SESSION['id'] = array(
+            'tema' => 'claro'
+        );
+        if ($_SESSION['id']['tema'] == 'noche') {
+            echo '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
+        }
     }
     ?>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -39,4 +46,14 @@
                 <a class="nav-link" href="contacto.php"><?php echo $lang["contacto"]; ?></a>
             </li>
         </ul>
+        <div class="desplegable">
+            <img class="imagenUser" src="https://cdn-icons-png.flaticon.com/512/64/64572.png">
+            <div class="contenido-desplegable">
+                <a href="">Inicio</a>
+                <a href="">Cambiar modo</a>
+                <a href="">Cambiar idioma</a>
+                <a href="">Cerrar sesión</a>
+            </div>
+        </div>
+        
     </nav>
