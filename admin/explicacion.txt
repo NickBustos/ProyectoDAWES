@@ -1,1 +1,0 @@
-Carpeta con ficheros de registro privada en la que se guardan los registros (usuarios y contraseñas);

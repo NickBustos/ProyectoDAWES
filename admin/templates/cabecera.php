@@ -26,7 +26,7 @@
         <ul class="nav navbar-nav">
             <li>
                 <a href="#" class="navbar-brand">
-                    <img src="multimedia/imagenes/logo2.png.png" alt="Logo">
+                    <img src="imagenes/logo.png" alt="Logo">
                 </a>
             </li>
             <li class="nav-item active " style="margin: auto;">
@@ -42,12 +42,20 @@
             </li>
         </ul>
         <div class="desplegable">
-            <img class="imagenUser" src="https://cdn-icons-png.flaticon.com/512/64/64572.png">
+            <img class="imagenUser" src="
+                <?php
+                $imagen = "imagenes/nouser.png";
+                if (isset($_SESSION) && isset($_SESSION[SESSION_USER])) {
+                    $imagen = $_SESSION[SESSION_FILE];
+                }
+                echo $imagen;
+                ?>">
             <div class="contenido-desplegable">
-                <a href="">Inicio</a>
-                <a href="cambiarTema.php">Cambiar Modo</button>
-                    <a href="">Cambiar idioma</a>
-                    <a href="">Cerrar sesión</a>
+                <a href="index.html"><?php echo $lang["inicio"]; ?></a>
+                <a href="cambiarTema.php"><?php echo $lang["Modo"]; ?></button>
+                    <a href="cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
+                    <a href="cerrarsesion.php"><?php echo $lang["cerrar"]; ?></a>
             </div>
         </div>
+        
     </nav>
