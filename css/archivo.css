@@ -43,6 +43,12 @@
     }
 }
 
+
+.imagenUser{
+    width: 50px;
+    height: 50px;
+}
+
 .desplegable {
     display: inline-block;
     position: relative;
@@ -54,6 +60,8 @@
     width: 100%;
     overflow: auto;
     box-shadow: 0px 10px 0px 0px;
+    width: auto;
+    margin-left: -30px;
 
 }
 
@@ -389,6 +397,8 @@ textarea.input1+.shadow-input1 {
 
 /*------------------------------------------------------------------
   [ Alert validate ]*/
+
+
 
 .validate-input {
     position: relative;
@@ -4894,7 +4904,7 @@ fieldset:disabled .btn {
     align-items: center;
     justify-content: space-between;
     padding-top: .5rem;
-    padding-bottom: .5rem
+    padding-bottom: 11.5rem
 }
 
 .navbar>.container,
