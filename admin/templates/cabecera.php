@@ -51,7 +51,7 @@
             <div class="contenido-desplegable">
                 <a href="">Inicio</a>
                 <a href="">Cambiar modo</a>
-                <a href="">Cambiar idioma</a>
+                <a href="cambiarIdioma.php">Cambiar idioma</a>
                 <a href="">Cerrar sesión</a>
             </div>
         </div>
