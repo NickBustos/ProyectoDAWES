@@ -14,25 +14,25 @@ include getIdioma("contacto.php");
 
             <div class="wrap-input1 validate-input" data-validate="Name is required">
                 <input class="input1" type="text" name="name" 
-                placeholder=<?php echo $lang["nombre"]; ?>>
+                placeholder='<?php echo $lang["nombre"]; ?>'>
                 <span class="shadow-input1"></span>
             </div>
 
             <div class="wrap-input1 validate-input" data-validate="Valid email is required: ex@abc.xyz">
                 <input class="input1" type="text" name="email" 
-                placeholder=<?php echo $lang["mail"]; ?>>
+                placeholder='<?php echo $lang["mail"]; ?>'>
                 <span class="shadow-input1"></span>
             </div>
 
             <div class="wrap-input1 validate-input" data-validate="Subject is required">
                 <input class="input1" type="text" name="subject" 
-                placeholder=<?php echo $lang["cc"]; ?>>
+                placeholder='<?php echo $lang["cc"]; ?>'>
                 <span class="shadow-input1"></span>
             </div>
 
             <div class="wrap-input1 validate-input" data-validate="Message is required">
                 <textarea class="input1" name="message" 
-                placeholder=<?php echo $lang["mensaje"]; ?>></textarea>
+                placeholder='<?php echo $lang["mensaje"]; ?>'></textarea>
                 <span class="shadow-input1"></span>
             </div>
 

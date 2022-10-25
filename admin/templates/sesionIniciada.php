@@ -7,11 +7,11 @@ include getIdioma("sesioniniciada.php");
 </p>
 <div class='container text-center main-text'>
     <form action='index.php' method='post'>
-        <input type='submit' class='col-md-3 btn btn-primary btn-lg' value=<?php echo $lang["entrar"]; ?> name="Entrar a sesión">
+        <input type='submit' class='col-md-3 btn btn-primary btn-lg' value='<?php echo $lang["entrar"]; ?>' name="Entrar a sesión">
     </form>
 
     <form action='cerrarsesion.php' method='post'>
-        <input type='submit' class='col-md-3 btn btn-secondary btn-lg' value=<?php echo $lang["salir"]; ?> name="Cerrar sesión">
+        <input type='submit' class='col-md-3 btn btn-secondary btn-lg' value='<?php echo $lang["salir"]; ?>' name="Cerrar sesión">
     </form>
 </div>
 <br /><br /><br /><br /><br /><br />
