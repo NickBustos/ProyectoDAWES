@@ -4,7 +4,7 @@ include getIdioma("index.php");
 ?>
 <section class="fondo">
   <div class="container-fluid main">
-    <br><br><br><br><br>
+    
     <div class="row d-flex justify-content-center">
       <?php
       if (isset($_SESSION[SESSION_USER])) {
