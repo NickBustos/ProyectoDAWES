@@ -10,23 +10,18 @@
     <?php
     include "admin/configuraciones/funciones.php";
     include getIdioma("cabecera.php");
+
+        session_start();
+       
+        if ($_SESSION['id']['tema'] == 'noche') {
+            echo '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
+        }
     ?>
 
 
 </head>
 
 <body>
-    <?php
-    if (!isset($_SESSION)) {
-        session_start();
-        $_SESSION['id'] = array(
-            'tema' => 'claro'
-        );
-        if ($_SESSION['id']['tema'] == 'noche') {
-            echo '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
-        }
-    }
-    ?>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
             <li>
@@ -50,10 +45,9 @@
             <img class="imagenUser" src="https://cdn-icons-png.flaticon.com/512/64/64572.png">
             <div class="contenido-desplegable">
                 <a href="">Inicio</a>
-                <a href="">Cambiar modo</a>
-                <a href="">Cambiar idioma</a>
-                <a href="">Cerrar sesión</a>
+                <a href="cambiarTema.php">Cambiar Modo</button>
+                    <a href="">Cambiar idioma</a>
+                    <a href="">Cerrar sesión</a>
             </div>
         </div>
-        
     </nav>

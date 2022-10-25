@@ -93,15 +93,7 @@ function getIdioma($nombrePagina)
     return $pathIdioma;
 }
 
-function cambiarTema(){
-    
-    if($_SESSION['id']['tema']=='claro'){
-        $_SESSION['id']['tema'] = 'noche';
-    }else{
-        $_SESSION['id']['tema'] = 'claro';
-    }
-    header('location: sesionIniciada.php');
-    };
+
 
 /**
  * Introduce datos del usuario en sesion
