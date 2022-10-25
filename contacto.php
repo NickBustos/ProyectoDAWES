@@ -1,4 +1,7 @@
-<?php include 'templates/cabeceraInicio.php'?>
+<?php 
+include 'admin/templates/cabecera.php';
+include getIdioma("contacto.php");
+?>
 <div class="contact1">
     <div class="container-contact1">
         <div class="contact1-pic js-tilt" data-tilt>
@@ -6,33 +9,37 @@
         </div>
         <form class="contact1-form validate-form">
             <span class="contact1-form-title">
-                ¡Ponte en contacto!
+            <?php echo $lang["ponteencontacto"]; ?>
             </span>
 
             <div class="wrap-input1 validate-input" data-validate="Name is required">
-                <input class="input1" type="text" name="name" placeholder="Nombre">
+                <input class="input1" type="text" name="name" 
+                placeholder='<?php echo $lang["nombre"]; ?>'>
                 <span class="shadow-input1"></span>
             </div>
 
             <div class="wrap-input1 validate-input" data-validate="Valid email is required: ex@abc.xyz">
-                <input class="input1" type="text" name="email" placeholder="Email">
+                <input class="input1" type="text" name="email" 
+                placeholder='<?php echo $lang["mail"]; ?>'>
                 <span class="shadow-input1"></span>
             </div>
 
             <div class="wrap-input1 validate-input" data-validate="Subject is required">
-                <input class="input1" type="text" name="subject" placeholder="CC">
+                <input class="input1" type="text" name="subject" 
+                placeholder='<?php echo $lang["cc"]; ?>'>
                 <span class="shadow-input1"></span>
             </div>
 
             <div class="wrap-input1 validate-input" data-validate="Message is required">
-                <textarea class="input1" name="message" placeholder="Escribenos tu mensaje"></textarea>
+                <textarea class="input1" name="message" 
+                placeholder='<?php echo $lang["mensaje"]; ?>'></textarea>
                 <span class="shadow-input1"></span>
             </div>
 
             <div class="container-contact1-form-btn">
                 <button class="contact1-form-btn">
                     <span>
-                        ¡Enviar!
+                    <?php echo $lang["enviar"]; ?>
                         <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                     </span>
                 </button>
@@ -41,4 +48,4 @@
     </div>
 </div>
 
-<?php include 'templates/pie.php' ?>
+<?php include 'admin/templates/pie.php' ?>
