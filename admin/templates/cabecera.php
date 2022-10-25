@@ -49,8 +49,8 @@
         <div class="desplegable">
             <img class="imagenUser" src="
                 <?php
-                $imagen="imagenes/nouser.png";
-                if(isset($_SESSION) && isset($_SESSION[SESSION_USER])){
+                $imagen = "imagenes/nouser.png";
+                if (isset($_SESSION) && isset($_SESSION[SESSION_USER])) {
                     $imagen = $_SESSION[SESSION_FILE];
                 }
                 echo $imagen;
@@ -62,5 +62,5 @@
                 <a href="cerrarsesion.php"><?php echo $lang["cerrar"]; ?></a>
             </div>
         </div>
-        
+
     </nav>
