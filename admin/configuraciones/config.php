@@ -43,7 +43,7 @@ define("PATTERN_CHARACTER_SEPARATOR", "@[".LINE_SEPARATOR."]@");//Verifica que h
 define("ERROR_IN", "<span style='color:red'>");
 define("ERROR_OUT", "</span>");
 
-//Campo formulario vacio
+//Campo formulario vacio 
 define("ERROR_VACIO", ERROR_IN . "El campo no puede estar vacio" . ERROR_OUT);
 
 //Usado caracter de separación
