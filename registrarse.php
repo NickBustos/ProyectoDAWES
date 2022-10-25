@@ -1,7 +1,6 @@
 <?php
 include "admin/templates/cabecera.php";
 include getIdioma("registrarse.php");
-include getIdioma("erroresFormularios.php");
 
 $user = $avatar = $fechaNac = $mail = $pass = "";
 $_user = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
