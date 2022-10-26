@@ -14,13 +14,11 @@
 
     session_start();
 
-    if (!isset($_SESSION['id']['tema'])) {
-        $_SESSION['id'] = array(
-            'tema' => 'claro'
-        );
+    if (!isset($_SESSION['tema'])) {
+        $_SESSION["tema"] ='claro';
     }
 
-    if ($_SESSION['id']['tema'] == 'noche') {
+    if ($_SESSION['tema'] == 'noche') {
         echo '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
     }
     ?>

@@ -17,7 +17,7 @@
         <li>" . MIN_PASS_LENGTH . " characters (Max " . MAX_PASS_LENGTH . ")</li>
         <li>1 lowercase</li>
         <li>1 uppercase</li>
-        <li>1 numbre</li>
+        <li>1 number</li>
     </ul>" . 
     ERROR_OUT,
     "error_pass_match" =>  ERROR_IN . "Passwords don't match" . ERROR_OUT,
