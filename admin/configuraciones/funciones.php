@@ -85,7 +85,7 @@ function getIdioma($nombrePagina)
 {
     $pathIdioma = "";
     if (!isset($_COOKIE["lang"])) {
-        setcookie("lang", "es", time() + 60 );
+        setcookie("lang", "es", time() + 60 * 60);
         $pathIdioma = "admin/idiomas/es-" . $nombrePagina;
     } else {
         $pathIdioma = "admin/idiomas/" . $_COOKIE["lang"] . "-" . $nombrePagina;

@@ -20,5 +20,6 @@ include getIdioma("sesioniniciada.php");
     src=<?php echo $_SESSION[SESSION_FILE] ?>>
 </div>
 <?php
+    include "admin/templates/pie.php";
     exit();
 ?>

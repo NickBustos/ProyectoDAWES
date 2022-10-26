@@ -47,6 +47,7 @@
 .imagenUser {
     width: 50px;
     height: 50px;
+    border-radius: 20px;
 }
 
 .desplegable {
@@ -4711,7 +4712,10 @@ fieldset:disabled .btn {
     width: auto
 }
 
-.btn-group>.btn:not(:first-child),
+
+
+@media(max-width:800px){
+    .btn-group>.btn:not(:first-child),
 .btn-group>.btn-group:not(:first-child) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -4719,6 +4723,18 @@ fieldset:disabled .btn {
     margin-left: -12px;
     background: #FD5D14;
     box-shadow: 0px 5px #00000038;
+}
+}
+@media(min-width:801px){
+    .btn-group>.btn:not(:first-child),
+    .btn-group>.btn-group:not(:first-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-radius: 10px;
+        margin-left: -15px;
+        background: #FD5D14;
+        box-shadow: 0px 5px #00000038;
+    }
 }
 
 .btn-group>.btn:not(:last-child):not(.dropdown-toggle),
@@ -4929,13 +4945,27 @@ fieldset:disabled .btn {
     white-space: nowrap
 }
 
-.navbar-nav {
-    display: flex;
-    flex-direction: column;
-    padding-left: 0;
-    margin-bottom: 0;
-    list-style: none
-}
+
+@media(max-width:800px){
+    .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+        margin-left: -50px;
+    }
+    }
+
+@media(min-width:801px){
+    .navbar-nav {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none
+    }
+    }
 
 .navbar-nav .nav-link {
     padding-right: 0;
@@ -8721,7 +8751,8 @@ fieldset:disabled .btn {
 }
 
 .text-center {
-    text-align: center !important
+    text-align: center !important;
+    color:white;
 }
 
 .text-decoration-none {
@@ -8906,12 +8937,23 @@ fieldset:disabled .btn {
     border-radius: .3rem !important
 }
 
+@media(max-width:800px){
+    .rounded-circle {
+        border-radius: 60% !important;
+        background: #FFFFFF;
+        width: 440px;
+        height: 375px;
+        box-shadow: 0px 13px #0404045c;
+    }
+}
+@media(min-width:801px){
 .rounded-circle {
     border-radius: 60% !important;
     background: #FFFFFF;
     width: 500px;
     height: 500px;
     box-shadow: 0px 13px #0404045c;
+}
 }
 
 .rounded-pill {
