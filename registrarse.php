@@ -9,60 +9,64 @@ $errorUser = $errorAvatar = $errorFecha = $errorMail = $errorPass = "";
 if (!empty($_POST)) {
     //---------------------------- USER --------------------------------
     $_user = htmlspecialchars($_POST["user"]);
-    if(!empty($_user)){
+    if (!empty($_user)) {
         if (preg_match(PATTERN_USER, $_user)) {
-            if(!preg_match(PATTERN_CHARACTER_SEPARATOR, $_user)){
+            if (!preg_match(PATTERN_CHARACTER_SEPARATOR, $_user)) {
                 $user = $_user;
-            }else{
+            } else {
                 $errorUser = $lang["error_character_separator"];
             }
-        }else{
+        } else {
             $errorUser = $lang["error_user_pattern"];
         }
-    }else{
+    } else {
         $errorUser = $lang["error_vacio"];
     }
     //---------------------------- PASS --------------------------------
     $_pass1 = htmlspecialchars($_POST["password1"]);
     $_pass2 = htmlspecialchars($_POST["password2"]);
-    if(!empty($_pass1)){
-        if(preg_match(PATTERN_PASS, $_pass1)){
-            if(!empty($_pass2) && $_pass1 === $_pass2){
+    if (!empty($_pass1)) {
+        if (
+            preg_match(PATTERN_PASS_MINUS, $_pass1) && preg_match(PATTERN_PASS_MAYUS, $_pass1)
+            && preg_match(PATTERN_PASS_NUMBER, $_pass1) && strlen($_pass1) <= MAX_PASS_LENGTH
+            && strlen($_pass1) >= MIN_PASS_LENGTH
+        ) {
+            if (!empty($_pass2) && $_pass1 === $_pass2) {
                 $pass = $_pass1;
-            }else{
+            } else {
                 $errorPass = $lang["error_pass_match"];
             }
-        }else{
+        } else {
             $errorPass = $lang["error_pass_pattern"];
         }
-    }else{
+    } else {
         $errorPass = $lang["error_vacio"];
     }
     //---------------------------- DATE --------------------------------
     $_fechaNac = htmlspecialchars($_POST["fechaNac"]);
-    if(!empty($_fechaNac)){
-        if(validarMayorEdad($_fechaNac)){
+    if (!empty($_fechaNac)) {
+        if (validarMayorEdad($_fechaNac)) {
             $fechaNac = $_fechaNac;
-        }else{
+        } else {
             $errorFecha = $lang["error_date_year"];
         }
-    }else{
+    } else {
         $errorFecha = $lang["error_vacio"];
     }
     //---------------------------- MAIL --------------------------------
     $_mail = htmlspecialchars($_POST["correoUsuario"]);
-    if(!empty($_mail)){
+    if (!empty($_mail)) {
         if (filter_var($_mail, FILTER_VALIDATE_EMAIL)) {
-            if(!preg_match(PATTERN_CHARACTER_SEPARATOR, $_mail)){
+            if (!preg_match(PATTERN_CHARACTER_SEPARATOR, $_mail)) {
                 $mail = $_mail;
-            }else{
+            } else {
                 $errorMail = $lang["error_character_separator"];
             }
-        }else{
-            $errorMail=$lang["error_mail"];
+        } else {
+            $errorMail = $lang["error_mail"];
         }
-    }else{
-        $errorMail=$lang["error_vacio"];
+    } else {
+        $errorMail = $lang["error_vacio"];
     }
     //---------------------------- FILE --------------------------------
 
@@ -73,18 +77,18 @@ if (!empty($_POST)) {
         if ($_FILES["avatar"]["type"] === "image/png") {
             if ($_FILES['avatar']['size'] <= 1000000) { //1 mega
                 $avatar = getImage($_FILES["avatar"]);
-            }else{
-                $errorAvatar=$lang["error_file_size"];
+            } else {
+                $errorAvatar = $lang["error_file_size"];
             }
-        }else{
-            $errorAvatar=$lang["error_file_type"];
+        } else {
+            $errorAvatar = $lang["error_file_type"];
         }
-    }else{
-        $errorAvatar=$lang["error_vacio"];
+    } else {
+        $errorAvatar = $lang["error_vacio"];
     }
     //---------------------------- RGST --------------------------------
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
-        $userData=[$user, md5($pass), $mail, $fechaNac, $avatar];
+        $userData = [$user, md5($pass), $mail, $fechaNac, $avatar];
         registerUser($userData);
         iniciarSesion(join(LINE_SEPARATOR, $userData));
     }
@@ -198,7 +202,7 @@ if (!empty($_POST)) {
 
                                             <div class="d-flex justify-content-center">
                                                 <p class="form-text text-muted">
-                                                <?php echo $lang["registrado"]; ?>
+                                                    <?php echo $lang["registrado"]; ?>
                                                 </p>
                                             </div>
                                             </form>
