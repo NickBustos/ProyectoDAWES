@@ -57,8 +57,8 @@
                 ?>">
             <div class="contenido-desplegable">
                 <a href="cambiarTema.php"><?php echo $lang["modo"]; ?></a>
-                    <a href="cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
-                    <a href="cerrarsesion.php"><?php echo $lang["cerrar"]; ?></a>
+                <a href="cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
+                <a href="cerrarsesion.php"><?php echo $lang["cerrar"]; ?></a>
             </div>
         </div>
 
