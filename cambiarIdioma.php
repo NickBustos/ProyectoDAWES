@@ -5,6 +5,6 @@ if (isset($_COOKIE["lang"]) && $_COOKIE["lang"] === "es") {
 }
 setcookie("lang", $idioma, time()+60);
 
-header('Location: ' . $_SERVER["HTTP_REFERER"]);
+header('Location: ' . htmlspecialchars($_SERVER["HTTP_REFERER"]));
 exit();
 ?>
