@@ -2,7 +2,7 @@
 
 $lang = array(
 
-    "inicio" => "Index",
+    "inicio" => "Home",
     "about" => "About",
     "contacto" => "Contact",
     "modo" => "Change mode",
