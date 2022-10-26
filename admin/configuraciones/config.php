@@ -7,7 +7,7 @@ define("PATH_TO_BD", "multimedia/bbdd.txt");//ACTUALIZAR
 //-------------------------------------- VALUES --------------------------------------
 
 //Fecha:
-define("DATE_TODAY", date("Y-m-d"));
+define("DATE_TODAY", date("Y-m-d"));//última disponible para formulario
 define("DATE_FIRST", date("1900-01-01"));//primera disponible para formulario
 
 //Contraseña:
@@ -28,8 +28,7 @@ define("SESSION_PASS", "pass");
 define("SESSION_MAIL", "mail");
 define("SESSION_DATE", "date");
 define("SESSION_FILE", "avatar");
-define("SESSION_THEME", "theme");
-
+define("SESSION_TEMA", "tema");
 
 //------------------------------------- PATTERNS -------------------------------------
 

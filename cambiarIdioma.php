@@ -5,8 +5,8 @@ if (isset($_COOKIE["lang"])) {
     }else{
         setCookie("lang","es",time()+60*60);
     }
-    }else{
-        setCookie("lang","es",time()+60*60);
+}else{
+    setCookie("lang","es",time()+60*60);
 }
 header('Location: ' . $_SERVER["HTTP_REFERER"]);
 exit();
