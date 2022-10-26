@@ -84,7 +84,7 @@ function getImage($file)
 function getIdioma($nombrePagina)
 {
     $idioma = "es";
-    if(isset($_COOKIE["lang"]) && ($_COOKIE["lang"]==="es" || $_COOKIE["lang"]==="en")){
+    if(isset($_COOKIE["lang"]) && $_COOKIE["lang"]==="en"){
         $idioma = $_COOKIE["lang"];
     }
     $pathIdioma = "admin/idiomas/" . $idioma . "-" . $nombrePagina;
