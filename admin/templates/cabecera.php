@@ -10,21 +10,23 @@
     <?php
     include "admin/configuraciones/funciones.php";
     include getIdioma("cabecera.php");
+
+
+    session_start();
+
+    if (!isset($_SESSION['id']['tema'])) {
+        $_SESSION['id'] = array(
+            'tema' => 'claro'
+        );
+    }
+
+    if ($_SESSION['id']['tema'] == 'noche') {
+        echo '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
+    }
     ?>
 </head>
 
 <body>
-    <?php
-    if (!isset($_SESSION)) {
-        session_start();
-        $_SESSION['id'] = array(
-            'tema' => 'claro'
-        );
-        if ($_SESSION['id']['tema'] == 'noche') {
-            echo '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
-        }
-    }
-    ?>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <ul class="nav navbar-nav">
             <li>
@@ -54,10 +56,10 @@
                 echo $imagen;
                 ?>">
             <div class="contenido-desplegable">
-                <a href="index.html"><?php echo $lang["inicio"]; ?></a>
-                <a href=""><?php echo $lang["modo"]; ?></a>
-                <a href="cambiaridioma.php"><?php echo $lang["idioma"]; ?></a>
-                <a href="cerrarsesion.php"><?php echo $lang["cerrar"]; ?></a>
+                <a href="cambiarTema.php"><?php echo $lang["modo"]; ?></a>
+                    <a href="cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
+                    <a href="cerrarsesion.php"><?php echo $lang["cerrar"]; ?></a>
             </div>
         </div>
+
     </nav>
