@@ -51,11 +51,27 @@
                 } else {
                     echo "imagenes/nouser.png";
                 }
-                //echo $imagen;
                 ?>">
             <div class="contenido-desplegable">
-                <a href="cambiarTema.php"><?php echo $lang["modo"]; ?></a>
-                <a href="cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
+                <?php
+                    if(isset($_SESSION) && isset($_SESSION["tema"]) && $_SESSION["tema"]==="noche"){
+                        echo "<a href='cambiarTema.php'>" . $lang["modoC"] . "</a>";
+                    }else{
+                        echo "<a href='cambiarTema.php'>" . $lang["modoN"] . "</a>";
+                    }
+                ?>
+
+                <!-- <a href="cambiarTema.php"><?php echo $lang["modo"]; ?></a> -->
+
+                <?php
+                    if(isset($_COOKIE["lang"]) && $_COOKIE["lang"]==="es"){
+                        echo "<a href='cambiarIdioma.php'>" . $lang["idiomaEn"] . "</a>";
+                    }else{
+                        echo "<a href='cambiarIdioma.php'>" . $lang["idiomaEs"] . "</a>";
+                    }
+                ?>
+
+                <!-- <a href="cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a> -->
                 <?php
                 if (isset($_SESSION) && isset($_SESSION[SESSION_USER])) {
                     echo "<a href='cerrarsesion.php'> " . $lang['cerrar'] . "</a>";
