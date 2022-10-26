@@ -1,9 +1,9 @@
 <?php
 session_start();
-if ($_SESSION['id']['tema'] == 'claro') {
-    $_SESSION['id']['tema'] = 'noche';
+if ($_SESSION['tema'] == 'claro') {
+    $_SESSION['tema'] = 'noche';
 } else {
-    $_SESSION['id']['tema'] = 'claro';
+    $_SESSION['tema'] = 'claro';
 }
 header('Location: ' . $_SERVER["HTTP_REFERER"]);
 ?>
