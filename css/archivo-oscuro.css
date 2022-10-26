@@ -4,7 +4,7 @@
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
- :root {
+:root {
     --bs-blue: #0d6efd;
     --bs-indigo: #6610f2;
     --bs-purple: #6f42c1;
@@ -44,7 +44,7 @@
 }
 
 
-.imagenUser{
+.imagenUser {
     width: 50px;
     height: 50px;
 }
@@ -59,10 +59,9 @@
     position: absolute;
     width: 100%;
     overflow: auto;
-    box-shadow: 0px 10px 0px 0px;
-    width: auto;
+    width: max-content;
     height: auto;
-    margin-left: -50px;
+    margin-left: -100px;
 
 }
 
@@ -73,14 +72,13 @@
 
 .contenido-desplegable a {
     display: block;
-    color: #000000;
+    color: #ffffff;
     padding: 5px;
     text-decoration: none;
 }
 
 .contenido-desplegable a:hover {
-    color: #FFFFFF;
-    background-color: #00A4BD;
+    color: #fd5d14;
 }
 
 .cuerpoInicial {
@@ -102,7 +100,7 @@
 }
 
 .fondo {
-    background: linear-gradient(180deg, #3d1705, rgba(253, 93, 20, 1) 35%, #48403d);
+    background: linear-gradient(180deg, #3d1705, #210e04, #000000);
 }
 
 .main {
@@ -167,7 +165,7 @@
     width: 100%;
     min-height: 100%;
     padding: 15px;
-    background: -webkit-linear-gradient(left, #e9ad2b, #FD5D14);
+    background: transparent;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -475,7 +473,7 @@ textarea.input1+.shadow-input1 {
     display: none;
     position: absolute;
     padding: 15px;
-    background: #444343;
+    background: #000000;
 }
 
 .desplegable:hover .contenido-desplegable {
@@ -510,7 +508,7 @@ body {
     font-weight: 400;
     line-height: 1.5;
     color: #777;
-    background-color: #fff;
+    background: linear-gradient(180deg, #3d1705, #3d1705, #000000);
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -5249,7 +5247,7 @@ fieldset:disabled .btn {
 }
 
 .navbar-dark .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.55)
+    color: rgba(255, 255, 255, 1)
 }
 
 .navbar-dark .navbar-nav .nav-link:hover,
@@ -5291,10 +5289,9 @@ fieldset:disabled .btn {
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #fff;
+    background: transparent;
     background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: false
+    
 }
 
 .card>hr {
@@ -5330,6 +5327,7 @@ fieldset:disabled .btn {
 }
 
 .card-title {
+    color:white;
     margin-bottom: .5rem
 }
 
@@ -8790,7 +8788,8 @@ fieldset:disabled .btn {
 }
 
 .text-dark {
-    color: #040F28 !important
+    color: #7a7c81 !important;
+    background-color: rgba(0, 0, 0, 1);
 }
 
 .text-white {
@@ -10046,7 +10045,8 @@ fieldset:disabled .btn {
 
     .mx-md-4 {
         margin-right: 1.5rem !important;
-        margin-left: 1.5rem !important
+        margin-left: 1.5rem !important;
+        color:white;
     }
 
     .mx-md-5 {

@@ -59,10 +59,9 @@
     position: absolute;
     width: 100%;
     overflow: auto;
-    box-shadow: 0px 10px 0px 0px;
-    width: auto;
+    width: max-content;
     height: auto;
-    margin-left: -50px;
+    margin-left: -100px;
 
 }
 
@@ -79,8 +78,8 @@
 }
 
 .contenido-desplegable a:hover {
-    color: #FFFFFF;
-    background-color: #00A4BD;
+    color: #ffffff;
+    transition: 0.3s;
 }
 
 .cuerpoInicial {
@@ -167,7 +166,7 @@
     width: 100%;
     min-height: 100%;
     padding: 15px;
-    background: -webkit-linear-gradient(left, #e9ad2b, #FD5D14);
+    background: transparent;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -472,10 +471,14 @@ textarea.input1+.shadow-input1 {
 }
 
 .contenido-desplegable {
+    background: #FDD214;
+    border: solid;
+    border-color: #E6A607;
+    border-radius: 45px;
     display: none;
     position: absolute;
     padding: 15px;
-    background: #444343;
+    
 }
 
 .desplegable:hover .contenido-desplegable {
@@ -510,7 +513,7 @@ body {
     font-weight: 400;
     line-height: 1.5;
     color: #777;
-    background-color: #fff;
+    background: linear-gradient(180deg, rgba(253, 93, 20, 1) 0%, rgba(253, 93, 20, 1) 35%, #e9ecef 100%);
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -2660,7 +2663,8 @@ progress {
 }
 
 .form-label {
-    margin-bottom: .5rem
+    margin-bottom: .5rem;
+    color: darkslategrey;
 }
 
 .col-form-label {
@@ -5291,10 +5295,9 @@ fieldset:disabled .btn {
     flex-direction: column;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #fff;
+    background-color: transparent;
     background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: false
+    border-radius: false;
 }
 
 .card>hr {
@@ -8790,7 +8793,8 @@ fieldset:disabled .btn {
 }
 
 .text-dark {
-    color: #040F28 !important
+    color: #040F28 !important;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .text-white {
