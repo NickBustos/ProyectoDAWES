@@ -1,4 +1,4 @@
-<footer class="text-center text-white" style="background-color: #f1f1f1;">
+<footer class="text-center text-white">
 
   <div class="text-center text-dark p-3">
     © 2020 Copyright:
