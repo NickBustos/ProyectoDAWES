@@ -4903,7 +4903,7 @@ fieldset:disabled .btn {
     align-items: center;
     justify-content: space-between;
     padding-top: .5rem;
-    padding-bottom: 13.5rem
+    z-index: 9;
 }
 
 .navbar>.container,
