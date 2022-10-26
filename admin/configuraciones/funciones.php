@@ -83,13 +83,12 @@ function getImage($file)
 
 function getIdioma($nombrePagina)
 {
-    $pathIdioma = "";
-    if (!isset($_COOKIE["lang"])) {
-        setcookie("lang", "es", time() + 60 );
-        $pathIdioma = "admin/idiomas/es-" . $nombrePagina;
-    } else {
-        $pathIdioma = "admin/idiomas/" . $_COOKIE["lang"] . "-" . $nombrePagina;
+    $idioma = "es";
+    if(isset($_COOKIE["lang"]) && ($_COOKIE["lang"]==="es" || $_COOKIE["lang"]==="en")){
+        $idioma = $_COOKIE["lang"];
     }
+    $pathIdioma = "admin/idiomas/" . $idioma . "-" . $nombrePagina;
+    setcookie("lang", $idioma, time() + 60);
     return $pathIdioma;
 }
 

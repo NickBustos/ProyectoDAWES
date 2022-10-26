@@ -1,13 +1,10 @@
 <?php
-if (isset($_COOKIE["lang"])) {
-    if($_COOKIE["lang"] === "es"){
-        setCookie("lang","en",time()+60);
-    }else{
-        setCookie("lang","es",time()+60);
-    }
-    }else{
-        setCookie("lang","es",time()+60);
+$idioma = "es";
+if (isset($_COOKIE["lang"]) && $_COOKIE["lang"] === "es") {
+    $idioma = "en";
 }
-header('Location: ' . $_SERVER["HTTP_REFERER"]);
+setcookie("lang", $idioma, time()+60);
+
+header('Location: ' . htmlspecialchars($_SERVER["HTTP_REFERER"]));
 exit();
 ?>
