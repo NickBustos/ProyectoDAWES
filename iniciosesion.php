@@ -65,7 +65,7 @@ if (!empty($_POST)) {
                                      * En ese caso te muestra la página de sesión iniciada.
                                      */
                                     if (isset($_SESSION[SESSION_USER])) {
-                                        include "admin/templates/sesioniniciada.php";
+                                        include "admin/templates/sesionIniciada.php";
                                     }
                                     ?>
 
