@@ -21,6 +21,7 @@
     </ul>" . 
     ERROR_OUT,
     "error_pass_match" =>  ERROR_IN . "Passwords don't match" . ERROR_OUT,
+    "error_user_used" =>  ERROR_IN . "The username is already in use" . ERROR_OUT,
     "error_user_pattern" =>  ERROR_IN . "Please, enter a correct user" . ERROR_OUT,
     "error_date_year"=> ERROR_IN . "Users need to be at least 18 years old" . ERROR_OUT,
     "error_mail"=> ERROR_IN . "Enter a valid mail" . ERROR_OUT,

@@ -7,6 +7,10 @@ include getIdioma("index.php");
     
     <div class="row d-flex justify-content-center">
       <?php
+      /**
+       * Comprueba que la sesión tenga un usuario (ha iniciado sesión).
+       * En ese caso te muestra la página de sesión iniciada.
+       */
       if (isset($_SESSION[SESSION_USER])) {
         include "admin/templates/sesioniniciada.php";
       }
