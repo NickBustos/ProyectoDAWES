@@ -1,3 +1,2 @@
 RewriteEngine ON
 RewriteRule ^admin - [R=401,NC,L]
-#RewriteRule \.(css)$ - [F]
