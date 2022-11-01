@@ -1,13 +1,8 @@
 <?php
-//-------------------------------------- PATHS ---------------------------------------
-
-define("PATH_TO_IMAGENES", 'multimedia/imagenes/');//ACTUALIZAR
-define("PATH_TO_BD", "multimedia/bbdd.txt");//ACTUALIZAR
-
 //-------------------------------------- VALUES --------------------------------------
 
 //Fecha:
-define("DATE_TODAY", date("Y-m-d"));
+define("DATE_TODAY", date("Y-m-d"));//última disponible para formulario
 define("DATE_FIRST", date("1900-01-01"));//primera disponible para formulario
 
 //Contraseña:
@@ -28,18 +23,16 @@ define("SESSION_PASS", "pass");
 define("SESSION_MAIL", "mail");
 define("SESSION_DATE", "date");
 define("SESSION_FILE", "avatar");
-define("SESSION_THEME", "theme");
-
+define("SESSION_TEMA", "tema");
 
 //------------------------------------- PATTERNS -------------------------------------
 
 //Patrones para validar campos
 define("PATTERN_USER", "/([A-ZÁ-Ú]{1}[-a-zá-ú]+\s?)+/A");
-define("PATTERN_PASS", "^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{".MIN_PASS_LENGTH.",".MAX_PASS_LENGTH."}$^");
-define("PATTERN_PASS_MINUS", '/[a-z]/');
-define("PATTERN_PASS_MAYUS", '/[A-Z]/');
-define("PATTERN_PASS_NUMBER", '/[0-9]/');
-define("PATTERN_CHARACTER_SEPARATOR", "@[".LINE_SEPARATOR."]@");//Verifica que hay ";"
+define("PATTERN_PASS_MINUS", '/[a-z]/');//Verifica que hay una minuscula
+define("PATTERN_PASS_MAYUS", '/[A-Z]/');//Verifica que hay una mayuscula
+define("PATTERN_PASS_NUMBER", '/[0-9]/');//Verifica que hay un numero
+define("PATTERN_CHARACTER_SEPARATOR", "/[".LINE_SEPARATOR."]/");//Verifica que hay ";"
 
 //-------------------------------------- ERRORS --------------------------------------
 

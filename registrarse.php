@@ -2,17 +2,34 @@
 include "admin/templates/cabecera.php";
 include getIdioma("registrarse.php");
 
+/**
+ * Creación de variables.
+ * $user usuario valido.
+ * $_user sin validar.
+ * $errorUser error de usuario.
+ * (Hay uno de cada por campo excepto pass que son 2).
+ */
 $user = $avatar = $fechaNac = $mail = $pass = "";
 $_user = $_fechaNac = $_mail = $_pass1 = $_pass2 = "";
 $errorUser = $errorAvatar = $errorFecha = $errorMail = $errorPass = "";
 
+/**
+ * 1. Coge el campo correspondiente y valida que no está vacíos.
+ * 2. Realiza la comprobación con el/los patron/es necesarios.
+ * 3.1 En caso de que este todo correcto lo captura el valor y lo guarda en la variable correspondiente.
+ * 3.2 En caso incorrecto muestra un mensaje de error personalizado.
+ */
 if (!empty($_POST)) {
     //---------------------------- USER --------------------------------
     $_user = htmlspecialchars($_POST["user"]);
     if (!empty($_user)) {
         if (preg_match(PATTERN_USER, $_user)) {
             if (!preg_match(PATTERN_CHARACTER_SEPARATOR, $_user)) {
-                $user = $_user;
+                if (getLineaFrom($_user) === "") {
+                    $user = $_user;
+                } else {
+                    $errorUser = $lang["error_user_used"];
+                }
             } else {
                 $errorUser = $lang["error_character_separator"];
             }
@@ -73,9 +90,9 @@ if (!empty($_POST)) {
     if (
         !empty($_FILES) && !empty($_FILES["avatar"])
         && !empty($_FILES["avatar"]["tmp_name"])
-    ) {
-        if ($_FILES["avatar"]["type"] === "image/png") {
-            if ($_FILES['avatar']['size'] <= 1000000) { //1 mega
+    ) { //Se asegura de que el usuario ha introducido un archivo
+        if ($_FILES["avatar"]["type"] === "image/png") { //Comrpueba que el archivo es una imagen png
+            if ($_FILES['avatar']['size'] <= 1000000) { //Comprueba que el archivo pesa menos de un 1 mega
                 $avatar = getImage($_FILES["avatar"]);
             } else {
                 $errorAvatar = $lang["error_file_size"];
@@ -87,6 +104,11 @@ if (!empty($_POST)) {
         $errorAvatar = $lang["error_vacio"];
     }
     //---------------------------- RGST --------------------------------
+    /**
+     * Si todos los datos anteriores son correctos (las variables correspondientes tienen valor)
+     * Guarda los datos en un array (orden importante) y este array se lo transmite a la función registrar usuario.
+     * Guardando los datos en el fichero e inicia sesión.
+     */
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
         $userData = [$user, md5($pass), $mail, $fechaNac, $avatar];
         registerUser($userData);
@@ -109,8 +131,12 @@ if (!empty($_POST)) {
                                     <div class="card-body p-md-5">
                                         <div class="row justify-content-center">
                                             <?php
+                                            /**
+                                             * Comprueba que la sesión tenga un usuario (ha iniciado sesión).
+                                             * En ese caso te muestra la página de sesión iniciada.
+                                             */
                                             if (isset($_SESSION[SESSION_USER])) {
-                                                include "admin/templates/sesioniniciada.php";
+                                                include "admin/templates/sesionIniciada.php";
                                             }
                                             ?>
                                             <div>
@@ -182,7 +208,8 @@ if (!empty($_POST)) {
                                             </div>
                                             <label for="formFile" class="form-label"><?php echo $lang["avatar"]; ?></label>
                                             <br>
-
+                                            
+                                            <!-- Esto no lo borramos porque tenemos pensado usarlo en el futuro -->
                                             <!-- <div class="form-check d-flex justify-content-center mb-5">
                                                 <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
                                                 <label class="form-check-label" for="form2Example3">

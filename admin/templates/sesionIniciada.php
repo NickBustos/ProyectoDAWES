@@ -2,6 +2,7 @@
 include getIdioma("sesioniniciada.php");
 ?>
 <p class='text-center h4 fw-bold mb-5 mx-1 mx-md-4 mt-4'>
+    <!-- Muestra un mensaje personalizado para los usuarios con nombre y su avatar -->
     <?php echo $lang["hola1"]; ?><?php echo $_SESSION[SESSION_USER] ?>
     <?php echo $lang["hola2"]; ?>
 </p>
@@ -20,5 +21,6 @@ include getIdioma("sesioniniciada.php");
     src=<?php echo $_SESSION[SESSION_FILE] ?>>
 </div>
 <?php
+    include "admin/templates/pie.php";
     exit();
 ?>
