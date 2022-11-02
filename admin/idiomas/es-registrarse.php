@@ -21,6 +21,7 @@
     </ul>" . 
     ERROR_OUT,
     "error_pass_match" =>  ERROR_IN . "Las contraseñas no coinciden" . ERROR_OUT,
+    "error_user_used" =>  ERROR_IN . "Ya hay un usuario con este nombre" . ERROR_OUT,
     "error_user_pattern" =>  ERROR_IN . "Por favor, ingrese un nombre válido" . ERROR_OUT,
     "error_date_year"=> ERROR_IN . "Solo se pueden registrar mayores de edad" . ERROR_OUT,
     "error_mail"=> ERROR_IN . "Introduce un mail válido" . ERROR_OUT,

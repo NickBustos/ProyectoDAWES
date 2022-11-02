@@ -2,32 +2,49 @@
 include "admin/templates/cabecera.php";
 include getIdioma("iniciosesion.php");
 
+/**
+ * Creación de variables.
+ * $user usuario valido.
+ * $_user sin validar.
+ * $errorUser error de usuario.
+ * (Hay una de cada por campo)
+ * $linea linea del fichero del usuario (en caso de que exista).
+ */
 $user = $password = $linea = "";
 $errorUser = $errorPassword = "";
 
+/**
+ * 1. Nos aseguramos haya post.
+ * 2. Llenamos las variables $_ con su campo.
+ * 3. Comprobamos que no están vacíos.
+ * 4. Vemos si el usuario existe con getLineaFrom, que devuelve la línea del fichero de ese usuario o cadena vacía sino existe.
+ * 5. Pasamos la contraseña a md5 y la comparamos con el valor de la línea correspondiente del fichero (registrados.txt).
+ * 6.1 En caso de que todos los datos sean correctos inicia sesión, lo que guarda sus datos en $_SESSION.
+ * 6.2 En caso incorrecto muestra un mensaje de error personalizado.
+ */
 if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
     $_password = htmlspecialchars($_POST["password"]);
     $linea;
 
-    if(!empty($_user)){
+    if (!empty($_user)) {
         $linea = getLineaFrom($_user);
-        if($linea !== ""){
+        if ($linea !== "") {
             $user = $_user;
-            if(!empty($_password)){
+            if (!empty($_password)) {
                 $_password = md5($_password);
-                if($_password === getDato(LINE_PASS, $linea)){
+                if ($_password === getDato(LINE_PASS, $linea)) {
                     iniciarSesion($linea);
-                }else{
+                } else {
                     $errorPassword = $lang["error_login_pass"];
                 }
-            }else{
+            } else {
                 $errorPassword = $lang["error_vacio"];
             }
-        }else{
+        } else {
             $errorUser = $lang["error_login_user"];
         }
-    }else{
+    } else {
         $errorUser = $lang["error_vacio"];
     }
 }
@@ -43,8 +60,12 @@ if (!empty($_POST)) {
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
                                     <?php
+                                    /**
+                                     * Comprueba que la sesión tenga un usuario (ha iniciado sesión).
+                                     * En ese caso te muestra la página de sesión iniciada.
+                                     */
                                     if (isset($_SESSION[SESSION_USER])) {
-                                        include "admin/templates/sesioniniciada.php";
+                                        include "admin/templates/sesionIniciada.php";
                                     }
                                     ?>
 
@@ -65,6 +86,7 @@ if (!empty($_POST)) {
                                                 <label class="form-label" for="form2Example2"><?php echo $lang["password"]; ?></label>
                                             </div>
 
+                                            <!-- Esto no lo borramos porque tenemos pensado usarlo en el futuro -->
                                             <!-- <div class="row mb-4">
                                                 <div class="col d-flex justify-content-center">
                                                     <div class="form-check">
@@ -73,7 +95,7 @@ if (!empty($_POST)) {
                                                     </div>
                                                 </div> -->
 
-
+                                            <!-- Esto no lo borramos porque tenemos pensado usarlo en el futuro -->
                                             <!-- <div class="col">
                                                     <a href="#!">Olvidé la contraseña</a>
                                                 </div> -->
@@ -88,7 +110,7 @@ if (!empty($_POST)) {
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <p class="form-text text-muted">
-                                        <?php echo $lang["noregistrado"]; ?>
+                                            <?php echo $lang["noregistrado"]; ?>
                                         </p>
                                     </div>
                                     </form>

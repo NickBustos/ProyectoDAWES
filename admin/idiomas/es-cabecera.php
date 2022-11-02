@@ -5,8 +5,9 @@ $lang = array(
     "inicio" => "Inicio",
     "about" => "Acerca de",
     "contacto" => "Contacto",
-    "modo" => "Cambiar modo",
-    "idioma" => "Cambiar idioma",
+    "modoC" => "Modo claro",
+    "modoN" => "Modo noche",
+    "idioma" => "Cambiar a inglés",
     "cerrar" => "Cerrar sesión"
     
 )

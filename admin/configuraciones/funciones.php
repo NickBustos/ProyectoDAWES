@@ -2,7 +2,6 @@
 include 'config.php';
 
 //--------------------------------- OPERACIONES BBDD --------------------------------
-
 /**
  * Coger valor de una línea de registrados.txt
  * usar constantes LYNE_TYPE
@@ -48,8 +47,7 @@ function registerUser($userData)
     fclose($fp);
 }
 
-//-------------------------------------- OTROS --------------------------------------
-
+//---------------------------------- VALIDACIONES -----------------------------------
 /**
  * Verifica si han pasado 18 años desde fecha
  */
@@ -68,6 +66,7 @@ function validarMayorEdad($fechanacimiento)
     }
 }
 
+//------------------------------------- FILES ---------------------------------------
 /**
  * Recoge imagen de un file
  * @param $_FILES["nombreFile"]
@@ -81,6 +80,7 @@ function getImage($file)
     }
 }
 
+//----------------------------- OPERACIONES CON COOKIES -----------------------------
 function getIdioma($nombrePagina)
 {
     $pathIdioma = "";
@@ -93,8 +93,7 @@ function getIdioma($nombrePagina)
     return $pathIdioma;
 }
 
-
-
+//----------------------------- OPERACIONES CON SESION -----------------------------
 /**
  * Introduce datos del usuario en sesion
  */
