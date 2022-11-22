@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="./css/archivo.css" />
     <?php
     include "admin/configuraciones/funciones.php";
+    include "admin/configuraciones/funcionesDB.php";
     include getIdioma("cabecera.php");
 
     /**
