@@ -10,7 +10,7 @@
     <?php
     include "admin/configuraciones/funciones.php";
     include "admin/configuraciones/funcionesDB.php";
-    include getIdioma("cabecera.php");
+    include getIdioma();
 
     /**
      * Inicia sesión.
@@ -66,9 +66,9 @@
                  * Muestra el mensaje correspondiente para cambiar el tema y el idioma.
                  */
                     if(isset($_SESSION) && isset($_SESSION["modovis"]) && $_SESSION["modovis"]==="dark"){
-                        echo "<a href='procesos/cambiarTema.php'>" . $lang["modovis"] . "</a>";
+                        echo "<a href='procesos/cambiarTema.php'>" . $lang["modoC"] . "</a>";
                     }else{
-                        echo "<a href='procesos/cambiarTema.php'>" . $lang["modovis"] . "</a>";
+                        echo "<a href='procesos/cambiarTema.php'>" . $lang["modoN"] . "</a>";
                     }
                 ?>
                 <a href="procesos/cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
