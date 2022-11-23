@@ -19,10 +19,10 @@
      * 
      */
     session_start();
-    if (!isset($_SESSION['tema'])) {
-        $_SESSION[SESSION_TEMA] = 'claro';
+    if (!isset($_SESSION["modovis"])) {
+        $_SESSION["modovis"] = 'light';
     }
-    if ($_SESSION[SESSION_TEMA] == 'noche') {
+    if ($_SESSION["modovis"] == 'dark') {
         echo '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
     }
     ?>
@@ -65,20 +65,20 @@
                 /**
                  * Muestra el mensaje correspondiente para cambiar el tema y el idioma.
                  */
-                    if(isset($_SESSION) && isset($_SESSION[SESSION_TEMA]) && $_SESSION[SESSION_TEMA]==="noche"){
-                        echo "<a href='cambiarTema.php'>" . $lang["modoC"] . "</a>";
+                    if(isset($_SESSION) && isset($_SESSION["modovis"]) && $_SESSION["modovis"]==="dark"){
+                        echo "<a href='procesos/cambiarTema.php'>" . $lang["modovis"] . "</a>";
                     }else{
-                        echo "<a href='cambiarTema.php'>" . $lang["modoN"] . "</a>";
+                        echo "<a href='procesos/cambiarTema.php'>" . $lang["modovis"] . "</a>";
                     }
                 ?>
-                <a href="cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
+                <a href="procesos/cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
                 
                 <?php
                 /**
                  * Si el usuario ha iniciado sesión muestra la opción de cerrar sesión.
                  */
                 if (isset($_SESSION) && isset($_SESSION[SESSION_USER])) {
-                    echo "<a href='cerrarsesion.php'> " . $lang['cerrar'] . "</a>";
+                    echo "<a href='procesos/cerrarsesion.php'> " . $lang['cerrar'] . "</a>";
                 }
                 ?>
 
