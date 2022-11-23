@@ -1,6 +1,5 @@
 <?php
 include "admin/templates/cabecera.php";
-include getIdioma("iniciosesion.php");
 
 /**
  * Creación de variables.

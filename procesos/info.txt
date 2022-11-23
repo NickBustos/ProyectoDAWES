@@ -1,0 +1,5 @@
+Todos los procesos que realizamos:
+- Mover funciones en ellos
+- Crear constantes para sus valores
+- Arreglar paths a estos procesos
+- Borrar los procesos.php viejos

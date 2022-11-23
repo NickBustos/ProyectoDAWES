@@ -1,6 +1,5 @@
 <?php
 include "admin/templates/cabecera.php";
-include getIdioma("index.php");
 ?>
 <section class="fondo">
   <div class="container-fluid main">
