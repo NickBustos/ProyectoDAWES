@@ -17,7 +17,8 @@ $errorUser = $errorPassword = "";
  * 2. Llenamos las variables $_ con su campo.
  * 3. Comprobamos que no están vacíos.
  * 4. Vemos si el usuario existe con getLineaFrom, que devuelve la línea del fichero de ese usuario o cadena vacía sino existe.
- * 5. Pasamos la contraseña a md5 y la comparamos con el valor de la línea correspondiente del fichero (registrados.txt).
+ * 5. Pasamos la contraseña a md5 y la comparamos con el valor cogido de la base de datos.
+ * 6. Insertamos el credencial de logeo en la base de datos, guardando id y usuario en sesion y redirecciona a index.
  * 6.1 En caso de que todos los datos sean correctos inicia sesión, lo que guarda sus datos en $_SESSION.
  * 6.2 En caso incorrecto muestra un mensaje de error personalizado.
  */
@@ -25,18 +26,21 @@ if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
     $_password = htmlspecialchars($_POST["password"]);
     $linea;
-
     if (!empty($_user)) {
         $passReal = existe($_user);
         if ($linea !== false) {
             $user = $_user;
-            
             if (!empty($_password)) {
                 $_password = md5($_password);
                 if ($_password === $passReal) {
-                    // iniciarSesion($linea);
-                    // GUARDAR ID EN SESSION
-                    // GUARDAR CREDENCIAL_USUARIO loguearse
+                    $conexion = new PDO(DSN, USER, PASSWORD);
+                    $sql = "SELECT DISTINCT id FROM usuario_credencial WHERE nombreusuario='{$user}'";
+                    $resultado = $conexion->query($sql);
+                    $id = $resultado->fetch(PDO::FETCH_NUM)[0];
+                    insertar("usuario_credencial", ['', $id, $user, "loguear", getMomentoActual()]);
+                    $_SESSION[SESSION_ID] = $id;
+                    $_SESSION[SESSION_USER] = $user;
+                    header("Location: index.php");
                 } else {
                     $errorPassword = $lang["error_login_pass"];
                 }
@@ -61,16 +65,6 @@ if (!empty($_POST)) {
                         <div class="card text-black" style="border-radius: 25px;">
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
-                                    <?php
-                                    /**
-                                     * Comprueba que la sesión tenga un usuario (ha iniciado sesión).
-                                     * En ese caso te muestra la página de sesión iniciada.
-                                     */
-                                    if (isset($_SESSION[SESSION_USER])) {
-                                        include "admin/templates/sesionIniciada.php";
-                                    }
-                                    ?>
-
                                     <div>
                                         <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo $lang["iniciosesion"]; ?></p>
                                         <form method="post">
