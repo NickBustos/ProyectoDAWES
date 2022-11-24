@@ -40,7 +40,7 @@ function getIdioma()
         $resultado->bindColumn(1, $idioma);
         $resultado->fetch();
     }else if(!isset($_COOKIE["lang"])){
-        setcookie("lang", "es", time() + 60 * 60);
+        setcookie("lang", "es", time() + 60, '/');
     }else if($_COOKIE["lang"]=="en"){
         $idioma = "en";
     }
