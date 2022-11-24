@@ -24,7 +24,7 @@ if (!empty($_POST)) {
     if (!empty($_user)) {
         if (preg_match(PATTERN_USER, $_user)) {
             if (!preg_match(PATTERN_CHARACTER_SEPARATOR, $_user)) {
-                if (getLineaFrom($_user) === "") {
+                if (existe($_user) === false) {
                     $user = $_user;
                 } else {
                     $errorUser = $lang["error_user_used"];
@@ -109,9 +109,10 @@ if (!empty($_POST)) {
      * Guardando los datos en el fichero e inicia sesión.
      */
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
-        $userData = [$user, md5($pass), $mail, $fechaNac, $avatar];
-        registerUser($userData);
-        iniciarSesion(join(LINE_SEPARATOR, $userData));
+        // $userData = [$user, md5($pass), $mail, $fechaNac, $avatar];
+        // registerUser($userData);
+        // iniciarSesion(join(LINE_SEPARATOR, $userData));
+        subirUsuario([$user, $pass, $fechaNac, $avatar, $mail]);
     }
 }
 ?>

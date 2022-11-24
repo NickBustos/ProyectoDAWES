@@ -5,7 +5,6 @@ function insertar($tabla, $datos){
     $campos = "";
     for($i = 0; $i < count($datos); $i++){
         $sql .= ":{$i}";
-        $campos .= "s";
         if($i < count($datos) - 1){
             $sql .= ", ";
         }else{
@@ -48,39 +47,34 @@ function getIdioma()
     return $pathIdioma;
 }
 
+// [NAME, PASSWORD, FECHA, FOTO([tmp_name]), EMAIL]
 function subirUsuario($datos){
     // Crear conexión
     $conexion = new PDO(DSN, USER, PASSWORD);
     // Sentencia sql para crear credencial
-    $sql = "INSERT INTO credencial VALUES ('{$datos[0]}', '{$datos[1]}')";
+    $sql = "INSERT INTO credencial VALUES ('{$datos[0]}', '".md5($datos[1])."')";
     $conexion->exec($sql);
     // Coger modovis e idioma
     $modovis = "light";
-    if(isset($_SESSION) && isset($_SESSION["tema"]) && $_SESSION["tema"]=="dark"){
+    if(isset($_SESSION["modovis"]) && $_SESSION["modovis"]=="dark"){
         $modovis = "dark";
     }
     $idioma = "es";
-    if(isset($_COOKIE) && isset($_COOKIE["lang"]) && $_COOKIE["lang"]=="en"){
+    if(isset($_COOKIE["lang"]) && $_COOKIE["lang"]=="en"){
         $idioma = "en";
     }
 
-    $rutaFoto = "imagenes/{$datos[0]}.png}";
-
     // Sentencia sql para crear usuario
     // Campos: id, fecha, foto, email, modovis, idioma, rol
-    $sql = "INSERT INTO usuario VALUES ('', '{$datos[2]}', '{$rutaFoto}', '{$datos[4]}', '{$modovis}', '{$idioma}', 'usuario')";
+    $sql = "INSERT INTO usuario VALUES ('', '{$datos[2]}', '{$datos[3]}', '{$datos[4]}', '{$modovis}', '{$idioma}', 'usuario')";
     $conexion->exec($sql);
 
     // Coger id del anterior campo insertado
-    // $id = $conexion->lastInsertId(); // daría error si hiciera 2 a la vez???
-
-    $sql = "SELECT id FROM usuario WHERE foto = '{$datos[3]}'";
-    $resultado = $conexion->query($sql);
-    $linea = $resultado->fetch(PDO::FETCH_NUM);
-    $id = $linea[0];
-
-    //guardar foto
-    move_uploaded_file($datos[3]["tmp_name"], $rutaFoto);
+    $id = $conexion->lastInsertId(); // daría error si hiciera 2 a la vez???
+    // $sql = "SELECT id FROM usuario WHERE foto = '{$datos[3]}'";
+    // $resultado = $conexion->query($sql);
+    // $linea = $resultado->fetch(PDO::FETCH_NUM);
+    // $id = $linea[0];
 
     // Coger momento actual
     $momento = new DateTimeImmutable();
@@ -92,6 +86,9 @@ function subirUsuario($datos){
     $sql = "INSERT INTO usuario_credencial VALUES ('', '{$id}', '{$datos[0]}', 'loguear', '{$momento}')";
     $conexion->exec($sql);
 
-    //GUARDAR ID EN SESIÓN
+    // GUARDAR ID EN SESIÓN
+    // $_SESSION["id"]=$id;
+    
 }
-?>
+
+// subirUsuario(["Mario", "aaa", "1998-07-01", "wa.png", "mariomh@alumnos.iesgalileo.com"]);

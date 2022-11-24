@@ -1,0 +1,4 @@
+Crear nuevo php funciones con las que vayamos a utilizar de funciones y funcionesDB
+Incorar constantes de procesos a configDB
+
+Pulir subirUsuarios()

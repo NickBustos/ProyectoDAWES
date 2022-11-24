@@ -27,13 +27,16 @@ if (!empty($_POST)) {
     $linea;
 
     if (!empty($_user)) {
-        $linea = getLineaFrom($_user);
-        if ($linea !== "") {
+        $passReal = existe($_user);
+        if ($linea !== false) {
             $user = $_user;
+            
             if (!empty($_password)) {
                 $_password = md5($_password);
-                if ($_password === getDato(LINE_PASS, $linea)) {
-                    iniciarSesion($linea);
+                if ($_password === $passReal) {
+                    // iniciarSesion($linea);
+                    // GUARDAR ID EN SESSION
+                    // GUARDAR CREDENCIAL_USUARIO loguearse
                 } else {
                     $errorPassword = $lang["error_login_pass"];
                 }

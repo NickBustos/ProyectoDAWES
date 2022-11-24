@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MumORDad</title>
-    <link rel="stylesheet" href="./css/archivo.css" />
     <?php
     include "admin/configuraciones/funciones.php";
     include "admin/configuraciones/funcionesDB.php";
@@ -19,12 +18,14 @@
      * 
      */
     session_start();
+    $css = "<link rel='stylesheet' href='./css/archivo.css' />";
     if (!isset($_SESSION["modovis"])) {
         $_SESSION["modovis"] = 'light';
     }
     if ($_SESSION["modovis"] == 'dark') {
-        echo '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
+        $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
     }
+    echo $css;
     ?>
 </head>
 
