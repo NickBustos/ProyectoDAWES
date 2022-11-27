@@ -87,3 +87,10 @@ $lang += array( //SESIÓNINICIADA
     "salir" => "Salir"
 
 );
+$lang += array( //SUBIRBATALLA
+
+    "subirBatalla" => "Crear batalla",
+    "nombre" => "Nombre:",
+    "imagen" => "Imagen:"
+
+);

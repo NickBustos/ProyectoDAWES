@@ -43,6 +43,18 @@
     }
 }
 
+.subirBatalla{
+    display:flex;
+}
+.bando{
+    flex:50%;
+    display:flexbox;
+}
+.submitBatalla{
+    display:block;
+    margin:5%;
+    width:90%;
+}
 
 .imagenUser{
     width: 50px;

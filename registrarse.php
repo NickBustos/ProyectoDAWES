@@ -195,7 +195,7 @@ if (!empty($_POST)) {
                                             </div>
                                             <?php echo $errorAvatar ?>
                                             <div class="d-flex flex-row align-items-center mb-1">
-                                                <input class="form-control" name="avatar" type="file" id="formFile" multiple accept="image/png">
+                                                <input class="form-control" name="avatar" type="file" id="formFile" accept="image/png">
                                             </div>
                                             <label for="formFile" class="form-label"><?php echo $lang["avatar"]; ?></label>
                                             <br>
