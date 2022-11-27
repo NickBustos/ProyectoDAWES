@@ -38,6 +38,7 @@ if (!empty($_POST)) {
         $idElem2 = insertar("elemento", ["", $nombre2, $img2, 0]);
         $idBatalla = insertar("batalla", [""]);
         insertar("batalla_elemento", [$idBatalla, $idElem1, $idElem2]);
+        insertar("usuario_batalla", ["", $_SESSION[SESSION_ID], $idBatalla, "crear", getMomentoActual()]);
     }
 }
 ?>
@@ -105,7 +106,6 @@ if (!empty($_POST)) {
                                         <form action='index.php'>
                                             <input type='submit' class="submitBatalla btn btn-secondary btn-lg" value='<?php echo $lang["volver"]; ?>'>
                                         </form>
-                                        <!-- <button class="submitBatalla btn btn-secondary btn-lg"><a href='index.php'><?php echo $lang["volver"]; ?></a></button> -->
                                     </div>
                                 </div>
                             </div>

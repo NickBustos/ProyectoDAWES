@@ -34,7 +34,7 @@ if (!empty($_POST)) {
                 $_password = md5($_password);
                 if ($_password === $passReal) {
                     $conexion = new PDO(DSN, USER, PASSWORD);
-                    $sql = "SELECT DISTINCT id FROM usuario_credencial WHERE nombreusuario='{$user}'";
+                    $sql = "SELECT DISTINCT id_usuario FROM usuario_credencial WHERE nombreusuario='{$user}'";
                     $resultado = $conexion->query($sql);
                     $id = $resultado->fetch(PDO::FETCH_NUM)[0];
                     insertar("usuario_credencial", ['', $id, $user, "loguear", getMomentoActual()]);
