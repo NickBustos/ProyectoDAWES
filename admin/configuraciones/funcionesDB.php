@@ -18,7 +18,8 @@ function insertar($tabla, $datos)
     foreach ($datos as $key => &$val) {
         $preparedSttm->bindParam(":{$key}", $val);
     }
-    return $preparedSttm->execute();
+    $preparedSttm->execute();
+    return $conexion->lastInsertId();
 }
 
 function existe($user)

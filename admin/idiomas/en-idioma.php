@@ -92,6 +92,7 @@ $lang += array( //SUBIRBATALLA
 
     "subirBatalla" => "Create battle",
     "nombre" => "Name:",
-    "imagen" => "Image:"
+    "imagen" => "Image:",
+    "volver" => "Return"
 
 );

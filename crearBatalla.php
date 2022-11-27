@@ -3,7 +3,7 @@ include_once "admin/templates/cabecera.php";
 
 $nombre1 = $nombre2 = $img1 = $img2 = "";
 $_nombre1 = $_nombre2 = "";
-$errorNombre1 = $errorNombre2 = $errorImg1 = $errorImg2 = "";
+$errorNombre1 = $errorNombre2 = $errorImg1 = $errorImg2 = "&nbsp;";
 if (!empty($_POST)) {
     $bandos = [
         ["nombre1", &$_nombre1, &$nombre1, &$errorNombre1, "img1", &$img1, &$errorImg1],
@@ -34,9 +34,10 @@ if (!empty($_POST)) {
         }
     }
     if ($nombre1 != "" && $img1 != "" && $nombre2 != "" && $img2 != "") {
-        echo "<img src='{$img1}'>{$nombre1}
-                <br/>
-                <img src='{$img2}'>{$nombre2}";
+        $idElem1 = insertar("elemento", ["", $nombre1, $img1, 0]);
+        $idElem2 = insertar("elemento", ["", $nombre2, $img2, 0]);
+        $idBatalla = insertar("batalla", [""]);
+        insertar("batalla_elemento", [$idBatalla, $idElem1, $idElem2]);
     }
 }
 ?>
@@ -55,6 +56,18 @@ if (!empty($_POST)) {
                                         <div class="bando">
                                             <div>
                                                 <img style="width:100%; height:200px" src="imagenes/dad.png">
+                                                <select class="form-control" name="elemento1">
+                                                    <?php
+                                                    $conexion = new PDO(DSN, USER, PASSWORD);
+                                                    $sql = "SELECT nombre, foto FROM elemento";
+                                                    $resultado = $conexion->query($sql);
+                                                    $opciones = "<option></option>";
+                                                    while ($registro = $resultado->fetch(PDO::FETCH_NUM)) {
+                                                        $opciones .= "<option>{$registro[1]}</option>";
+                                                    }
+                                                    echo $opciones;
+                                                    ?>
+                                                </select>
                                             </div>
                                             <div>
                                                 <label class="form-label" for="nombre1"><?php echo $lang["nombre"]; ?></label>
@@ -68,7 +81,12 @@ if (!empty($_POST)) {
                                         </div>
                                         <div class="bando">
                                             <div class="imagen">
-                                                <img  style="width:100%; height:200px" src="imagenes/mum.png">
+                                                <img style="width:100%; height:200px" src="imagenes/mum.png">
+                                                <select class="form-control" name="elemento1">
+                                                    <?php
+                                                    echo $opciones;
+                                                    ?>
+                                                </select>
                                             </div>
                                             <div>
                                                 <label class="form-label" for="nombre2"><?php echo $lang["nombre"]; ?></label>
@@ -84,6 +102,10 @@ if (!empty($_POST)) {
                                     </form>
                                     <div>
                                         <input form="subirBatalla" class="submitBatalla btn btn-primary btn-lg" type="submit" value="<?php echo $lang["subirBatalla"]; ?>">
+                                        <form action='index.php'>
+                                            <input type='submit' class="submitBatalla btn btn-secondary btn-lg" value='<?php echo $lang["volver"]; ?>'>
+                                        </form>
+                                        <!-- <button class="submitBatalla btn btn-secondary btn-lg"><a href='index.php'><?php echo $lang["volver"]; ?></a></button> -->
                                     </div>
                                 </div>
                             </div>
