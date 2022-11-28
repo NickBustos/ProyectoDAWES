@@ -39,6 +39,8 @@ if (!empty($_POST)) {
         $idBatalla = insertar("batalla", [""]);
         insertar("batalla_elemento", [$idBatalla, $idElem1, $idElem2]);
         insertar("usuario_batalla", ["", $_SESSION[SESSION_ID], $idBatalla, "crear", getMomentoActual()]);
+        echo "<h1>BATALLA SUBIDA</h1>";
+        exit();
     }
 }
 ?>
@@ -57,18 +59,18 @@ if (!empty($_POST)) {
                                         <div class="bando">
                                             <div>
                                                 <img style="width:100%; height:200px" src="imagenes/dad.png">
-                                                <select class="form-control" name="elemento1">
+                                                <!-- <select class="form-control" name="elemento1"> -->
                                                     <?php
-                                                    $conexion = new PDO(DSN, USER, PASSWORD);
-                                                    $sql = "SELECT nombre, foto FROM elemento";
-                                                    $resultado = $conexion->query($sql);
-                                                    $opciones = "<option></option>";
-                                                    while ($registro = $resultado->fetch(PDO::FETCH_NUM)) {
-                                                        $opciones .= "<option>{$registro[1]}</option>";
-                                                    }
-                                                    echo $opciones;
+                                                    // $conexion = new PDO(DSN, USER, PASSWORD);
+                                                    // $sql = "SELECT nombre, foto FROM elemento";
+                                                    // $resultado = $conexion->query($sql);
+                                                    // $opciones = "<option></option>";
+                                                    // while ($registro = $resultado->fetch(PDO::FETCH_NUM)) {
+                                                    //     $opciones .= "<option>{$registro[1]}</option>";
+                                                    // }
+                                                    // echo $opciones;
                                                     ?>
-                                                </select>
+                                                <!-- </select> -->
                                             </div>
                                             <div>
                                                 <label class="form-label" for="nombre1"><?php echo $lang["nombre"]; ?></label>
@@ -83,11 +85,11 @@ if (!empty($_POST)) {
                                         <div class="bando">
                                             <div class="imagen">
                                                 <img style="width:100%; height:200px" src="imagenes/mum.png">
-                                                <select class="form-control" name="elemento1">
+                                                <!-- <select class="form-control" name="elemento1"> -->
                                                     <?php
-                                                    echo $opciones;
+                                                    // echo $opciones;
                                                     ?>
-                                                </select>
+                                                <!-- </select> -->
                                             </div>
                                             <div>
                                                 <label class="form-label" for="nombre2"><?php echo $lang["nombre"]; ?></label>

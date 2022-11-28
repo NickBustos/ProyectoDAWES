@@ -115,9 +115,32 @@ function selectFromUsuario($campos)
         $sql.=" ";
     }
     $sql.=" FROM usuario WHERE id='" . $_SESSION[SESSION_ID] . "'";
-    echo $sql;
     $resultado = $conexion->query($sql);
     $registro = $resultado->fetch(PDO::FETCH_NUM);
     return $registro;
 
+}
+
+//$where [tabla, igualacion]
+function select($campos, $tabla, $where){
+    include_once "configDB.php";
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $sql = "SELECT ";
+    for($i = 0; $i < count($campos); $i++){
+        $sql.="{$campos[$i]}";
+        if($i < count($campos) -1){
+            $sql.=",";
+        }
+        $sql.=" ";
+    }
+    $sql.=" FROM {$tabla} ";
+    if(isset($where)){
+        $sql.="WHERE {$where[0]}='{$where[1]}'";
+    }
+    echo $sql;
+    echo "<br/>";
+    $resultado = $conexion->query($sql);
+    $registros = $resultado->fetchAll(PDO::FETCH_NUM);
+    return $registros;
+    
 }
