@@ -21,8 +21,6 @@ include_once "admin/templates/cabecera.php";
                                         $sql = "SELECT nombre, foto FROM elemento WHERE id='$batalla[0]' OR id='$batalla[1]'";
                                         $bandos = $conexion->query($sql);
                                         while ($bando = $bandos->fetch(PDO::FETCH_NUM)) {
-                                            echo $bando[1];
-                                            echo "<br/>";
                                             $mostrar.=
                                             "<div class='bando'>
                                                 <div style='display:flex; justify-content:center;'>

@@ -1,2 +1,2 @@
-RewriteEngine ON
-RewriteRule ^admin - [R=401,NC,L]
+#RewriteEngine ON
+#RewriteRule ^admin - [R=401,NC,L]
