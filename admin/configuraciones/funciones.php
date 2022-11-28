@@ -108,7 +108,7 @@ function iniciarSesion($linea)
 }
 
 //----------------------------- Función para registrar los datos en la BD sin el modo Visualización y sin Idioma-----------------------------
-$conexion_db = new PDO($DSN,user,PASSWORD);
+$conexion_db = new PDO($DSN,USER,PASSWORD);
 
 function insertarCliente($fechaNac, $image, $email, $rol){
 
@@ -117,4 +117,5 @@ function insertarCliente($fechaNac, $image, $email, $rol){
         $pdostmt = $conexion_db->prepare(($sql));
         $pdostmt->execute();
 
+}
 }
