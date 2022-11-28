@@ -121,3 +121,17 @@ function selectFromUsuario($campos)
     return $registro;
 
 }
+
+
+function getPassword(){
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $sql = "SELECT password";
+ 
+    $sql.=" FROM credencial WHERE id='" . $_SESSION[SESSION_ID] . "'";
+    echo $sql;
+    $resultado = $conexion->query($sql);
+    $registro = $resultado->fetch(PDO::FETCH_NUM);
+    return $registro;
+}
+
+
