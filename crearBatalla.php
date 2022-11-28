@@ -58,7 +58,7 @@ if (!empty($_POST)) {
                                     <form method="post" class="subirBatalla" id="subirBatalla" enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
                                         <div class="bando">
                                             <div>
-                                                <img style="width:100%; height:200px" src="imagenes/dad.png">
+                                                <img style="width:100%; height:200px; border-radius: 50%;" src="imagenes/javier.png">
                                                 <!-- <select class="form-control" name="elemento1"> -->
                                                     <?php
                                                     // $conexion = new PDO(DSN, USER, PASSWORD);
@@ -84,7 +84,7 @@ if (!empty($_POST)) {
                                         </div>
                                         <div class="bando">
                                             <div class="imagen">
-                                                <img style="width:100%; height:200px" src="imagenes/mum.png">
+                                                <img style="width:100%; height:200px; border-radius: 50%;" src="imagenes/martin.png">
                                                 <!-- <select class="form-control" name="elemento1"> -->
                                                     <?php
                                                     // echo $opciones;
