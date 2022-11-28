@@ -103,11 +103,21 @@ function subirUsuario($datos)
 
 }
 
-function selectFromUsuario($campo)
+function selectFromUsuario($campos)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
-    $sql = "SELECT {$campo} FROM usuario WHERE id='" . $_SESSION[SESSION_ID] . "'";
-    return $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
-}
+    $sql = "SELECT ";
+    for($i = 0; $i < count($campos); $i++){
+        $sql.="{$campos[$i]}";
+        if($i < count($campos) -1){
+            $sql.=",";
+        }
+        $sql.=" ";
+    }
+    $sql.=" FROM usuario WHERE id='" . $_SESSION[SESSION_ID] . "'";
+    echo $sql;
+    $resultado = $conexion->query($sql);
+    $registro = $resultado->fetch(PDO::FETCH_NUM);
+    return $registro;
 
-// subirUsuario(["Mario", "aaa", "1998-07-01", "wa.png", "mariomh@alumnos.iesgalileo.com"]);
+}
