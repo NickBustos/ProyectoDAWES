@@ -29,11 +29,11 @@ if (isset($_SESSION["idBBDD"])) {
     $resultado = $conexion->exec($sql);
 } else{
     //No inicio sesion
-    if (isset($_COOKIE[LANG])) {
-        $idioma = $_COOKIE[LANG];
+    if (isset($_COOKIE["lang"])) {
+        $idioma = $_COOKIE["lang"];
         $idioma = getIdiomaContrario($idioma);
     }
-    setCookie(LANG, $idioma, time() + 60);
+    setCookie("lang", $idioma, time() + 60, '/');
 }
 header('Location: ' . $_SERVER["HTTP_REFERER"]);
 exit();

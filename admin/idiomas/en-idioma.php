@@ -88,3 +88,11 @@ $lang += array( //SESIÓNINICIADA
     "salir" => "Get out"
 
 );
+$lang += array( //SUBIRBATALLA
+
+    "subirBatalla" => "Create battle",
+    "nombre" => "Name:",
+    "imagen" => "Image:",
+    "volver" => "Return"
+
+);

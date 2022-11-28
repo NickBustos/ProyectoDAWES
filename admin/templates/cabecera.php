@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MumORDad</title>
-    <link rel="stylesheet" href="./css/archivo.css" />
     <?php
     include "admin/configuraciones/funciones.php";
     include "admin/configuraciones/funcionesDB.php";
@@ -19,12 +18,14 @@
      * 
      */
     session_start();
+    $css = "<link rel='stylesheet' href='./css/archivo.css' />";
     if (!isset($_SESSION["modovis"])) {
         $_SESSION["modovis"] = 'light';
     }
     if ($_SESSION["modovis"] == 'dark') {
-        echo '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
+        $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
     }
+    echo $css;
     ?>
 </head>
 
@@ -54,8 +55,8 @@
                  * Por defecto muestra la imagen nouser.png
                  * Si esta iniciada la sesión coge la imagen del avatar del usuario.
                  */
-                if (isset($_SESSION) && isset($_SESSION[SESSION_USER])) {
-                    echo $_SESSION[SESSION_FILE];
+                if (isset($_SESSION[SESSION_ID])) {
+                    echo selectFromUsuario("foto");
                 } else {
                     echo "imagenes/nouser.png";
                 }
@@ -65,7 +66,7 @@
                 /**
                  * Muestra el mensaje correspondiente para cambiar el tema y el idioma.
                  */
-                    if(isset($_SESSION) && isset($_SESSION["modovis"]) && $_SESSION["modovis"]==="dark"){
+                    if(isset($_SESSION["modovis"]) && $_SESSION["modovis"]==="dark"){
                         echo "<a href='procesos/cambiarTema.php'>" . $lang["modoC"] . "</a>";
                     }else{
                         echo "<a href='procesos/cambiarTema.php'>" . $lang["modoN"] . "</a>";
@@ -77,7 +78,7 @@
                 /**
                  * Si el usuario ha iniciado sesión muestra la opción de cerrar sesión.
                  */
-                if (isset($_SESSION) && isset($_SESSION[SESSION_USER])) {
+                if (isset($_SESSION[SESSION_ID])) {
                     echo "<a href='procesos/cerrarsesion.php'> " . $lang['cerrar'] . "</a>";
                 }
                 ?>

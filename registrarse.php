@@ -24,7 +24,7 @@ if (!empty($_POST)) {
     if (!empty($_user)) {
         if (preg_match(PATTERN_USER, $_user)) {
             if (!preg_match(PATTERN_CHARACTER_SEPARATOR, $_user)) {
-                if (getLineaFrom($_user) === "") {
+                if (existe($_user) === false) {
                     $user = $_user;
                 } else {
                     $errorUser = $lang["error_user_used"];
@@ -105,13 +105,14 @@ if (!empty($_POST)) {
     //---------------------------- RGST --------------------------------
     /**
      * Si todos los datos anteriores son correctos (las variables correspondientes tienen valor)
-     * Guarda los datos en un array (orden importante) y este array se lo transmite a la función registrar usuario.
-     * Guardando los datos en el fichero e inicia sesión.
+     * Guarda los datos en un array (orden importante) y este array se lo transmite a la función subirusuario.
+     * Guardando los datos en la base de datos, guardando id y usuario en sesion y redirecciona a index.
      */
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
-        $userData = [$user, md5($pass), $mail, $fechaNac, $avatar];
-        registerUser($userData);
-        iniciarSesion(join(LINE_SEPARATOR, $userData));
+        $id = subirUsuario([$user, $pass, $fechaNac, $avatar, $mail]);
+        $_SESSION[SESSION_ID]=$id;
+        $_SESSION[SESSION_USER] = $user;
+        header("Location: index.php");
     }
 }
 ?>
@@ -129,15 +130,6 @@ if (!empty($_POST)) {
                                 <div class="card text-black" style="border-radius: 25px;">
                                     <div class="card-body p-md-5">
                                         <div class="row justify-content-center">
-                                            <?php
-                                            /**
-                                             * Comprueba que la sesión tenga un usuario (ha iniciado sesión).
-                                             * En ese caso te muestra la página de sesión iniciada.
-                                             */
-                                            if (isset($_SESSION[SESSION_USER])) {
-                                                include "admin/templates/sesionIniciada.php";
-                                            }
-                                            ?>
                                             <div>
                                                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo $lang["registrarse"]; ?></p>
 
@@ -206,7 +198,7 @@ if (!empty($_POST)) {
                                             <!-- Imagen -->
                                             <?php echo $errorAvatar ?>
                                             <div class="d-flex flex-row align-items-center mb-1">
-                                                <input class="form-control" name="avatar" type="file" id="formFile" multiple accept="image/png">
+                                                <input class="form-control" name="avatar" type="file" id="formFile" accept="image/png">
                                             </div>
                                             <label for="formFile" class="form-label"><?php echo $lang["avatar"]; ?></label>
                                             <br>
