@@ -147,6 +147,7 @@ function selectFromUsuario($campos)
 
 }
 
+
 //$where [tabla, igualacion]
 /**
  * Función para facilitar datos del campo que sea requerido
