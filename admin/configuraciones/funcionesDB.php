@@ -121,6 +121,7 @@ function selectFromUsuario($campos)
 
 }
 
+
 //$where [tabla, igualacion]
 function select($campos, $tabla, $where){
     include_once "configDB.php";
