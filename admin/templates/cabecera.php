@@ -56,7 +56,7 @@
                  * Si esta iniciada la sesión coge la imagen del avatar del usuario.
                  */
                 if (isset($_SESSION[SESSION_ID])) {
-                    echo selectFromUsuario("foto");
+                    echo selectFromUsuario(["foto"])[0];
                 } else {
                     echo "imagenes/nouser.png";
                 }
