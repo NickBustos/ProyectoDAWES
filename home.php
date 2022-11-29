@@ -1,18 +1,24 @@
 <?php
 include "admin/templates/cabecera.php";
-include getIdioma("index.php");
 ?>
 <section class="fondo">
   <div class="container-fluid main">
-    
+
     <div class="row d-flex justify-content-center">
       <?php
       /**
        * Comprueba que la sesión tenga un usuario (ha iniciado sesión).
        * En ese caso te muestra la página de sesión iniciada.
        */
-      if (isset($_SESSION[SESSION_USER])) {
-        include "admin/templates/sesionIniciada.php";
+      if (isset($_SESSION[SESSION_ID])) {
+        // include "admin/templates/sesionIniciada.php";
+        $conexion = new PDO(DSN, USER, PASSWORD);
+        $sql = "SELECT * FROM usuario WHERE id='" . $_SESSION[SESSION_ID] . "'";
+        $resultado = $conexion->query($sql);
+        $registro = $resultado->fetch(PDO::FETCH_NUM);
+        echo "<h1 style='text-align:center;'>Inicio sesión</h1><br/>";
+        echo "<img src='{$registro[2]}'><br/>";
+        exit();
       }
       ?>
       <div class="rounded-circle">

@@ -43,6 +43,28 @@
     }
 }
 
+.subirBatalla{
+    display:flex;
+    border:solid lightgrey 5px;
+    padding:5%;
+    border-radius: 25px;
+}
+.bando{
+    flex:50%;
+    display:flexbox;
+}
+.bando:nth-child(odd) {
+    border-right: solid lightgrey 5px;;
+}
+.submitBatalla{
+    display:block;
+    width:100%;
+}
+.voteBatalla{
+    display:block;
+    width:100%;
+    padding:5%;
+}
 
 .imagenUser{
     width: 50px;

@@ -1,0 +1,3 @@
+Todos los procesos que realizamos:
+- Mover funciones en ellos
+- Crear constantes para sus valores
