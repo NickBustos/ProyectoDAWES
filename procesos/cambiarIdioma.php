@@ -1,13 +1,8 @@
 <?php
 session_start();
-include_once 'configDB.php';
-include_once 'funcionesDB.php';
+include_once '../admin/configuraciones/funcionesDB.php';
+include_once '../admin/configuraciones/funciones.php';
 
-define("LANG_ENGLISH", "en");
-define("LANG_SPANISH", "es");
-define("LANG", "lang");
-
-//HACER CONSTANTES DE VALORES
 function getIdiomaContrario($idioma)
 {
     $nuevoIdioma = LANG_SPANISH;

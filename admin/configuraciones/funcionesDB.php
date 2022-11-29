@@ -1,7 +1,5 @@
 <?php
-// Constante para guardar el ID del usuario en la sesión, cuando inicia sesión, porque facilita mucho los select
-define("SESSION_ID", "id");
-//Para cualquier tabla, lo único que tenemos que insertar los datos como un array
+
 function insertar($tabla, $datos)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
@@ -49,7 +47,6 @@ function getIdioma()
     $idioma = "es";
     if (isset($_SESSION[SESSION_ID])) {
         $idioma = selectFromUsuario(["idioma"])[0];
-        echo $idioma;
     } else if (!isset($_COOKIE["lang"])) {
         setcookie("lang", "es", time() + 60, '/');
     } else if ($_COOKIE["lang"] == "en") {
@@ -80,11 +77,9 @@ function getMomentoActual()
  */
 function subirUsuario($datos)
 {
-    // Crear conexión
-    $conexion = new PDO(DSN, USER, PASSWORD);
-    // Sentencia sql para crear credencial
-    $sql = "INSERT INTO credencial VALUES ('{$datos[0]}', '" . md5($datos[1]) . "')";
-    $conexion->exec($sql);
+
+    insertar("credencial", [$datos[0], md5($datos[1])]);
+
     // Coger modovis e idioma
     $modovis = "light";
     if (isset($_SESSION["modovis"]) && $_SESSION["modovis"] == "dark") {
@@ -95,31 +90,16 @@ function subirUsuario($datos)
         $idioma = "en";
     }
 
-    // Sentencia sql para crear usuario
     // Campos: id, fecha, foto, email, modovis, idioma, rol
-    $sql = "INSERT INTO usuario VALUES ('', '{$datos[2]}', '{$datos[3]}', '{$datos[4]}', '{$modovis}', '{$idioma}', 'usuario')";
-    $conexion->exec($sql);
-
-    // Coger id del anterior campo insertado
-    $id = $conexion->lastInsertId(); // daría error si hiciera 2 a la vez???
-    // $sql = "SELECT id FROM usuario WHERE foto = '{$datos[3]}'";
-    // $resultado = $conexion->query($sql);
-    // $linea = $resultado->fetch(PDO::FETCH_NUM);
-    // $id = $linea[0];
+    $id = insertar("usuario", ['', $datos[2], $datos[3], $datos[4], $modovis, $idioma, 'usuario']);
 
     // Coger momento actual
     $momento = getMomentoActual();
-    // Sentencia sql para crear usuario_credencial
     // campos: id_usuario, nombre, accion, fechatime, 
-    $sql = "INSERT INTO usuario_credencial VALUES ('', '{$id}', '{$datos[0]}', 'registrar', '{$momento}')";
-    $conexion->exec($sql);
-    $sql = "INSERT INTO usuario_credencial VALUES ('', '{$id}', '{$datos[0]}', 'loguear', '{$momento}')";
-    $conexion->exec($sql);
+    insertar("usuario_credencial", ['', $id, $datos[0], 'registrar', $momento]);
+    insertar("usuario_credencial", ['', $id, $datos[0], 'loguear', $momento]);
 
     return $id;
-    // GUARDAR ID EN SESIÓN
-    // $_SESSION["id"]=$id;
-
 }
 
 /**

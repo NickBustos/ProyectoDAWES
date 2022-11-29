@@ -18,12 +18,9 @@ define("LINE_FILE", 4);
 define("LINE_SEPARATOR", ";");
 
 //Datos guardados en sesion de usuario
+define("SESSION_ID", "id");
 define("SESSION_USER", "user");
-define("SESSION_PASS", "pass");
-define("SESSION_MAIL", "mail");
-define("SESSION_DATE", "date");
-define("SESSION_FILE", "avatar");
-define("SESSION_TEMA", "tema");
+
 
 //------------------------------------- PATTERNS -------------------------------------
 
@@ -39,5 +36,16 @@ define("PATTERN_CHARACTER_SEPARATOR", "/[".LINE_SEPARATOR."]/");//Verifica que h
 //Etiquetas para dar formato HTML a los errores
 define("ERROR_IN", "<span style='color:red'>");
 define("ERROR_OUT", "</span>");
+
+//-------------------------------------- IDIOMA --------------------------------------
+define("LANG_ENGLISH", "en");
+define("LANG_SPANISH", "es");
+define("LANG", "lang");
+
+//------------------------------------- MODOVIS --------------------------------------
+define("TEMA", "modovis");
+define("TEMA_LIGHT", "light");
+define("TEMA_DARK", "dark");
+
 
 ?>

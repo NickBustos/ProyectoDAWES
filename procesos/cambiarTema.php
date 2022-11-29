@@ -1,13 +1,8 @@
 <?php
 session_start();
-include_once 'configDB.php';
-include_once 'funcionesDB.php';
+include_once '../admin/configuraciones/funcionesDB.php';
+include_once '../admin/configuraciones/funciones.php';
 
-define("TEMA", "modovis");
-define("TEMA_LIGHT", "light");
-define("TEMA_DARK", "dark");
-
-//HACER CONSTANTES DE VALORES
 function getTemaContrario($tema){
     $nuevoTema = TEMA_LIGHT;
     if ($tema == TEMA_LIGHT) {
