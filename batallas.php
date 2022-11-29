@@ -12,6 +12,13 @@ include_once "admin/templates/cabecera.php";
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
                                     <?php
+                                    /**
+                                     * Realizamos un select, para recoger todas las batallas
+                                     * Por cada batalla el id del elemento 1 es batalla[0] y el id del elemento 2 es batalla [1].
+                                     * Cada elemento esta formado, por el nombre y la foto.
+                                     * A continuación mostramos los elementos, haciendo un echo $mostrar.
+                                     * Por cada batalla encontrado, se realiza un while
+                                     */
                                     $conexion = new PDO(DSN, USER, PASSWORD);
                                     $sql = "SELECT id_elemento1, id_elemento2 FROM batalla_elemento ORDER BY id_batalla";
                                     $batallas = $conexion->query($sql);

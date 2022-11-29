@@ -16,15 +16,15 @@ function getTemaContrario($tema){
 }
 
 $tema="TEMA_LIGHT";
-if(isset($_SESSION["idBBDD"])){
+if(isset($_SESSION[SESSION_ID])){
     //Inició sesion
     $conexion=new PDO(DSN, USER, PASSWORD);
-    $sql = "SELECT modovis FROM usuario WHERE ID='{$_SESSION["idBBDD"]}'";
+    $sql = "SELECT modovis FROM usuario WHERE ID='{$_SESSION[SESSION_ID]}'";
     $resultado = $conexion->query($sql);
     $resultado->bindColumn(1, $tema);
     $resultado->fetch();
     $tema = getTemaContrario($tema);
-    $sql = "UPDATE usuario SET modovis='{$tema}' WHERE ID='{$_SESSION["idBBDD"]}'";
+    $sql = "UPDATE usuario SET modovis='{$tema}' WHERE ID='{$_SESSION[SESSION_ID]}'";
     $resultado = $conexion->exec($sql);
 }else {
     //No ha iniciado sesión

@@ -104,7 +104,7 @@ if (!empty($_POST)) {
     }
     //---------------------------- RGST --------------------------------
     /**
-     * Si todos los datos anteriores son correctos (las variables correspondientes tienen valor)
+     * Si todos los datos anteriores (Estos datos les recogemos a la hora de registrarse el usuario) son correctos (las variables correspondientes tienen valor)
      * Guarda los datos en un array (orden importante) y este array se lo transmite a la función subirusuario.
      * Guardando los datos en la base de datos, guardando id y usuario en sesion y redirecciona a index.
      */

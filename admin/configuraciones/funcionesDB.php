@@ -1,6 +1,7 @@
 <?php
+// Constante para guardar el ID del usuario en la sesión, cuando inicia sesión, porque facilita mucho los select
 define("SESSION_ID", "id");
-
+//Para cualquier tabla, lo único que tenemos que insertar los datos como un array
 function insertar($tabla, $datos)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
@@ -21,7 +22,12 @@ function insertar($tabla, $datos)
     $preparedSttm->execute();
     return $conexion->lastInsertId();
 }
-
+/**
+ * Function existe
+ * Le pasamos un usuario, en caso de que lo encuentre, nos devuelve la contraseña
+ * En caso de error nos devuelve false.
+ * Esta función es llamada en la funcion iniciarSesion y registrarse.
+ */
 function existe($user)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
@@ -33,11 +39,15 @@ function existe($user)
     }
     return false;
 }
-
+/**
+ * 1º Si tenemos guardado el ID, los busca en la base de datos.
+ * 2º En caso de que no haya iniciado sesion creamos la cookie.
+ * 3º Nos devuelve el path, para directamente poner include.getIdioma.
+ */
 function getIdioma()
 {
     $idioma = "es";
-    if (isset($_SESSION["idBBDD"])) {
+    if (isset($_SESSION[SESSION_ID])) {
         $conexion = new PDO(DSN, USER, PASSWORD);
         $sql = "SELECT idioma FROM usuario WHERE ID='{$_SESSION["idBBDD"]}'";
         $resultado = $conexion->query($sql);
@@ -51,7 +61,11 @@ function getIdioma()
     $pathIdioma = "admin/idiomas/" . $idioma . "-idioma.php";
     return $pathIdioma;
 }
-
+/**
+ * 1º Hemos creado esta funcion para facilitarnos la vida
+ * Cada operacion que requiera saber el dateTime llamamos a esta funcion
+ * Nos devuelve, Año-mes-dia ; Hora:minutos:segundos:milisegundos.
+ */
 function getMomentoActual()
 {
     $momento = new DateTimeImmutable();
@@ -59,6 +73,14 @@ function getMomentoActual()
 }
 
 // [NAME, PASSWORD, FECHA, FOTO(getImage()), EMAIL]
+/**
+ * Coge los datos que hemos metido en la pagina registro, 
+ * Aparte en la sesion o cookie, nos coge el modo vision y el idioma seleccionado.
+ * Una vez recogidos todos los datos, primero lo inserta en credencial, 
+ * a continuacion lo inserta en la tabla Usuario.
+ * Nos devuelve el ID.
+ * Una vez recogido, nos inserta un usuario credencial y otro de loguearse.
+ */
 function subirUsuario($datos)
 {
     // Crear conexión
@@ -103,6 +125,10 @@ function subirUsuario($datos)
 
 }
 
+/**
+ * Función para facilitar datos del usuario,
+ * como por ejemplo la foto de la cabecera.
+ */
 function selectFromUsuario($campos)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
@@ -122,6 +148,12 @@ function selectFromUsuario($campos)
 }
 
 //$where [tabla, igualacion]
+/**
+ * Función para facilitar datos del campo que sea requerido
+ * $campos --> Es una array de las columnas que queremos
+ * $tabla --> Nombre de la tabla de la que queremos extraer los datos
+ * $where --> Es un array al que le pasamos [nombre de tabla,valor al que se iguala]
+ */
 function select($campos, $tabla, $where){
     include_once "configDB.php";
     $conexion = new PDO(DSN, USER, PASSWORD);

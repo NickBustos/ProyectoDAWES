@@ -17,15 +17,15 @@ function getIdiomaContrario($idioma)
 }
 
 $idioma = LANG_SPANISH;
-if (isset($_SESSION["idBBDD"])) {
+if (isset($_SESSION[SESSION_ID])) {
     //Inició sesion
     $conexion = new PDO(DSN, USER, PASSWORD);
-    $sql = "SELECT idioma FROM usuario WHERE ID='{$_SESSION["idBBDD"]}'";
+    $sql = "SELECT idioma FROM usuario WHERE ID='{$_SESSION[SESSION_ID]}'";
     $resultado = $conexion->query($sql);
     $resultado->bindColumn(1, $idioma);
     $resultado->fetch();
     $idioma = getIdiomaContrario($idioma);
-    $sql = "UPDATE usuario SET idioma='{$idioma}' WHERE ID='{$_SESSION["idBBDD"]}'";
+    $sql = "UPDATE usuario SET idioma='{$idioma}' WHERE ID='{$_SESSION[SESSION_ID]}'";
     $resultado = $conexion->exec($sql);
 } else{
     //No inicio sesion
