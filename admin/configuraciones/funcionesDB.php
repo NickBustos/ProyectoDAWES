@@ -48,11 +48,8 @@ function getIdioma()
 {
     $idioma = "es";
     if (isset($_SESSION[SESSION_ID])) {
-        $conexion = new PDO(DSN, USER, PASSWORD);
-        $sql = "SELECT idioma FROM usuario WHERE ID='{$_SESSION["idBBDD"]}'";
-        $resultado = $conexion->query($sql);
-        $resultado->bindColumn(1, $idioma);
-        $resultado->fetch();
+        $idioma = selectFromUsuario(["idioma"])[0];
+        echo $idioma;
     } else if (!isset($_COOKIE["lang"])) {
         setcookie("lang", "es", time() + 60, '/');
     } else if ($_COOKIE["lang"] == "en") {

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MumORDad</title>
     <?php
+    session_start();
     include "admin/configuraciones/funciones.php";
     include "admin/configuraciones/funcionesDB.php";
     include getIdioma();
@@ -17,12 +18,14 @@
      * Si el valor del tema es "noche" carga el css correspondiente.
      * 
      */
-    session_start();
     $css = "<link rel='stylesheet' href='./css/archivo.css' />";
-    if (!isset($_SESSION["modovis"])) {
+    if(isset($_SESSION[SESSION_ID])){
+        if(selectFromUsuario(["modovis"])[0] === "dark"){
+            $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
+        }
+    } else if (!isset($_SESSION["modovis"])) {
         $_SESSION["modovis"] = 'light';
-    }
-    if ($_SESSION["modovis"] == 'dark') {
+    } else if ($_SESSION["modovis"] == 'dark') {
         $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
     }
     echo $css;

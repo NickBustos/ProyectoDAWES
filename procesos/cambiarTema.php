@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once 'configDB.php';
+include_once 'funcionesDB.php';
 
 define("TEMA", "modovis");
 define("TEMA_LIGHT", "light");
