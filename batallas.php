@@ -22,14 +22,14 @@ include_once "admin/templates/cabecera.php";
                                     $conexion = new PDO(DSN, USER, PASSWORD);
                                     $sql = "SELECT id_elemento1, id_elemento2 FROM batalla_elemento ORDER BY id_batalla";
                                     $batallas = $conexion->query($sql);
-                                    
+
                                     while ($batalla = $batallas->fetch(PDO::FETCH_NUM)) {
-                                        $mostrar="<form method='post' class='subirBatalla' id='subirBatalla' action='" . $_SERVER["PHP_SELF"] . "'>";
+                                        $mostrar = "<form method='post' class='subirBatalla' id='subirBatalla' action='" . $_SERVER["PHP_SELF"] . "'>";
                                         $sql = "SELECT nombre, foto FROM elemento WHERE id='$batalla[0]' OR id='$batalla[1]'";
                                         $bandos = $conexion->query($sql);
                                         while ($bando = $bandos->fetch(PDO::FETCH_NUM)) {
-                                            $mostrar.=
-                                            "<div class='bando'>
+                                            $mostrar .=
+                                                "<div class='bando'>
                                                 <div style='display:flex; justify-content:center;'>
                                                     <img width='200px' height='200px' src='{$bando[1]}'>
                                                 </div>
@@ -39,9 +39,10 @@ include_once "admin/templates/cabecera.php";
                                                 </div>
                                             </div>";
                                         }
-                                        $mostrar.="</form>";//Como el de los colores vea esto me pega un puñetazo
+                                        $mostrar .= "</form>&nbsp;";// no le enseñen esto al de los colores que me pega un puño
                                         echo $mostrar;
                                     }
+
                                     ?>
                                 </div>
                             </div>

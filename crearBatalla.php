@@ -1,5 +1,13 @@
 <?php
 include_once "admin/templates/cabecera.php";
+
+//Si no ha iniciado sesión no muestra nada
+if (!isset($_SESSION[SESSION_ID])) {
+    echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
+    echo "<img src='imagenes/luigi.png'><br/>";
+    exit();
+}
+    
 /**
  * 1º Creamos un array bandos:
  *  - Creamos, una variable para el usuario meta los datos, si estan mal paso a la de error en caso de que este bien pasa a la variable con nombre(imagen / nombre)
