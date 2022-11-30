@@ -15,10 +15,8 @@
     $fecha = explode(",",$datosUsuario[1]);
     $foto = explode(",",$datosUsuario[2]);
     $email = explode(",",$datosUsuario[3]);
-    
-    $contraseña =getPassword();
+    $contraseña = getPassword();
     $nombre = $_SESSION[SESSION_USER];
-
 ?>
 
 <form action="">
