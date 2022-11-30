@@ -69,11 +69,15 @@
                 /**
                  * Muestra el mensaje correspondiente para cambiar el tema y el idioma.
                  */
-                    if(isset($_SESSION["modovis"]) && $_SESSION["modovis"]==="dark"){
-                        echo "<a href='procesos/cambiarTema.php'>" . $lang["modoC"] . "</a>";
-                    }else{
-                        echo "<a href='procesos/cambiarTema.php'>" . $lang["modoN"] . "</a>";
+                $mensaje = "<a href='procesos/cambiarTema.php'>" . $lang["modoN"] . "</a>";
+                    if(isset($_SESSION[SESSION_ID])){
+                        if(selectFromUsuario([TEMA])[0]===TEMA_DARK){
+                            $mensaje = "<a href='procesos/cambiarTema.php'>" . $lang["modoC"] . "</a>";
+                        }
+                    }else if(isset($_SESSION["modovis"]) && $_SESSION["modovis"]==="dark"){
+                        $mensaje = "<a href='procesos/cambiarTema.php'>" . $lang["modoC"] . "</a>";
                     }
+                    echo $mensaje;
                 ?>
                 <a href="procesos/cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
                 

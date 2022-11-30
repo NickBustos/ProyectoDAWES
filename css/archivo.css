@@ -44,14 +44,25 @@
 }
 
 .subirBatalla{
-    display:flex;
     border:solid lightgrey 5px;
     padding:5%;
     border-radius: 25px;
 }
+.headerBatalla > *{
+    display:flex;
+}
+.rowBatalla{
+    display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 .bando{
-    flex:50%;
-    display:flexbox;
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
 }
 .bando:nth-child(odd) {
     border-right: solid lightgrey 5px;;

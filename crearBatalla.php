@@ -7,7 +7,7 @@ if (!isset($_SESSION[SESSION_ID])) {
     echo "<img src='imagenes/luigi.png'><br/>";
     exit();
 }
-    
+
 /**
  * 1º Creamos un array bandos:
  *  - Creamos, una variable para el usuario meta los datos, si estan mal paso a la de error en caso de que este bien pasa a la variable con nombre(imagen / nombre)
@@ -84,11 +84,16 @@ if (!empty($_POST)) {
                                 Este cubo esta dividio en dos bandos
                             Los dos div, tienen una imagen y un input text -->
                                     <form method="post" class="subirBatalla" id="subirBatalla" enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
-                                        <div class="bando">
-                                            <div>
-                                                <img style="width:100%; height:200px; border-radius: 50%;" src="imagenes/javier.png">
-                                                <!-- Intento de enseñar los elementos, que existen en la BD para que el usuario les pudiera escoger -->
-                                                <!-- <select class="form-control" name="elemento1"> -->
+                                        <header class='rowBatalla headerBatalla'>
+                                            <img class='imagenUser' src='<?php echo selectFromUsuario(["foto"])[0]; ?>'>
+                                            <p class='text-center fw-bold h1'><?php echo $_SESSION[SESSION_USER]; ?></p>
+                                        </header>
+                                        <div class='rowBatalla'>
+                                            <div class="bando">
+                                                <div>
+                                                    <img style="width:100%; height:200px; border-radius: 50%;" src="imagenes/javier.png">
+                                                    <!-- Intento de enseñar los elementos, que existen en la BD para que el usuario les pudiera escoger -->
+                                                    <!-- <select class="form-control" name="elemento1"> -->
                                                     <?php
                                                     // $conexion = new PDO(DSN, USER, PASSWORD);
                                                     // $sql = "SELECT nombre, foto FROM elemento";
@@ -99,45 +104,43 @@ if (!empty($_POST)) {
                                                     // }
                                                     // echo $opciones;
                                                     ?>
-                                                <!-- </select> -->
+                                                    <!-- </select> -->
+                                                </div>
+                                                <div>
+                                                    <label class="form-label" for="nombre1"><?php echo $lang["nombre"]; ?></label>
+                                                    <input class="form-control" name="nombre1" type="text" value='<?php echo $nombre1 ?>'>
+                                                    <?php echo $errorNombre1 ?>
+                                                    <br />
+                                                    <label class="form-label" for="img1"><?php echo $lang["imagen"]; ?></label>
+                                                    <input class="form-control" name="img1" type="file" accept="image/png">
+                                                    <?php echo $errorImg1 ?>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <label class="form-label" for="nombre1"><?php echo $lang["nombre"]; ?></label>
-                                                <input class="form-control" name="nombre1" type="text" value='<?php echo $nombre1 ?>'>
-                                                <?php echo $errorNombre1 ?>
-                                                <br />
-                                                <label class="form-label" for="img1"><?php echo $lang["imagen"]; ?></label>
-                                                <input class="form-control" name="img1" type="file" accept="image/png">
-                                                <?php echo $errorImg1 ?>
-                                            </div>
-                                        </div>
-                                        <div class="bando">
-                                            <div class="imagen">
-                                                <img style="width:100%; height:200px; border-radius: 50%;" src="imagenes/martin.png">
-                                                <!-- <select class="form-control" name="elemento1"> -->
+                                            <div class="bando">
+                                                <div class="imagen">
+                                                    <img style="width:100%; height:200px; border-radius: 50%;" src="imagenes/martin.png">
+                                                    <!-- <select class="form-control" name="elemento1"> -->
                                                     <?php
                                                     // echo $opciones;
                                                     ?>
-                                                <!-- </select> -->
+                                                    <!-- </select> -->
+                                                </div>
+                                                <div>
+                                                    <label class="form-label" for="nombre2"><?php echo $lang["nombre"]; ?></label>
+                                                    <input class="form-control" name="nombre2" type="text" value='<?php echo $nombre2 ?>'>
+                                                    <?php echo $errorNombre2 ?>
+                                                    <br />
+                                                    <label class="form-label" for="img2"><?php echo $lang["imagen"]; ?></label>
+                                                    <input class="form-control" name="img2" type="file" accept="image/png">
+                                                    <?php echo $errorImg2 ?>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <label class="form-label" for="nombre2"><?php echo $lang["nombre"]; ?></label>
-                                                <input class="form-control" name="nombre2" type="text" value='<?php echo $nombre2 ?>'>
-                                                <?php echo $errorNombre2 ?>
-                                                <br />
-                                                <label class="form-label" for="img2"><?php echo $lang["imagen"]; ?></label>
-                                                <input class="form-control" name="img2" type="file" accept="image/png">
-                                                <?php echo $errorImg2 ?>
-                                            </div>
+                                            <br />
                                         </div>
-                                        <br />
+                                        <div class='rowBatalla'>
+                                            <input class="submitBatalla btn btn-primary btn-lg" type="submit" value="<?php echo $lang["subirBatalla"]; ?>">
+                                        </div>
                                     </form>
-                                    <div>
-                                        <input form="subirBatalla" class="submitBatalla btn btn-primary btn-lg" type="submit" value="<?php echo $lang["subirBatalla"]; ?>">
-                                        <form action='index.php'>
-                                            <input type='submit' class="submitBatalla btn btn-secondary btn-lg" value='<?php echo $lang["volver"]; ?>'>
-                                        </form>
-                                    </div>
                                 </div>
                             </div>
                         </div>
