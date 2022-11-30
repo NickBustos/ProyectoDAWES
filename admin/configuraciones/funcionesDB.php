@@ -154,3 +154,6 @@ function select($campos, $tabla, $where){
     return $registros;
     
 }
+// include_once "configDB.php";
+// subirUsuario(["pepepe", "aaa", "1998-07-01", "aaaa", "aaa@"]);
+
