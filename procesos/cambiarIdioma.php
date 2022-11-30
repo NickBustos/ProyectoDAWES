@@ -1,12 +1,8 @@
 <?php
 session_start();
-include_once 'configDB.php';
+include_once '../admin/configuraciones/funcionesDB.php';
+include_once '../admin/configuraciones/funciones.php';
 
-define("LANG_ENGLISH", "en");
-define("LANG_SPANISH", "es");
-define("LANG", "lang");
-
-//HACER CONSTANTES DE VALORES
 function getIdiomaContrario($idioma)
 {
     $nuevoIdioma = LANG_SPANISH;
@@ -17,15 +13,15 @@ function getIdiomaContrario($idioma)
 }
 
 $idioma = LANG_SPANISH;
-if (isset($_SESSION["idBBDD"])) {
+if (isset($_SESSION[SESSION_ID])) {
     //Inició sesion
     $conexion = new PDO(DSN, USER, PASSWORD);
-    $sql = "SELECT idioma FROM usuario WHERE ID='{$_SESSION["idBBDD"]}'";
+    $sql = "SELECT idioma FROM usuario WHERE ID='{$_SESSION[SESSION_ID]}'";
     $resultado = $conexion->query($sql);
     $resultado->bindColumn(1, $idioma);
     $resultado->fetch();
     $idioma = getIdiomaContrario($idioma);
-    $sql = "UPDATE usuario SET idioma='{$idioma}' WHERE ID='{$_SESSION["idBBDD"]}'";
+    $sql = "UPDATE usuario SET idioma='{$idioma}' WHERE ID='{$_SESSION[SESSION_ID]}'";
     $resultado = $conexion->exec($sql);
 } else{
     //No inicio sesion

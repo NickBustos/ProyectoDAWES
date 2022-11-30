@@ -16,10 +16,12 @@ $errorUser = $errorPassword = "";
  * 1. Nos aseguramos haya post.
  * 2. Llenamos las variables $_ con su campo.
  * 3. Comprobamos que no están vacíos.
- * 4. Vemos si el usuario existe con getLineaFrom, que devuelve la línea del fichero de ese usuario o cadena vacía sino existe.
+ * 4. Vemos si el usuario existe en la base de datos.
  * 5. Pasamos la contraseña a md5 y la comparamos con el valor cogido de la base de datos.
  * 6. Insertamos el credencial de logeo en la base de datos, guardando id y usuario en sesion y redirecciona a index.
- * 6.1 En caso de que todos los datos sean correctos inicia sesión, lo que guarda sus datos en $_SESSION.
+ * 6.1 En caso de que todos los datos sean correctos cogemos el ID y insertamos un credencial de logueo, 
+ * 6.2 Ademas para facilitarnos el trabajo, guardamos tanto el id como el nombre de usuario en la sesión
+ * 6.3 Por último redirigimos al index
  * 6.2 En caso incorrecto muestra un mensaje de error personalizado.
  */
 if (!empty($_POST)) {

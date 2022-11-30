@@ -4,3 +4,5 @@ Incorar constantes de procesos a configDB
 Pulir subirUsuarios()
 
 TENÉIS QUE CAMBIAR EN BASE DE DATOS EL CAMPO FOTO DE USUARIO DE VARCHAR A LONGBLOB
+
+Pal victor
