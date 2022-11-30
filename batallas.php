@@ -20,22 +20,27 @@ include_once "admin/templates/cabecera.php";
                                      * Por cada batalla encontrado, se realiza un while
                                      */
                                     $conexion = new PDO(DSN, USER, PASSWORD);
-                                    $sql = "SELECT id_elemento1, id_elemento2, id_batalla FROM batalla_elemento ORDER BY id_batalla";
-                                    $batallas = $conexion->query($sql);
+                                    // $sql = "SELECT id_elemento1, id_elemento2, id_batalla FROM batalla_elemento ORDER BY id_batalla";
+                                    $sql = "SELECT be.id_elemento1, be.id_elemento2, be.id_batalla 
+                                                FROM batalla_elemento be INNER JOIN usuario_batalla ub
+                                                    ON be.id_batalla = ub.id_batalla
+                                                WHERE ub.id_usuario <> '{$_SESSION[SESSION_ID]}'
+                                                ORDER BY RAND() LIMIT 1";
+                                    $batalla = $conexion->query($sql)->fetch(PDO::FETCH_NUM);
 
-                                    $id_usuario = $name_user = $foto_usuario = "";
-                                    while ($batalla = $batallas->fetch(PDO::FETCH_NUM)) {
+                                    if ($batalla == false) {
+                                        echo "<p class='text-center fw-bold h1'>NO QUEDAN BATALLAS DISPLONIBLES</p>";
+                                    } else {
+
                                         $sql = "SELECT id_usuario FROM usuario_batalla WHERE id_batalla='{$batalla[2]}' AND accion='crear'";
-                                        $id = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
-                                        if ($id !== $id_usuario) {
-                                            $id_usuario = $id;
-                                            $sql = "SELECT DISTINCT u.foto, c.nombreusuario FROM usuario u 
+                                        $id_usuario = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
+
+                                        $sql = "SELECT DISTINCT u.foto, c.nombreusuario FROM usuario u 
                                                 INNER JOIN usuario_credencial c ON u.id=c.id_usuario 
                                                 WHERE u.id='{$id_usuario}'";
-                                            $registro = $conexion->query($sql)->fetch(PDO::FETCH_NUM);
-                                            $foto = $registro[0];
-                                            $name_user = $registro[1];
-                                        }
+                                        $registro = $conexion->query($sql)->fetch(PDO::FETCH_NUM);
+                                        $foto = $registro[0];
+                                        $name_user = $registro[1];
 
                                         $mostrar = "<form method='post' class='subirBatalla' id='subirBatalla' action='" . $_SERVER["PHP_SELF"] . "'>";
                                         $mostrar .= "
@@ -48,7 +53,7 @@ include_once "admin/templates/cabecera.php";
                                         $bandos = $conexion->query($sql);
                                         while ($bando = $bandos->fetch(PDO::FETCH_NUM)) {
                                             $mostrar .=
-                                            "<div class='bando'>
+                                                "<div class='bando'>
                                                 <div style='display:flex; justify-content:center;'>
                                                     <img width='200px' height='200px' src='{$bando[1]}'>
                                                 </div>
@@ -61,7 +66,6 @@ include_once "admin/templates/cabecera.php";
                                         $mostrar .= "</div></form>&nbsp;"; // no le enseñen esto al de los colores que me pega un puño
                                         echo $mostrar;
                                     }
-
                                     ?>
                                 </div>
                             </div>
