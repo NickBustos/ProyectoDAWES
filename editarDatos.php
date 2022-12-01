@@ -8,14 +8,11 @@
 </head>
 <body>
     <?php
-    include_once "funcionesDB.php";
-
-    $datosUsuario = selectFromUsuario('id','fechanacimiento','foto','email');
-    $id = explode(",",$datosUsuario[0]); 
-    $fecha = explode(",",$datosUsuario[1]);
-    $foto = explode(",",$datosUsuario[2]);
-    $email = explode(",",$datosUsuario[3]);
-
+    include_once "admin/configuraciones/funcionesDB.php";
+    include_once "admin/configuraciones/funciones.php";
+    session_start();
+    $datosUsuario = selectFromUsuario(['id','fechanacimiento','foto','email']);
+    $fecha = explode("-",$datosUsuario[1]);
     $nombre = $_SESSION[SESSION_USER];
     $contraseña = existe($nombre);
     
@@ -23,16 +20,18 @@
 
 <form action="">
     Nombre Usuario:
-    <input type = "text" value="<?php $nombre ?>"/>
+    <input type = "text" value="<?php echo $nombre ?> "disabled/><br>
     Contraseña:
-    <input type = "text" value="<?php $contraseña ?>"/>
+    <input type = "text" value="<?php echo $contraseña ?> "disabled/><br>
     Fecha Nacimiento:
-    <input type = "text" value="<?php $fecha ?>"/>
+    <input type = "text" value="<?php echo $datosUsuario[1] ?> "disabled/><br>
     Email:
-    <input type = "text" value="<?php $email ?>"/>
+    <input type = "text" value="<?php echo $datosUsuario[3] ?>  "disabled/><br>
     Foto:
-    <img src = "<?php $foto ?>"/>
+    <img src = "<?php echo $datosUsuario[2] ?> "disabled/><br> 
+    <br><br>
     
+    <?php echo "<button id = 'desbloquear'>Editar Campos</button>" ?>
 </form>
 </body>
 </html>
