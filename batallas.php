@@ -12,6 +12,12 @@ include_once "admin/templates/cabecera.php";
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
                                     <?php
+                                    //Si no ha iniciado sesión no muestra nada
+                                    if (!isset($_SESSION[SESSION_ID])) {
+                                        echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
+                                        echo "<img src='imagenes/luigi.png'><br/>";
+                                        exit();
+                                    }
                                     /**
                                      * Realizamos un select, para recoger todas las batallas
                                      * Por cada batalla el id del elemento 1 es batalla[0] y el id del elemento 2 es batalla [1].
@@ -20,48 +26,95 @@ include_once "admin/templates/cabecera.php";
                                      * Por cada batalla encontrado, se realiza un while
                                      */
                                     $conexion = new PDO(DSN, USER, PASSWORD);
-                                    $sql = "SELECT id_elemento1, id_elemento2, id_batalla FROM batalla_elemento ORDER BY id_batalla";
-                                    $batallas = $conexion->query($sql);
 
-                                    $id_usuario = $name_user = $foto_usuario = "";
-                                    while ($batalla = $batallas->fetch(PDO::FETCH_NUM)) {
-                                        $sql = "SELECT id_usuario FROM usuario_batalla WHERE id_batalla='{$batalla[2]}' AND accion='crear'";
-                                        $id = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
-                                        if ($id !== $id_usuario) {
-                                            $id_usuario = $id;
-                                            $sql = "SELECT DISTINCT u.foto, c.nombreusuario FROM usuario u 
-                                                INNER JOIN usuario_credencial c ON u.id=c.id_usuario 
-                                                WHERE u.id='{$id_usuario}'";
-                                            $registro = $conexion->query($sql)->fetch(PDO::FETCH_NUM);
-                                            $foto = $registro[0];
-                                            $name_user = $registro[1];
-                                        }
+                                    $batalla = $elemento1 = $elemento2 = "";
+                                    if (isset($_SESSION[SESSION_CURRENT_BATTLE])) {
+                                        $batalla = $_SESSION[SESSION_CURRENT_BATTLE];
+                                        $elemento1 = $_SESSION[SESSION_BATTLE_ELEM_1];
+                                        $elemento2 = $_SESSION[SESSION_BATTLE_ELEM_2];
+                                    } else {
+                                        //COMPROBAR QUE TENGA EN CUENTA LA TABLA VOTO TAMBIÉN
+                                        $sql = "SELECT be.id_elemento1, be.id_elemento2, be.id_batalla 
+                                                    FROM batalla_elemento be 
+                                                    INNER JOIN usuario_batalla ub
+                                                        ON be.id_batalla = ub.id_batalla
+                                                    WHERE ub.id_usuario <> '{$_SESSION[SESSION_ID]}'
+                                                    ORDER BY RAND() LIMIT 1";
+                                        $registroBatalla = $conexion->query($sql);
 
-                                        $mostrar = "<form method='post' class='subirBatalla' id='subirBatalla' action='" . $_SERVER["PHP_SELF"] . "'>";
+                                        $registroBatalla->bindColumn(1, $elemento1);
+                                        $registroBatalla->bindColumn(2, $elemento2);
+                                        $registroBatalla->bindColumn(3, $batalla);
+                                        $registroBatalla->fetch(PDO::FETCH_BOUND);
+                                    }
+                                    if ($batalla == "") {// No hay batalla disponible
+                                        echo "<p class='text-center fw-bold h1'>NO QUEDAN BATALLAS DISPLONIBLES</p>";
+                                        echo "
+                                        <form action='crearBatalla.php'>
+                                            <input type='submit' class='submitBatalla btn btn-primary btn-lg' value='Crear batalla'>
+                                        </form>";
+                                    } else {
+                                        // Guardar datos de batalla en sesión para poder hacer operaciones con ellos
+                                        $_SESSION[SESSION_CURRENT_BATTLE]=$batalla;
+                                        $_SESSION[SESSION_BATTLE_ELEM_1]=$elemento1;
+                                        $_SESSION[SESSION_BATTLE_ELEM_2]=$elemento2;
+
+                                        // Coger id del usuario dueño de la batalla
+                                        $sql = "SELECT id_usuario FROM usuario_batalla WHERE id_batalla='{$batalla}' AND accion='crear'";
+                                        $id_usuario = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
+
+                                        // Coger datos del usuario dueño de la batalla
+                                        $foto = $name_user = "";
+                                        $sql = "SELECT DISTINCT u.foto, c.nombreusuario FROM usuario u 
+                                                    INNER JOIN usuario_credencial c ON u.id=c.id_usuario 
+                                                    WHERE u.id='{$id_usuario}'";
+                                        $resultado = $conexion->query($sql);
+                                        $resultado->bindColumn(1, $foto);
+                                        $resultado->bindColumn(2, $name_user);
+                                        $resultado->fetch(PDO::FETCH_BOUND);
+
+                                        // Coger bandos de la batalla
+                                        $sql = "SELECT id, nombre, foto FROM elemento WHERE id='$elemento1' OR id='$elemento2'";
+                                        $bandos = $conexion->query($sql);
+
+                                        // Comenzar a cargar elementos HTML en variable $mostrar (crear formulario y cabecera)
+                                        $mostrar = "<form method='post' class='subirBatalla' id='subirBatalla' action='procesos/procesarVoto.php'>";
                                         $mostrar .= "
                                             <header class='rowBatalla headerBatalla'>
                                                 <img class='imagenUser' src='{$foto}'>
                                                 <p class='text-center fw-bold h1'>{$name_user}</p>
                                             </header>
                                             <div class='rowBatalla'>";
-                                        $sql = "SELECT nombre, foto FROM elemento WHERE id='$batalla[0]' OR id='$batalla[1]'";
-                                        $bandos = $conexion->query($sql);
-                                        while ($bando = $bandos->fetch(PDO::FETCH_NUM)) {
+
+                                        // Por cada bando de la batalla se carga la imagen y el nombre del elemento que lo compone y el botón de votarlo.
+                                        while ($bando = $bandos->fetch(PDO::FETCH_NAMED)) {
                                             $mostrar .=
-                                            "<div class='bando'>
-                                                <div style='display:flex; justify-content:center;'>
-                                                    <img width='200px' height='200px' src='{$bando[1]}'>
-                                                </div>
-                                                <p class='text-center h1 fw-bold mt-4'>{$bando[0]}</p>
-                                                <div class='voteBatalla'>
-                                                    <input type='submit' class='submitBatalla btn btn-primary btn-lg' value='VOTAR'>
-                                                </div>
-                                            </div>";
+                                                "<div class='bando'>
+                                                    <div style='display:flex; justify-content:center;'>
+                                                        <img width='200px' height='200px' src='{$bando['foto']}'>
+                                                    </div>
+                                                    <p class='text-center h1 fw-bold mt-4'>{$bando['nombre']}</p>
+                                                    <div class='voteBatalla'>
+                                                        <button name='elementoVotado' type='submit' class='submitBatalla btn btn-primary btn-lg' value='{$bando['id']}'>
+                                                            <img class='imagenUser' src='imagenes/thumbsUp.png'>
+                                                        </button>
+                                                    </div>
+                                                </div>";
                                         }
-                                        $mostrar .= "</div></form>&nbsp;"; // no le enseñen esto al de los colores que me pega un puño
+
+                                        //Se añaden los botones next y denunciar y se cierra el formulario y el div iniciados
+                                        $mostrar .= "</div>
+                                            <div class='rowBatalla'>
+                                                <button type='submit' class='submitBatalla btn btn-primary btn-lg' name='siguiente'>
+                                                    <img class='imagenUser' src='imagenes/next.png'>
+                                                </button>
+                                                <button type='submit' class='submitBatalla btn btn-secondary btn-lg' name='denunciar'>
+                                                    <img class='imagenUser' src='imagenes/denunciar.png'>
+                                                </button>
+                                            </div>
+                                            </form>&nbsp;"; // no le enseñen esto al de los colores que me pega un puño
                                         echo $mostrar;
                                     }
-
                                     ?>
                                 </div>
                             </div>
