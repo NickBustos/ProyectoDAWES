@@ -18,6 +18,7 @@
 
     $nombre = $_SESSION[SESSION_USER];
     $contraseña = existe($nombre);
+    
 ?>
 
 <form action="">

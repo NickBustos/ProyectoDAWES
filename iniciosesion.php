@@ -30,7 +30,7 @@ if (!empty($_POST)) {
     $linea;
     if (!empty($_user)) {
         $passReal = existe($_user);
-        if ($linea !== false) {
+        if ($passReal !== false) {
             $user = $_user;
             if (!empty($_password)) {
                 $_password = md5($_password);
