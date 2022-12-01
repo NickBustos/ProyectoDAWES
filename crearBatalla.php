@@ -61,8 +61,8 @@ if (!empty($_POST)) {
     if ($nombre1 != "" && $img1 != "" && $nombre2 != "" && $img2 != "") {
         $idElem1 = insertar("elemento", ["", $nombre1, $img1, 0]);
         $idElem2 = insertar("elemento", ["", $nombre2, $img2, 0]);
-        $idBatalla = insertar("batalla", [""]);
-        insertar("batalla_elemento", [$idBatalla, $idElem1, $idElem2]);
+        // $idBatalla = insertar("batalla", [""]);
+        $idBatalla = insertar("batalla_elemento", ["", $idElem1, $idElem2]);
         insertar("usuario_batalla", ["", $_SESSION[SESSION_ID], $idBatalla, "crear", getMomentoActual()]);
         echo "<h1>BATALLA SUBIDA</h1>";
         exit();

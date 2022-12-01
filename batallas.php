@@ -28,12 +28,31 @@ include_once "admin/templates/cabecera.php";
                                     $conexion = new PDO(DSN, USER, PASSWORD);
 
                                     $batalla = $elemento1 = $elemento2 = "";
+                                    $nameDeBoton = "ignorar"; // de base el boton es ignorar
+
                                     if (isset($_SESSION[SESSION_CURRENT_BATTLE])) {
                                         $batalla = $_SESSION[SESSION_CURRENT_BATTLE];
                                         $elemento1 = $_SESSION[SESSION_BATTLE_ELEM_1];
                                         $elemento2 = $_SESSION[SESSION_BATTLE_ELEM_2];
+
+                                        if (isset($_SESSION[SESSION_BATTLE_VOTED])) {
+                                            // HA VOTADO
+                                            $nameDeBoton = "siguiente"; // si ha votado es siguiente
+                                        }
                                     } else {
                                         //COMPROBAR QUE TENGA EN CUENTA LA TABLA VOTO TAMBIÉN
+
+                                        /*
+                                        SELECT be.id_elemento1, be.id_elemento2, be.id_batalla 
+            FROM batalla_elemento be 
+            INNER JOIN usuario_batalla ub
+            	ON be.id_batalla = ub.id_batalla
+            INNER JOIN voto vt
+            	ON ub.id_usuario = vt.id_usuario
+            WHERE ub.id_usuario <> '10'
+            ORDER BY RAND() LIMIT 1
+
+                                        */
                                         $sql = "SELECT be.id_elemento1, be.id_elemento2, be.id_batalla 
                                                     FROM batalla_elemento be 
                                                     INNER JOIN usuario_batalla ub
@@ -47,7 +66,7 @@ include_once "admin/templates/cabecera.php";
                                         $registroBatalla->bindColumn(3, $batalla);
                                         $registroBatalla->fetch(PDO::FETCH_BOUND);
                                     }
-                                    if ($batalla == "") {// No hay batalla disponible
+                                    if ($batalla == "") { // No hay batalla disponible
                                         echo "<p class='text-center fw-bold h1'>NO QUEDAN BATALLAS DISPLONIBLES</p>";
                                         echo "
                                         <form action='crearBatalla.php'>
@@ -55,9 +74,9 @@ include_once "admin/templates/cabecera.php";
                                         </form>";
                                     } else {
                                         // Guardar datos de batalla en sesión para poder hacer operaciones con ellos
-                                        $_SESSION[SESSION_CURRENT_BATTLE]=$batalla;
-                                        $_SESSION[SESSION_BATTLE_ELEM_1]=$elemento1;
-                                        $_SESSION[SESSION_BATTLE_ELEM_2]=$elemento2;
+                                        $_SESSION[SESSION_CURRENT_BATTLE] = $batalla;
+                                        $_SESSION[SESSION_BATTLE_ELEM_1] = $elemento1;
+                                        $_SESSION[SESSION_BATTLE_ELEM_2] = $elemento2;
 
                                         // Coger id del usuario dueño de la batalla
                                         $sql = "SELECT id_usuario FROM usuario_batalla WHERE id_batalla='{$batalla}' AND accion='crear'";
@@ -88,7 +107,7 @@ include_once "admin/templates/cabecera.php";
 
                                         // Por cada bando de la batalla se carga la imagen y el nombre del elemento que lo compone y el botón de votarlo.
                                         while ($bando = $bandos->fetch(PDO::FETCH_NAMED)) {
-                                            $mostrar .=
+                                            $infoBando =
                                                 "<div class='bando'>
                                                     <div style='display:flex; justify-content:center;'>
                                                         <img width='200px' height='200px' src='{$bando['foto']}'>
@@ -100,12 +119,30 @@ include_once "admin/templates/cabecera.php";
                                                         </button>
                                                     </div>
                                                 </div>";
+                                            if(isset($_SESSION[SESSION_BATTLE_VOTED])){
+                                                $sql = "SELECT COUNT(*) FROM voto 
+                                                    WHERE id_elemento='{$bando['id']}'
+                                                        AND id_batalla='{$batalla}'";
+                                                $votos = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
+                                                
+                                                $infoBando =
+                                                "<div class='bando'>
+                                                    <div style='display:flex; justify-content:center;'>
+                                                        <img width='200px' height='200px' src='{$bando['foto']}'>
+                                                    </div>
+                                                    <p class='text-center h1 fw-bold mt-4'>{$bando['nombre']}</p>
+                                                    <div class='voteBatalla'>
+                                                        <p class='text-center h1 fw-bold'>{$votos}</p>
+                                                    </div>
+                                                </div>";
+                                            }
+                                            $mostrar.=$infoBando;
                                         }
 
                                         //Se añaden los botones next y denunciar y se cierra el formulario y el div iniciados
                                         $mostrar .= "</div>
                                             <div class='rowBatalla'>
-                                                <button type='submit' class='submitBatalla btn btn-primary btn-lg' name='siguiente'>
+                                                <button type='submit' class='submitBatalla btn btn-primary btn-lg' name='{$nameDeBoton}'>
                                                     <img class='imagenUser' src='imagenes/next.png'>
                                                 </button>
                                                 <button type='submit' class='submitBatalla btn btn-secondary btn-lg' name='denunciar'>

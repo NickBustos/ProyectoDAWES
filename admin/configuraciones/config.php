@@ -23,6 +23,7 @@ define("SESSION_USER", "user");
 define("SESSION_CURRENT_BATTLE", "current_battle");
 define("SESSION_BATTLE_ELEM_1", "battle_elem1");
 define("SESSION_BATTLE_ELEM_2", "battle_elem2");
+define("SESSION_BATTLE_VOTED", "battle_voted");
 
 
 //------------------------------------- PATTERNS -------------------------------------
