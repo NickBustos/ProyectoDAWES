@@ -20,7 +20,6 @@ if (isset($_POST)) {
     $momento = getMomentoActual();
     if (isset($_POST["siguiente"])) {
         quitarDatosBatalla();
-        //borrar datos sesion sobre batalla (unset??)
     } else if (isset($_POST["ignorar"])) {
         $sql = "INSERT INTO usuario_batalla VALUES (
             '', :id_u, :id_b, 'ignorar', :mom
@@ -31,7 +30,6 @@ if (isset($_POST)) {
             "mom" => $momento
         ];
         quitarDatosBatalla();
-        //borrar datos sesion sobre batalla
     } else if (isset($_POST["denunciar"])) {
         $sql = "INSERT INTO usuario_batalla VALUES (
             '', :id_u, :id_b, 'denunciar', :mom
@@ -43,7 +41,6 @@ if (isset($_POST)) {
         ];
         quitarDatosBatalla();
         //Comprobar nº de denuncias
-        //borrar datos sesion sobre batalla
     } else if (isset($_POST["elementoVotado"])) {
         $sql = "INSERT INTO voto VALUES (
             :id_u, :id_b, :id_e, :mom
@@ -55,13 +52,13 @@ if (isset($_POST)) {
             "mom" => $momento
         ];
         $_SESSION[SESSION_BATTLE_VOTED]=true;
-        //mostrar resultados al recargar???
     }
 
     if ($sql !== "") {
         $preparedSttm = $conexion->prepare($sql);
         $preparedSttm->execute($datos);
     }
+    
 }
 
-// header()
+header("Location: {$_SERVER['HTTP_REFERER']}");

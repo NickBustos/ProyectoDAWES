@@ -1,9 +1,4 @@
-<?php
-include_once "admin/templates/cabecera.php";
-?>
-<br><br>
-<div class="row d-flex justify-content-center">
-    <div class="col-md-6">
+<div class="col-md-6">
         <div class="card">
             <div class="card-body">
                 <div class="container h-100">
@@ -157,6 +152,3 @@ include_once "admin/templates/cabecera.php";
 
         </div>
     </div>
-</div>
-
-<?php include "admin/templates/pie.php" ?>
