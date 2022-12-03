@@ -38,14 +38,14 @@
                                         $sql = "SELECT be.id_elemento1, be.id_elemento2, be.id_batalla
                                                 FROM batalla_elemento be 
                                                 WHERE be.id_batalla NOT IN (
-                                                        SELECT id_batalla
-                                                        FROM usuario_batalla
-                                                        WHERE id_usuario = 12
+                                                        SELECT ub.id_batalla
+                                                        FROM usuario_batalla ub
+                                                        WHERE ub.id_usuario = {$_SESSION[SESSION_ID]}
                                                     )
                                                     AND be.id_batalla NOT IN (
-                                                        SELECT id_batalla
-                                                        FROM voto
-                                                        WHERE id_usuario = 12
+                                                        SELECT vt.id_batalla
+                                                        FROM voto vt
+                                                        WHERE vt.id_usuario = {$_SESSION[SESSION_ID]}
                                                     )
                                                 ORDER BY RAND() 
                                                 LIMIT 1";
