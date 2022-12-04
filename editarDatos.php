@@ -15,6 +15,7 @@
     $fecha = explode("-",$datosUsuario[1]);
     $nombre = $_SESSION[SESSION_USER];
     $contraseña = existe($nombre);
+    $contraseñaMostrar = base64_decode($contraseña);
     
 ?>
 
@@ -22,7 +23,7 @@
     Nombre Usuario:
     <input type = "text" value="<?php echo $nombre ?> "disabled/><br>
     Contraseña:
-    <input type = "text" value="<?php echo $contraseña ?> "disabled/><br>
+    <input type = "text" value="<?php echo $contraseñaMostrar ?> "disabled/><br>
     Fecha Nacimiento:
     <input type = "text" value="<?php echo $datosUsuario[1] ?> "disabled/><br>
     Email:
