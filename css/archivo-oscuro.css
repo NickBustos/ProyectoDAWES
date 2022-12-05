@@ -43,38 +43,49 @@
     }
 }
 
-.subirBatalla{
-    border:solid lightgrey 5px;
-    padding:5%;
-    border-radius: 25px;
-}
-.headerBatalla > *{
-    display:flex;
-}
-.rowBatalla{
-    display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
+
+.medallas img{
+    height: 40px !important;
 }
 
-.bando{
+.subirBatalla {
+    border: solid lightgrey 5px;
+    padding: 5%;
+    border-radius: 25px;
+}
+
+.headerBatalla>* {
+    display: flex;
+}
+
+.rowBatalla {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.bando {
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
     flex: 1;
 }
+
 .bando:nth-child(odd) {
-    border-right: solid lightgrey 5px;;
+    border-right: solid lightgrey 5px;
+    ;
 }
-.submitBatalla{
-    display:block;
-    width:100%;
+
+.submitBatalla {
+    display: block;
+    width: 100%;
 }
-.voteBatalla{
-    display:block;
-    width:100%;
-    padding:5%;
+
+.voteBatalla {
+    display: block;
+    width: 100%;
+    padding: 5%;
 }
 
 .imagenUser {
@@ -131,6 +142,7 @@
     text-align: center;
     font-weight: 600;
     text-transform: uppercase;
+    margin:auto;
 }
 
 .fondo {
@@ -172,7 +184,9 @@
     color: #111e6c;
 }
 
-
+.text-center h4 {
+    text-shadow: 4px 1px 2px #d32c2c, 0 0 1em #fc751f, 0 0 0.2em #e6650b;
+}
 
 
 .pie {
@@ -182,6 +196,8 @@
     height: 60px;
     background: #ffffff;
 }
+
+
 
 .row-center {
     --bs-gutter-x: 1.5rem;
@@ -4747,18 +4763,21 @@ fieldset:disabled .btn {
 
 
 
-@media(max-width:800px){
+@media(max-width:800px) {
+
     .btn-group>.btn:not(:first-child),
-.btn-group>.btn-group:not(:first-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    border-radius: 10px;
-    margin-left: -12px;
-    background: #FD5D14;
-    box-shadow: 0px 5px #00000038;
+    .btn-group>.btn-group:not(:first-child) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-radius: 10px;
+        margin-left: -12px;
+        background: #FD5D14;
+        box-shadow: 0px 5px #00000038;
+    }
 }
-}
-@media(min-width:801px){
+
+@media(min-width:801px) {
+
     .btn-group>.btn:not(:first-child),
     .btn-group>.btn-group:not(:first-child) {
         border-top-right-radius: 0;
@@ -4979,7 +4998,7 @@ fieldset:disabled .btn {
 }
 
 
-@media(max-width:800px){
+@media(max-width:800px) {
     .navbar-nav {
         display: flex;
         flex-direction: column;
@@ -4988,9 +5007,9 @@ fieldset:disabled .btn {
         list-style: none;
         margin-left: -50px;
     }
-    }
+}
 
-@media(min-width:801px){
+@media(min-width:801px) {
     .navbar-nav {
         display: flex;
         flex-direction: column;
@@ -4998,7 +5017,7 @@ fieldset:disabled .btn {
         margin-bottom: 0;
         list-style: none
     }
-    }
+}
 
 .navbar-nav .nav-link {
     padding-right: 0;
@@ -5356,7 +5375,7 @@ fieldset:disabled .btn {
     word-wrap: break-word;
     background: transparent;
     background-clip: border-box;
-    
+
 }
 
 .card>hr {
@@ -5392,7 +5411,7 @@ fieldset:disabled .btn {
 }
 
 .card-title {
-    color:white;
+    color: white;
     margin-bottom: .5rem
 }
 
@@ -8785,7 +8804,7 @@ fieldset:disabled .btn {
 
 .text-center {
     text-align: center !important;
-    color:white;
+    color: white;
 }
 
 .text-decoration-none {
@@ -8970,7 +8989,7 @@ fieldset:disabled .btn {
     border-radius: .3rem !important
 }
 
-@media(max-width:800px){
+@media(max-width:800px) {
     .rounded-circle {
         border-radius: 60% !important;
         background: #FFFFFF;
@@ -8979,14 +8998,15 @@ fieldset:disabled .btn {
         box-shadow: 0px 13px #0404045c;
     }
 }
-@media(min-width:801px){
-.rounded-circle {
-    border-radius: 60% !important;
-    background: #FFFFFF;
-    width: 500px;
-    height: 500px;
-    box-shadow: 0px 13px #0404045c;
-}
+
+@media(min-width:801px) {
+    .rounded-circle {
+        border-radius: 60% !important;
+        background: #FFFFFF;
+        width: 500px;
+        height: 500px;
+        box-shadow: 0px 13px #0404045c;
+    }
 }
 
 .rounded-pill {
@@ -10123,7 +10143,7 @@ fieldset:disabled .btn {
     .mx-md-4 {
         margin-right: 1.5rem !important;
         margin-left: 1.5rem !important;
-        color:white;
+        color: white;
     }
 
     .mx-md-5 {
