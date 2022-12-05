@@ -102,11 +102,12 @@ if (!empty($_POST)) {
                                                     // $resultado = $conexion->query($sql);
                                                     // $opciones = "<option></option>";
                                                     // while ($registro = $resultado->fetch(PDO::FETCH_NUM)) {
-                                                    //     $opciones .= "<option>{$registro[1]}</option>";
+                                                    //     $opciones .= "<option>{$registro[0]}</option>";
                                                     // }
                                                     // echo $opciones;
                                                     ?>
                                                     <!-- </select> -->
+                                                    
                                                 </div>
                                                 <div>
                                                     <label class="form-label" for="nombre1"><?php echo $lang["nombre"]; ?></label>
