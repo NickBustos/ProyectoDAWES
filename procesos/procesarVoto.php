@@ -59,7 +59,7 @@ if (isset($_POST)) {
         //Se tienen que mantener los credenciales de denuncia??
         //Si no como se cuentan puntos de troll??
     } else if (isset($_POST["elementoVotado"])) {
-        //VIGILAR: ESTA FUNCION PUEDE NO EXISTIR AL SUBIRLO (HABRÍA QUE CREARLA)
+        //VIGILAR: ESTA FUNCION PUEDE NO EXISTIR AL SUBIRLO (HABRÍA QUE CREARLA) https://www.php.net/manual/en/function.str-ends-with.php
         if (str_ends_with(htmlspecialchars($_SERVER["HTTP_REFERER"]), "/crearBatalla.php")) {
             $nombre1 = htmlspecialchars($_POST["nombre1"]);
             $img1 = htmlspecialchars($_POST["img1"]);
