@@ -91,7 +91,7 @@ if (!empty($_POST)) {
         && !empty($_FILES["avatar"]["tmp_name"])
     ) { //Se asegura de que el usuario ha introducido un archivo
         if ($_FILES["avatar"]["type"] === "image/png") { //Comrpueba que el archivo es una imagen png
-            if ($_FILES['avatar']['size'] <= 1000000) { //Comprueba que el archivo pesa menos de un 1 mega
+            if ($_FILES['avatar']['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 750 kilobytes
                 $avatar = getImage($_FILES["avatar"]);
             } else {
                 $errorAvatar = $lang["error_file_size"];

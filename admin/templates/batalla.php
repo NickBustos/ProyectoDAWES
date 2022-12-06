@@ -7,12 +7,6 @@
                         <div class="card-body p-md-5">
                             <div class="row justify-content-center">
                                 <?php
-                                //Si no ha iniciado sesión no muestra nada
-                                if (!isset($_SESSION[SESSION_ID])) {
-                                    echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
-                                    echo "<img src='imagenes/luigi.png'><br/>";
-                                    exit();
-                                }
                                 /**
                                  * Realizamos un select, para recoger todas las batallas
                                  * Por cada batalla el id del elemento 1 es batalla[0] y el id del elemento 2 es batalla [1].

@@ -93,6 +93,8 @@ $lang += array( //SUBIRBATALLA
     "nombre" => "Nombre:",
     "imagen" => "Imagen:",
     "volver" => "Volver",
-    "upload" => "SI QUIERES SUBIR LA BATALLA, ¡VOTA!"
+    "upload" => "SI QUIERES SUBIR LA BATALLA, ¡VOTA!",
+    "elemento1" => "Elemento 1",
+    "elemento2" => "Elemento 2"
 
 );

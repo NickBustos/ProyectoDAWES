@@ -5,16 +5,23 @@ include_once '../admin/configuraciones/funciones.php';
 
 function quitarDatosBatalla()
 {
-    unset($_SESSION[SESSION_CURRENT_BATTLE]);
-    unset($_SESSION[SESSION_BATTLE_ELEM_1]);
-    unset($_SESSION[SESSION_BATTLE_ELEM_2]);
-    unset($_SESSION[SESSION_BATTLE_VOTED]);
+    foreach ($_SESSION as $key => $value) {
+        if ($key != SESSION_ID && $key != SESSION_USER) {
+            unset($_SESSION[$key]);
+        }
+    }
+}
+
+function realizarSql($conexion, $sql, $datos)
+{
+    $preparedSttm = $conexion->prepare($sql);
+    $preparedSttm->execute($datos);
 }
 
 if (isset($_POST)) {
-    var_dump($_POST);
-    echo "<br/>";
-    var_dump($_SESSION);
+    // var_dump($_POST);
+    // echo "<br/>";
+    // var_dump($_SESSION);
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "";
     $datos = [];
@@ -30,6 +37,7 @@ if (isset($_POST)) {
             "id_b" => $_SESSION[SESSION_CURRENT_BATTLE],
             "mom" => $momento
         ];
+        realizarSql($conexion, $sql, $datos);
         quitarDatosBatalla();
     } else if (isset($_POST["denunciar"])) {
         $sql = "INSERT INTO usuario_batalla VALUES (
@@ -40,19 +48,34 @@ if (isset($_POST)) {
             "id_b" => $_SESSION[SESSION_CURRENT_BATTLE],
             "mom" => $momento
         ];
-
-        $consulta = "SELECT count(*) FROM usuario_batalla WHERE accion='denunciar' AND id_batalla='{$_SESSION[SESSION_CURRENT_BATTLE]}'";
-        $denuncias = $conexion->query($consulta)->fetch(PDO::FETCH_NUM)[0]+1; //se suma uno porque se cuenta la tuya (aunque todavía no esté subida)
-        echo $denuncias;
-        if ($denuncias >= 10) {// CAMBIAR NUMERO
-            $consulta = "DELETE FROM `batalla_elemento` WHERE id_batalla=?";
-            $conexion->prepare($consulta)->execute([$_SESSION[SESSION_CURRENT_BATTLE]]);
-            $sql = ""; //Como ya se ha borrado no hace falta insertar la última denuncia
+        realizarSql($conexion, $sql, $datos);
+        $sql = "SELECT count(*) FROM usuario_batalla WHERE accion='denunciar' AND id_batalla='{$_SESSION[SESSION_CURRENT_BATTLE]}'";
+        $denuncias = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0]; //se suma uno porque se cuenta la tuya (aunque todavía no esté subida)
+        if ($denuncias >= 10) { // CAMBIAR NUMERO
+            $sql = "DELETE FROM `batalla_elemento` WHERE id_batalla=?";
+            realizarSql($conexion, $sql, [$_SESSION[SESSION_CURRENT_BATTLE]]);
         }
         quitarDatosBatalla();
         //Se tienen que mantener los credenciales de denuncia??
         //Si no como se cuentan puntos de troll??
     } else if (isset($_POST["elementoVotado"])) {
+        //VIGILAR: ESTA FUNCION PUEDE NO EXISTIR AL SUBIRLO (HABRÍA QUE CREARLA)
+        if (str_ends_with(htmlspecialchars($_SERVER["HTTP_REFERER"]), "/crearBatalla.php")) {
+            $nombre1 = htmlspecialchars($_POST["nombre1"]);
+            $img1 = htmlspecialchars($_POST["img1"]);
+            $nombre2 = htmlspecialchars($_POST["nombre2"]);
+            $img2 = htmlspecialchars($_POST["img2"]);
+            $_SESSION[SESSION_BATTLE_ELEM_1] = insertar("elemento", ["", $nombre1, $img1, 0]);
+            $_SESSION[SESSION_BATTLE_ELEM_2] = insertar("elemento", ["", $nombre2, $img2, 0]);
+            $_SESSION[SESSION_CURRENT_BATTLE] = insertar("batalla_elemento", ["", $_SESSION[SESSION_BATTLE_ELEM_1], $_SESSION[SESSION_BATTLE_ELEM_2]]);
+            $elementoVotado=$_SESSION[SESSION_BATTLE_ELEM_1];
+            if($_POST["elementoVotado"]==2){
+                $elementoVotado=$_SESSION[SESSION_BATTLE_ELEM_2];
+            }
+            $_POST["elementoVotado"]=$elementoVotado;
+            insertar("usuario_batalla", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CURRENT_BATTLE], "crear", getMomentoActual()]);
+            //GESTIONAR ELEMENTO_USUARIO TAMBIÉN
+        }
         $sql = "INSERT INTO voto VALUES (
             :id_u, :id_b, :id_e, :mom
         )";
@@ -63,12 +86,8 @@ if (isset($_POST)) {
             "mom" => $momento
         ];
         $_SESSION[SESSION_BATTLE_VOTED] = true;
-    }
-
-    if ($sql !== "") {
-        $preparedSttm = $conexion->prepare($sql);
-        $preparedSttm->execute($datos);
+        realizarSql($conexion, $sql, $datos);
     }
 }
 
-header("Location: {$_SERVER['HTTP_REFERER']}");
+header("Location: ../index.php");

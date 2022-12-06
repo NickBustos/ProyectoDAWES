@@ -15,68 +15,67 @@ if (!isset($_SESSION[SESSION_ID])) {
  *  - Lo recorremos un forEach, donde separamos el array bandos en bando y hacemos la validacion de los datos recogidos anteriormente.
  */
 $nombre1 = $nombre2 = $img1 = $img2 = "";
-$_nombre1 = $_nombre2 = $_img1 = $_img2 = "";
+$_nombre1 = $_nombre2 = $_img = "";
 $errorNombre1 = $errorNombre2 = $errorImg1 = $errorImg2 = "&nbsp;";
 $elementoExistente1 = $elementoExistente2 = "";
+$preview = false;
+
 if (!empty($_POST)) {
-    if (isset($_POST["subirBatalla"])) { //Estaba en creación -> validaciones
-        $bandos = [
-            ["nombre1", &$_nombre1, &$nombre1, &$errorNombre1, "img1", &$img1, &$errorImg1, "elementoExistente1", &$elementoExistente1],
-            ["nombre2", &$_nombre2, &$nombre2, &$errorNombre2, "img2", &$img2, &$errorImg2, "elementoExistente2", &$elementoExistente2]
-        ];
-        foreach ($bandos as $bando) {
-                $bando[1] = htmlspecialchars($_POST[$bando[0]]);
-            if (!empty($bando[1])) {
-                $bando[2] = $bando[1];
-            } else {
-                $bando[3] = $lang["error_vacio"];
-            }
-            if (
-                !empty($_FILES) && !empty($_FILES[$bando[4]])
-                && !empty($_FILES[$bando[4]]["tmp_name"])
-            ) { //Se asegura de que el usuario ha introducido un archivo
-                if ($_FILES[$bando[4]]["type"] === "image/png") { //Comprueba que el archivo es una imagen png
-                    if ($_FILES[$bando[4]]['size'] <= 1000000) { //Comprueba que el archivo pesa menos de un 1 mega
-                        $bando[5] = getImage($_FILES[$bando[4]]);
-                    } else {
-                        $bando[6] = $lang["error_file_size"];
-                    }
+    //Ver datos de selects
+    //ver si nombre existe? 
+    $_nombre1 = htmlspecialchars($_POST["nombre1"]);
+    if (!empty($_nombre1)) {
+        $nombre1 = $_nombre1;
+    } else {
+        $errorNombre1 = $lang["error_vacio"];
+    }
+    $_nombre2 = htmlspecialchars($_POST["nombre2"]);
+    if (!empty($_nombre2)) {
+        $nombre2 = $_nombre2;
+    } else {
+        $errorNombre2 = $lang["error_vacio"];
+    }
+
+    if (!empty($_FILES)) { //Se asegura de que el usuario ha introducido al menos un archivo
+        if ( // si existe primera imagen
+            !empty($_FILES["img1"]) &&
+            !empty($_FILES["img1"]["tmp_name"])
+        ) {
+            $_img = $_FILES["img1"];
+            if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
+                if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 500 kilobytes
+                    $img1 = getImage($_img);
                 } else {
-                    $bando[6] = $lang["error_file_type"];
+                    $errorImg1 = $lang["error_file_size"];
                 }
             } else {
-                $bando[6] = $lang["error_vacio"];
+                $errorImg1 = $lang["error_file_type"];
             }
+        } else {
+            $errorImg1 = $lang["error_vacio"];
         }
-    } else if (isset($_POST["nombre1"])) { //Se estaba en preview -> voto/volver
-        if (isset($_POST["elementoVotado"])) { //voto (subir y votar)
-            $_nombre1 = htmlspecialchars($_POST["nombre1"]);
-            $_img1 = htmlspecialchars($_POST["img1"]);
-            $_nombre2 = htmlspecialchars($_POST["nombre2"]);
-            $_img2 = htmlspecialchars($_POST["img2"]);
-            $idElem1 = insertar("elemento", ["", $_nombre1, $_img1, 0]);
-            $idElem2 = insertar("elemento", ["", $_nombre2, $_img2, 0]);
-            $idBatalla = insertar("batalla_elemento", ["", $idElem1, $idElem2]);
-            insertar("usuario_batalla", ["", $_SESSION[SESSION_ID], $idBatalla, "crear", getMomentoActual()]);
-
-            $conexion = new PDO(DSN, USER, PASSWORD);
-            $elementoVotado = $idElem1;
-            if ($_POST["elementoVotado"] === "2") {
-                $elementoVotado = $idElem2;
+        if ( // si existe segunda imagen
+            !empty($_FILES["img2"]) &&
+            !empty($_FILES["img2"]["tmp_name"])
+        ) {
+            $_img = $_FILES["img2"];
+            if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
+                if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 750 kilobytes
+                    $img2 = getImage($_img);
+                } else {
+                    $errorImg2 = $lang["error_file_size"];
+                }
+            } else {
+                $errorImg2 = $lang["error_file_type"];
             }
-            $sql = "INSERT INTO voto VALUES (
-                :id_u, :id_b, :id_e, :mom
-            )";
-            $datos = [
-                "id_u" => $_SESSION[SESSION_ID],
-                "id_b" => $idBatalla,
-                "id_e" => $elementoVotado,
-                "mom" => getMomentoActual()
-            ];
-            $preparedSttm = $conexion->prepare($sql)->execute($datos);
-            echo "<p class='text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4'>BATALLA SUBIDA CON ÉXITO</p>";
-            $nombre1 = $nombre2 = $img1 = $img2 = "";
+        } else {
+            $errorImg2 = $lang["error_vacio"];
         }
+    } else {
+        $errorImg1 = $errorImg2 = $lang["error_vacio"];
+    }
+    if (!empty($nombre1) && !empty($nombre2) && !empty($img1) && !empty($img2)) {
+        $preview = true;
     }
 }
 ?>
@@ -90,13 +89,75 @@ if (!empty($_POST)) {
                         <div class="card text-black" style="border-radius: 25px;">
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
-                                    <?php
-                                    if ($nombre1 != "" && $img1 != "" && $nombre2 != "" && $img2 != "") {
-                                        include "admin/templates/batallaPreview.php";
-                                    } else {
-                                        include "admin/templates/creacionBatalla.php";
-                                    }
-                                    ?>
+                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo ($preview) ? $lang["upload"] : $lang["subirBatalla"]; ?></p>
+                                    <form method='post' class='subirBatalla' id='subirBatalla' enctype="multipart/form-data" 
+                                        action='<?php echo ($preview) ? "procesos/procesarVoto.php" : $_SERVER["PHP_SELF"]; ?>'>
+                                        <!--Si estas en creacion te hace el post a esta misma página, sino te lleva a procesarVoto-->
+                                        <header class='rowBatalla headerBatalla'>
+                                            <img class='imagenUser' src='<?php echo selectFromUsuario(["foto"])[0]; ?>'>
+                                            <p class='text-center fw-bold h1'><?php echo $_SESSION[SESSION_USER]; ?></p>
+                                        </header>
+                                        <div class='rowBatalla'>
+                                            <div class='bando'>
+                                                <div style='display:flex; justify-content:center;'>
+                                                    <img width='200px' height='200px' src='<?php echo ($preview) ? $img1 : "imagenes/javier.png"; ?>'>
+                                                </div>
+                                                <p class='text-center h1 fw-bold mt-4'><?php echo ($preview) ? $nombre1 : $lang["elemento1"]; ?></p>
+                                                <div class='voteBatalla'>
+                                                    <?php
+                                                    echo ($preview) ?
+                                                        "<input type='hidden' name='nombre1' value='{$nombre1}'>
+                                                        <input type='hidden' name='img1' value='{$img1}'>
+                                                        <button name='elementoVotado' type='submit' class='submitBatalla btn btn-primary btn-lg' value='1'>
+                                                            <img class='imagenUser' src='imagenes/thumbsUp.png'>
+                                                        </button>"
+                                                        :
+                                                        "<label class='form-label' for='nombre1'>{$lang['nombre']}</label>
+                                                        <input class='form-control' name='nombre1' type='text' value='{$nombre1}'>
+                                                        {$errorNombre1}
+                                                        <br />
+                                                        <label class='form-label' for='img1'>{$lang['imagen']}</label>
+                                                        <input class='form-control' name='img1' type='file' accept='image/png'>
+                                                        {$errorImg1}";
+
+                                                    ?>
+                                                </div>
+                                            </div>
+                                            <div class='bando'>
+                                                <div style='display:flex; justify-content:center;'>
+                                                    <img width='200px' height='200px' src='<?php echo ($preview) ? $img2 : "imagenes/martin.png"; ?>'>
+                                                </div>
+                                                <p class='text-center h1 fw-bold mt-4'><?php echo ($preview) ? $nombre2 : $lang["elemento2"]; ?></p>
+                                                <div class='voteBatalla'>
+                                                    <?php
+                                                    echo ($preview) ?
+                                                        "<input type='hidden' name='nombre2' value='{$nombre2}'>
+                                                        <input type='hidden' name='img2' value='{$img2}'>
+                                                        <button name='elementoVotado' type='submit' class='submitBatalla btn btn-primary btn-lg' value='2'>
+                                                            <img class='imagenUser' src='imagenes/thumbsUp.png'>
+                                                        </button>"
+                                                        :
+                                                        "<label class='form-label' for='nombre2'>{$lang['nombre']}</label>
+                                                        <input class='form-control' name='nombre2' type='text' value='{$nombre2}'>
+                                                        {$errorNombre2}
+                                                        <br />
+                                                        <label class='form-label' for='img2'>{$lang['imagen']}</label>
+                                                        <input class='form-control' name='img2' type='file' accept='image/png'>
+                                                        {$errorImg2}";
+                                                    ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class='rowBatalla'>
+                                            <button type='submit' class='submitBatalla btn btn-primary btn-lg' name='<?php echo ($preview) ? "return" : "subirBatalla"; ?>'>
+                                                <p class='text-center h1 fw-bold'>
+                                                    <?php echo ($preview) ? $lang['volver'] : $lang['subirBatalla']; ?>
+                                                </p>
+                                            </button>
+
+                                        </div>
+                                    </form>&nbsp;
+                                    <!--holi-->
                                 </div>
                             </div>
                         </div>
