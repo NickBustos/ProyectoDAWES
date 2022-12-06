@@ -49,10 +49,9 @@ if (isset($_POST)) {
             $conexion->prepare($consulta)->execute([$_SESSION[SESSION_CURRENT_BATTLE]]);
             $sql = ""; //Como ya se ha borrado no hace falta insertar la última denuncia
         }
-
         quitarDatosBatalla();
-
-        //Comprobar nº de denuncias
+        //Se tienen que mantener los credenciales de denuncia??
+        //Si no como se cuentan puntos de troll??
     } else if (isset($_POST["elementoVotado"])) {
         $sql = "INSERT INTO voto VALUES (
             :id_u, :id_b, :id_e, :mom

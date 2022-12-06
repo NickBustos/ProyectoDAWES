@@ -93,6 +93,7 @@ $lang += array( //SUBIRBATALLA
     "subirBatalla" => "Create battle",
     "nombre" => "Name:",
     "imagen" => "Image:",
-    "volver" => "Return"
+    "volver" => "Return",
+    "upload" => "IF YOU WANT TO UPLOAD THE BATTLE, ¡VOTE!"
 
 );
