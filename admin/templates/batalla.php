@@ -41,6 +41,18 @@
                                                         FROM voto vt
                                                         WHERE vt.id_usuario = {$_SESSION[SESSION_ID]}
                                                     )
+                                                    AND be.id_batalla NOT IN (
+                                                        SELECT ub.id_batalla
+                                                        FROM usuario_batalla ub
+                                                        WHERE ub.accion='denunciar'
+                                                        GROUP BY ub.id_batalla
+                                                        HAVING count(ub.accion) >= 10
+                                                    )
+                                                    AND be.id_batalla NOT IN (
+                                                        SELECT ub.id_batalla
+                                                        FROM usuario_batalla ub
+                                                        WHERE ub.accion='eliminar'
+                                                    )
                                                 ORDER BY RAND() 
                                                 LIMIT 1";
                                     $registroBatalla = $conexion->query($sql);

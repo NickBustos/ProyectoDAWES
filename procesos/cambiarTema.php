@@ -3,15 +3,7 @@ session_start();
 include_once '../admin/configuraciones/funcionesDB.php';
 include_once '../admin/configuraciones/funciones.php';
 
-function getTemaContrario($tema){
-    $nuevoTema = TEMA_LIGHT;
-    if ($tema == TEMA_LIGHT) {
-        $nuevoTema = TEMA_DARK;
-    }
-    return $nuevoTema;
-}
-
-$tema="TEMA_LIGHT";
+$tema=TEMA_LIGHT;
 if(isset($_SESSION[SESSION_ID])){
     //Inició sesion
     $conexion=new PDO(DSN, USER, PASSWORD);

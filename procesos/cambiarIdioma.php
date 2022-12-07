@@ -3,15 +3,6 @@ session_start();
 include_once '../admin/configuraciones/funcionesDB.php';
 include_once '../admin/configuraciones/funciones.php';
 
-function getIdiomaContrario($idioma)
-{
-    $nuevoIdioma = LANG_SPANISH;
-    if ($idioma == LANG_SPANISH) {
-        $nuevoIdioma = LANG_ENGLISH;
-    }
-    return $nuevoIdioma;
-}
-
 $idioma = LANG_SPANISH;
 if (isset($_SESSION[SESSION_ID])) {
     //Inició sesion

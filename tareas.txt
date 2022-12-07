@@ -4,6 +4,9 @@
  - enseñar elementos previos al crear batalla
  - limpiar templates/batalla
  - borrar creacionBatalla tras coger lo importante
+ - Cuando se borra usuario se borran sus batallas
+ - Al borrar usuario se deberían borrar sus batallas 
+ (opcional pero creo que hace falta porque si no daría error)
 
 validacion de crear batalla + corta - clara
  $bandos = [
