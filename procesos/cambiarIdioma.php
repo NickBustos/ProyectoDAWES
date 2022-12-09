@@ -16,11 +16,11 @@ if (isset($_SESSION[SESSION_ID])) {
     $resultado = $conexion->exec($sql);
 } else{
     //No inicio sesion
-    if (isset($_COOKIE["lang"])) {
-        $idioma = $_COOKIE["lang"];
+    if (isset($_COOKIE[LANG])) {
+        $idioma = $_COOKIE[LANG];
         $idioma = getIdiomaContrario($idioma);
     }
-    setCookie("lang", $idioma, time() + 60, '/');
+    setCookie(LANG, $idioma, time() + 60*60, '/');
 }
 header('Location: ' . $_SERVER["HTTP_REFERER"]);
 exit();

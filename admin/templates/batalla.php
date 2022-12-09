@@ -14,7 +14,7 @@
                                  * A continuación mostramos los elementos, haciendo un echo $mostrar.
                                  * Por cada batalla encontrado, se realiza un while
                                  */
-                                $conexion = new PDO(DSN, USER, PASSWORD);
+                                // $conexion = new PDO(DSN, USER, PASSWORD); YA LA HE CREADO EN CABECERA
 
                                 $batalla = $elemento1 = $elemento2 = "";
                                 $nameDeBoton = "ignorar"; // de base el boton es ignorar
@@ -30,31 +30,31 @@
                                     }
                                 } else {
                                     $sql = "SELECT be.id_elemento1, be.id_elemento2, be.id_batalla
-                                                FROM batalla_elemento be 
-                                                WHERE be.id_batalla NOT IN (
-                                                        SELECT ub.id_batalla
-                                                        FROM usuario_batalla ub
-                                                        WHERE ub.id_usuario = {$_SESSION[SESSION_ID]}
-                                                    )
-                                                    AND be.id_batalla NOT IN (
-                                                        SELECT vt.id_batalla
-                                                        FROM voto vt
-                                                        WHERE vt.id_usuario = {$_SESSION[SESSION_ID]}
-                                                    )
-                                                    AND be.id_batalla NOT IN (
-                                                        SELECT ub.id_batalla
-                                                        FROM usuario_batalla ub
-                                                        WHERE ub.accion='denunciar'
-                                                        GROUP BY ub.id_batalla
-                                                        HAVING count(ub.accion) >= 10
-                                                    )
-                                                    AND be.id_batalla NOT IN (
-                                                        SELECT ub.id_batalla
-                                                        FROM usuario_batalla ub
-                                                        WHERE ub.accion='eliminar'
-                                                    )
-                                                ORDER BY RAND() 
-                                                LIMIT 1";
+                                    FROM batalla_elemento be 
+                                    WHERE be.id_batalla NOT IN (
+                                            SELECT ub.id_batalla
+                                            FROM usuario_batalla ub
+                                            WHERE ub.id_usuario = {$_SESSION[SESSION_ID]}
+                                        )
+                                        AND be.id_batalla NOT IN (
+                                            SELECT vt.id_batalla
+                                            FROM voto vt
+                                            WHERE vt.id_usuario = {$_SESSION[SESSION_ID]}
+                                        )
+                                        AND be.id_batalla NOT IN (
+                                            SELECT ub.id_batalla
+                                            FROM usuario_batalla ub
+                                            WHERE ub.accion='denunciar'
+                                            GROUP BY ub.id_batalla
+                                            HAVING count(ub.accion) >= 10
+                                        )
+                                        AND be.id_batalla NOT IN (
+                                            SELECT ub.id_batalla
+                                            FROM usuario_batalla ub
+                                            WHERE ub.accion='eliminar'
+                                        )
+                                    ORDER BY RAND() 
+                                    LIMIT 1";
                                     $registroBatalla = $conexion->query($sql);
 
                                     $registroBatalla->bindColumn(1, $elemento1);

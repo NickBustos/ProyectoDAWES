@@ -43,13 +43,13 @@ function existe($user)
  */
 function getIdioma()
 {
-    $idioma = "es";
+    $idioma = LANG_SPANISH;
     if (isset($_SESSION[SESSION_ID])) {
         $idioma = selectFromUsuario(["idioma"])[0];
-    } else if (!isset($_COOKIE["lang"])) {
-        setcookie("lang", "es", time() + 60, '/');
-    } else if ($_COOKIE["lang"] == "en") {
-        $idioma = "en";
+    } else if (!isset($_COOKIE[LANG])) {
+        setcookie(LANG, LANG_SPANISH, time() + 60*60, '/');
+    } else if ($_COOKIE[LANG] == LANG_ENGLISH) {
+        $idioma = LANG_ENGLISH;
     }
     $pathIdioma = "admin/idiomas/" . $idioma . "-idioma.php";
     return $pathIdioma;
