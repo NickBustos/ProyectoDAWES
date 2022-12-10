@@ -23,14 +23,10 @@ if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
     if (!empty($_user)) {
         if (preg_match(PATTERN_USER, $_user)) {
-            if (!preg_match(PATTERN_CHARACTER_SEPARATOR, $_user)) {
-                if (existe($_user) === false) {
-                    $user = $_user;
-                } else {
-                    $errorUser = $lang["error_user_used"];
-                }
+            if (existe($_user) === false) {
+                $user = $_user;
             } else {
-                $errorUser = $lang["error_character_separator"];
+                $errorUser = $lang["error_user_used"];
             }
         } else {
             $errorUser = $lang["error_user_pattern"];
@@ -73,11 +69,7 @@ if (!empty($_POST)) {
     $_mail = htmlspecialchars($_POST["correoUsuario"]);
     if (!empty($_mail)) {
         if (filter_var($_mail, FILTER_VALIDATE_EMAIL)) {
-            if (!preg_match(PATTERN_CHARACTER_SEPARATOR, $_mail)) {
-                $mail = $_mail;
-            } else {
-                $errorMail = $lang["error_character_separator"];
-            }
+            $mail = $_mail;
         } else {
             $errorMail = $lang["error_mail"];
         }
@@ -110,7 +102,7 @@ if (!empty($_POST)) {
      */
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
         $id = subirUsuario([$user, $pass, $fechaNac, $avatar, $mail]);
-        $_SESSION[SESSION_ID]=$id;
+        $_SESSION[SESSION_ID] = $id;
         $_SESSION[SESSION_USER] = $user;
         header("Location: index.php");
     }
@@ -199,7 +191,7 @@ if (!empty($_POST)) {
                                             </div>
                                             <label for="formFile" class="form-label"><?php echo $lang["avatar"]; ?></label>
                                             <br>
-                                            
+
                                             <!-- Esto no lo borramos porque tenemos pensado usarlo en el futuro -->
                                             <!-- <div class="form-check d-flex justify-content-center mb-5">
                                                 <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
