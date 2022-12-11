@@ -20,6 +20,10 @@ function insertar($tabla, $datos)
     $preparedSttm->execute();
     return $conexion->lastInsertId();
 }
+
+
+
+
 /**
  * Function existe
  * Le pasamos un usuario, en caso de que lo encuentre, nos devuelve la contraseña
