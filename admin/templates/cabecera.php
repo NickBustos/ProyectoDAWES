@@ -20,15 +20,17 @@
      */
     $css = "<link rel='stylesheet' href='./css/archivo.css' />";
     if(isset($_SESSION[SESSION_ID])){
-        if(selectFromUsuario(["modovis"])[0] === "dark"){
+        if(selectFromUsuario([TEMA])[0] === "dark"){
             $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
         }
-    } else if (!isset($_SESSION["modovis"])) {
-        $_SESSION["modovis"] = 'light';
-    } else if ($_SESSION["modovis"] == 'dark') {
+    } else if (!isset($_SESSION[TEMA])) {
+        $_SESSION[TEMA] = TEMA_LIGHT;
+    } else if ($_SESSION[TEMA] == TEMA_DARK) {
         $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
     }
     echo $css;
+
+    $conexion= new PDO(DSN, USER, PASSWORD);// La creamos aquí porque al final siempre la usamos, para tenerla preparada
     ?>
 </head>
 

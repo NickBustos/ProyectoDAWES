@@ -51,5 +51,7 @@ define("TEMA", "modovis");
 define("TEMA_LIGHT", "light");
 define("TEMA_DARK", "dark");
 
+//--------------------------------------- BBDD ---------------------------------------
+
 
 ?>

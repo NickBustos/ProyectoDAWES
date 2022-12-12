@@ -15,63 +15,121 @@ if (!isset($_SESSION[SESSION_ID])) {
  *  - Lo recorremos un forEach, donde separamos el array bandos en bando y hacemos la validacion de los datos recogidos anteriormente.
  */
 $nombre1 = $nombre2 = $img1 = $img2 = "";
-$_nombre1 = $_nombre2 = "";
+$_nombre1 = $_nombre2 = $_img = "";
 $errorNombre1 = $errorNombre2 = $errorImg1 = $errorImg2 = "&nbsp;";
+$elementoExistente1 = $elementoExistente2 = "";
+$id1 = $id2 = $elementoExistente = -1;
+$preview = false;
+
 if (!empty($_POST)) {
-    $bandos = [
-        ["nombre1", &$_nombre1, &$nombre1, &$errorNombre1, "img1", &$img1, &$errorImg1],
-        ["nombre2", &$_nombre2, &$nombre2, &$errorNombre2, "img2", &$img2, &$errorImg2]
-    ];
-    foreach ($bandos as $bando) {
-        $bando[1] = htmlspecialchars($_POST[$bando[0]]);
-        if (!empty($bando[1])) {
-            $bando[2] = $bando[1];
+    //Ver datos de selects
+    if ($_POST["elementoExistente1"] != "") {
+        $id1 = $_POST["elementoExistente1"];
+        $elementoExistente = select(["nombre", "foto"], "elemento", ["id", $id1])[0];
+        $nombre1 = $elementoExistente[0];
+        $img1 = $elementoExistente[1];
+    } else {
+        $_nombre1 = htmlspecialchars($_POST["nombre1"]);
+        if (!empty($_nombre1)) {
+            $nombre1 = $_nombre1;
         } else {
-            $bando[3] = $lang["error_vacio"];
+            $errorNombre1 = $lang["error_vacio"];
         }
         if (
-            !empty($_FILES) && !empty($_FILES[$bando[4]])
-            && !empty($_FILES[$bando[4]]["tmp_name"])
-        ) { //Se asegura de que el usuario ha introducido un archivo
-            if ($_FILES[$bando[4]]["type"] === "image/png") { //Comprueba que el archivo es una imagen png
-                if ($_FILES[$bando[4]]['size'] <= 1000000) { //Comprueba que el archivo pesa menos de un 1 mega
-                    $bando[5] = getImage($_FILES[$bando[4]]);
+            !empty($_FILES) && !empty($_FILES["img1"]) &&
+            !empty($_FILES["img1"]["tmp_name"])
+        ) {
+            $_img = $_FILES["img1"];
+            if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
+                if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 500 kilobytes
+                    $img1 = getImage($_img);
                 } else {
-                    $bando[6] = $lang["error_file_size"];
+                    $errorImg1 = $lang["error_file_size"];
                 }
             } else {
-                $bando[6] = $lang["error_file_type"];
+                $errorImg1 = $lang["error_file_type"];
             }
-        } else {
-            $bando[6] = $lang["error_vacio"];
+        }else{
+            $errorImg1 = $lang["error_vacio"];
         }
     }
-    /**
-     * Si los datos anteriores han sido validados/llenos.
-     * Inserta los siguientes elementos:
-     *  -   Primer elemento -> Tabla Elemento.
-     *  -   Segundo elemento -> Tabla Elemento.
-     *  -   idBatalla -> crea una batalla y cuando se crea, se le asigna un ID y este nos le devuelve.
-     *  -   Insertamos una batalla elemento con los ID recogidos anteriormente.
-     *  -   Insertamos en usuario_batalla -> Un campo ID vacio, de la session recogemos el ID guardado, recogemos el id de la batalla, le pasamos el parametro creo 
-     *  y por ultimo llamamos getMomentoActual.
-     *  Por último nos muestra un mensaje de creación de batalla
-     *
-     */
-    if ($nombre1 != "" && $img1 != "" && $nombre2 != "" && $img2 != "") {
-        $idElem1 = insertar("elemento", ["", $nombre1, $img1, 0]);
-        $idElem2 = insertar("elemento", ["", $nombre2, $img2, 0]);
-        // $idBatalla = insertar("batalla", [""]);
-        // $idBatalla = insertar("batalla_elemento", ["", $idElem1, $idElem2]);
-        $idBatalla = insertar("batalla", [""]);
-        insertar("batalla_elemento", [$idBatalla, $idElem1, $idElem2]);
-        insertar("usuario_batalla", ["", $_SESSION[SESSION_ID], $idBatalla, "crear", getMomentoActual()]);
-        echo "<h1>BATALLA SUBIDA</h1>";
-        exit();
+
+    if ($_POST["elementoExistente2"] != "") {
+        $id2 = $_POST["elementoExistente2"];
+        $elementoExistente = select(["nombre", "foto"], "elemento", ["id", $id2])[0];
+        $nombre2 = $elementoExistente[0];
+        $img2 = $elementoExistente[1];
+    } else {
+        $_nombre2 = htmlspecialchars($_POST["nombre2"]);
+        if (!empty($_nombre2)) {
+            $nombre2 = $_nombre2;
+        } else {
+            $errorNombre2 = $lang["error_vacio"];
+        }
+        if (
+            !empty($_FILES) && !empty($_FILES["img2"]) &&
+            !empty($_FILES["img2"]["tmp_name"])
+        ){
+            $_img = $_FILES["img2"];
+            if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
+                if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 750 kilobytes
+                    $img2 = getImage($_img);
+                } else {
+                    $errorImg2 = $lang["error_file_size"];
+                }
+            } else {
+                $errorImg2 = $lang["error_file_type"];
+            }
+        }else {
+            $errorImg2 = $lang["error_vacio"];
+        }
+    }
+
+
+    // if (!empty($_FILES)) { //Se asegura de que el usuario ha introducido al menos un archivo
+    //     if ( // si existe primera imagen
+    //         !empty($_FILES["img1"]) &&
+    //         !empty($_FILES["img1"]["tmp_name"])
+    //     ) {
+    //         $_img = $_FILES["img1"];
+    //         if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
+    //             if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 500 kilobytes
+    //                 $img1 = getImage($_img);
+    //             } else {
+    //                 $errorImg1 = $lang["error_file_size"];
+    //             }
+    //         } else {
+    //             $errorImg1 = $lang["error_file_type"];
+    //         }
+    //     } else {
+    //         $errorImg1 = $lang["error_vacio"];
+    //     }
+    //     if ( // si existe segunda imagen
+    //         !empty($_FILES["img2"]) &&
+    //         !empty($_FILES["img2"]["tmp_name"])
+    //     ) {
+    //         $_img = $_FILES["img2"];
+    //         if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
+    //             if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 750 kilobytes
+    //                 $img2 = getImage($_img);
+    //             } else {
+    //                 $errorImg2 = $lang["error_file_size"];
+    //             }
+    //         } else {
+    //             $errorImg2 = $lang["error_file_type"];
+    //         }
+    //     } else {
+    //         $errorImg2 = $lang["error_vacio"];
+    //     }
+    // } else {
+    //     $errorImg1 = $errorImg2 = $lang["error_vacio"];
+    // }
+    if (!empty($nombre1) && !empty($nombre2) && !empty($img1) && !empty($img2)) {
+        $preview = true;
     }
 }
 ?>
-<br><br>
+
 <div class="row d-flex justify-content-center">
     <div class="col-md-6">
         <div class="card">
@@ -81,68 +139,91 @@ if (!empty($_POST)) {
                         <div class="card text-black" style="border-radius: 25px;">
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
-                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo $lang["subirBatalla"]; ?></p>
-                                    <!-- El cubo que contiene la batalla
-                                Este cubo esta dividio en dos bandos
-                            Los dos div, tienen una imagen y un input text -->
-                                    <form method="post" class="subirBatalla" id="subirBatalla" enctype="multipart/form-data" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
+                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo ($preview) ? $lang["upload"] : $lang["subirBatalla"]; ?></p>
+                                    <form method='post' class='subirBatalla' id='subirBatalla' enctype="multipart/form-data" action='<?php echo ($preview) ? "procesos/procesarVoto.php" : $_SERVER["PHP_SELF"]; ?>'>
+                                        <!--Si estas en creacion te hace el post a esta misma página, sino te lleva a procesarVoto-->
                                         <header class='rowBatalla headerBatalla'>
                                             <img class='imagenUser' src='<?php echo selectFromUsuario(["foto"])[0]; ?>'>
                                             <p class='text-center fw-bold h1'><?php echo $_SESSION[SESSION_USER]; ?></p>
                                         </header>
                                         <div class='rowBatalla'>
-                                            <div class="bando">
-                                                <div>
-                                                    <img style="width:100%; height:200px; border-radius: 50%;" src="imagenes/javier.png">
-                                                    <!-- Intento de enseñar los elementos, que existen en la BD para que el usuario les pudiera escoger -->
-                                                    <!-- <select class="form-control" name="elemento1"> -->
-                                                    <?php
-                                                    // $conexion = new PDO(DSN, USER, PASSWORD);
-                                                    // $sql = "SELECT nombre, foto FROM elemento";
-                                                    // $resultado = $conexion->query($sql);
-                                                    // $opciones = "<option></option>";
-                                                    // while ($registro = $resultado->fetch(PDO::FETCH_NUM)) {
-                                                    //     $opciones .= "<option>{$registro[1]}</option>";
-                                                    // }
-                                                    // echo $opciones;
-                                                    ?>
-                                                    <!-- </select> -->
+                                            <div class='bando'>
+                                                <div style='display:flex; justify-content:center;'>
+                                                    <img width='200px' height='200px' src='<?php echo ($preview) ? $img1 : "imagenes/javier.png"; ?>'>
                                                 </div>
-                                                <div>
-                                                    <label class="form-label" for="nombre1"><?php echo $lang["nombre"]; ?></label>
-                                                    <input class="form-control" name="nombre1" type="text" value='<?php echo $nombre1 ?>'>
-                                                    <?php echo $errorNombre1 ?>
-                                                    <br />
-                                                    <label class="form-label" for="img1"><?php echo $lang["imagen"]; ?></label>
-                                                    <input class="form-control" name="img1" type="file" accept="image/png">
-                                                    <?php echo $errorImg1 ?>
+                                                <p class='text-center h1 fw-bold mt-4'><?php echo ($preview) ? $nombre1 : $lang["elemento1"]; ?></p>
+                                                <div class='voteBatalla'>
+                                                    <?php
+                                                    if ($preview) {
+                                                        echo
+                                                        "<input type='hidden' name='nombre1' value='{$nombre1}'>
+                                                        <input type='hidden' name='img1' value='{$img1}'>
+                                                        <input type='hidden' name='id1' value='{$id1}'>
+                                                        <button name='elementoVotado' type='submit' class='submitBatalla btn btn-primary btn-lg' value='1'>
+                                                            <img class='imagenUser' src='imagenes/thumbsUp.png'>
+                                                        </button>";
+                                                    } else {
+                                                        echo
+                                                        "<select class='form-control' name='elementoExistente1'>";
+                                                        $conexion = new PDO(DSN, USER, PASSWORD);
+                                                        $sql = "SELECT id, nombre FROM elemento";
+                                                        $resultado = $conexion->query($sql);
+                                                        $opciones = "<option value=''></option>";
+                                                        $listaElementos = select(["id", "nombre"], "elemento", []);
+                                                        foreach ($listaElementos as $elementoExistente) {
+                                                            $opciones .= "<option value='{$elementoExistente[0]}'>{$elementoExistente[1]}</option>";
+                                                        }
+                                                        echo $opciones . "</select>";
+                                                        echo
+                                                        "<label class='form-label' for='nombre1'>{$lang['nombre']}</label>
+                                                        <input class='form-control' name='nombre1' type='text' value='{$nombre1}'>
+                                                        {$errorNombre1}
+                                                        <br />
+                                                        <label class='form-label' for='img1'>{$lang['imagen']}</label>
+                                                        <input class='form-control' name='img1' type='file' accept='image/png'>
+                                                        {$errorImg1}";
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
-                                            <div class="bando">
-                                                <div class="imagen">
-                                                    <img style="width:100%; height:200px; border-radius: 50%;" src="imagenes/martin.png">
-                                                    <!-- <select class="form-control" name="elemento1"> -->
-                                                    <?php
-                                                    // echo $opciones;
-                                                    ?>
-                                                    <!-- </select> -->
+                                            <div class='bando'>
+                                                <div style='display:flex; justify-content:center;'>
+                                                    <img width='200px' height='200px' src='<?php echo ($preview) ? $img2 : "imagenes/martin.png"; ?>'>
                                                 </div>
-                                                <div>
-                                                    <label class="form-label" for="nombre2"><?php echo $lang["nombre"]; ?></label>
-                                                    <input class="form-control" name="nombre2" type="text" value='<?php echo $nombre2 ?>'>
-                                                    <?php echo $errorNombre2 ?>
-                                                    <br />
-                                                    <label class="form-label" for="img2"><?php echo $lang["imagen"]; ?></label>
-                                                    <input class="form-control" name="img2" type="file" accept="image/png">
-                                                    <?php echo $errorImg2 ?>
+                                                <p class='text-center h1 fw-bold mt-4'><?php echo ($preview) ? $nombre2 : $lang["elemento2"]; ?></p>
+                                                <div class='voteBatalla'>
+                                                    <?php
+                                                    echo ($preview) ?
+                                                        "<input type='hidden' name='nombre2' value='{$nombre2}'>
+                                                        <input type='hidden' name='img2' value='{$img2}'>
+                                                        <input type='hidden' name='id2' value='{$id2}'>
+                                                        <button name='elementoVotado' type='submit' class='submitBatalla btn btn-primary btn-lg' value='2'>
+                                                            <img class='imagenUser' src='imagenes/thumbsUp.png'>
+                                                        </button>"
+                                                        :
+                                                        "<select class='form-control' name='elementoExistente2'>
+                                                        " . $opciones . "</select>
+                                                        <label class='form-label' for='nombre2'>{$lang['nombre']}</label>
+                                                        <input class='form-control' name='nombre2' type='text' value='{$nombre2}'>
+                                                        {$errorNombre2}
+                                                        <br />
+                                                        <label class='form-label' for='img2'>{$lang['imagen']}</label>
+                                                        <input class='form-control' name='img2' type='file' accept='image/png'>
+                                                        {$errorImg2}";
+                                                    ?>
                                                 </div>
                                             </div>
-                                            <br />
                                         </div>
                                         <div class='rowBatalla'>
-                                            <input class="submitBatalla btn btn-primary btn-lg" type="submit" value="<?php echo $lang["subirBatalla"]; ?>">
+                                            <button type='submit' class='submitBatalla btn btn-primary btn-lg' name='<?php echo ($preview) ? "return" : "subirBatalla"; ?>'>
+                                                <p class='text-center h1 fw-bold'>
+                                                    <?php echo ($preview) ? $lang['volver'] : $lang['subirBatalla']; ?>
+                                                </p>
+                                            </button>
+
                                         </div>
-                                    </form>
+                                    </form>&nbsp;
+                                    <!--holi-->
                                 </div>
                             </div>
                         </div>
