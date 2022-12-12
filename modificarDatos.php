@@ -1,7 +1,10 @@
 <?php include_once "admin/templates/cabecera.php"; ?>
 
 <?php
-
+/**
+ * Puedo poner a mayores, lo que me ha dicho mario de pedir comprobacion para cambiar la contrasñea
+ * 
+ */
 // var_dump($_SESSION);
 // echo "<br/>";
 
@@ -55,9 +58,9 @@ if (!empty($_POST)) {
             }
         }
         $sql .= " WHERE nombreusuario='{$nameAct}'";
-        // echo $sql . "<br/>";
-        // echo $conexion->prepare($sql)->execute($credencialesGuardar);
-        // echo "<br/>";
+        echo $sql . "<br/>";
+        echo $conexion->prepare($sql)->execute($credencialesGuardar);
+        echo "<br/>";
         if (in_array("nombreusuario", $tablasCredenciales)) {
             $_SESSION[SESSION_USER] = $newName;
             $nameAct = $newName;
@@ -111,9 +114,9 @@ if (!empty($_POST)) {
             }
         }
         $sql .= " WHERE id='{$_SESSION[SESSION_ID]}'";
-        // echo $sql . "<br/>";
-        // echo $conexion->prepare($sql)->execute($usuarioGuardar);
-        // echo "<br/>";
+        echo $sql . "<br/>";
+        echo $conexion->prepare($sql)->execute($usuarioGuardar);
+        echo "<br/>";
         if (in_array("fechanacimiento", $tablasUsuario)) {
             $dateAct = $dateNew;
             $errorDate = "Fecha Cambiada";
@@ -132,16 +135,16 @@ if (!empty($_POST)) {
 
 <form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' enctype='multipart/form-data'>
     Nombre:<input type="text" name='newName' value=<?php echo $nameAct; ?>><?php echo $errorName; ?>
-    <br />
-    Password:<input name='newPass' type="password"><?php echo $errorPass; ?>
-    <br />
+    <br />  <br />
+    Password:<input name='newPass' type="password" value = "**********"><?php echo $errorPass; ?>
+    <br />  <br />
     FechaNac:<input type="date" name='newDate' value=<?php echo $dateAct; ?>><?php echo $errorDate; ?>
-    <br />
+    <br />  <br />
     Email<input type="email" name='newMail' value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>"><?php echo $errorMail; ?>
-    <br />
+    <br />  <br />
     <img src='<?php echo $fotoAct; ?>' width='100px' height='100px'>
     <input type="file" name='newFoto'><?php echo $errorFoto; ?>
-    <br />
+    <br />  <br />   <br />
     <input type="submit">
 </form>
 
