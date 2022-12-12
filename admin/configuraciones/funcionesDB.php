@@ -90,7 +90,7 @@ function subirUsuario($datos)
     }
 
     // Campos: id, fecha, foto, email, modovis, idioma, rol
-    $id = insertar("usuario", ['', $datos[2], $datos[3], $datos[4], $modovis, $idioma, 'usuario']);
+    $id = insertar("usuario", ['', $datos[2], $datos[3], $datos[4], $modovis, $idioma, 'usuario', '0', '0', '0', '0', '0', '0']);
 
     // Coger momento actual
     $momento = getMomentoActual();
@@ -193,4 +193,10 @@ function realizarSql($conexion, $sql, $datos)
 {
     $preparedSttm = $conexion->prepare($sql);
     $preparedSttm->execute($datos);
+}
+
+function actualizarUsuario($campo, $actualizacion, $id){
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $sql = "UPDATE usuario SET {$campo}=? WHERE id={$id}";
+    $conexion->prepare($sql)->execute([$actualizacion]);
 }
