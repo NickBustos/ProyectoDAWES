@@ -47,7 +47,7 @@ function getIdioma()
     if (isset($_SESSION[SESSION_ID])) {
         $idioma = selectFromUsuario(["idioma"])[0];
     } else if (!isset($_COOKIE[LANG])) {
-        setcookie(LANG, LANG_SPANISH, time() + 60*60, '/');
+        setcookie(LANG, LANG_SPANISH, time() + 60 * 60, '/');
     } else if ($_COOKIE[LANG] == LANG_ENGLISH) {
         $idioma = LANG_ENGLISH;
     }
@@ -109,18 +109,17 @@ function selectFromUsuario($campos)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "SELECT ";
-    for($i = 0; $i < count($campos); $i++){
-        $sql.="{$campos[$i]}";
-        if($i < count($campos) -1){
-            $sql.=",";
+    for ($i = 0; $i < count($campos); $i++) {
+        $sql .= "{$campos[$i]}";
+        if ($i < count($campos) - 1) {
+            $sql .= ",";
         }
-        $sql.=" ";
+        $sql .= " ";
     }
-    $sql.=" FROM usuario WHERE id='" . $_SESSION[SESSION_ID] . "'";
+    $sql .= " FROM usuario WHERE id='" . $_SESSION[SESSION_ID] . "'";
     $resultado = $conexion->query($sql);
     $registro = $resultado->fetch(PDO::FETCH_NUM);
     return $registro;
-
 }
 
 
@@ -131,27 +130,27 @@ function selectFromUsuario($campos)
  * $tabla --> Nombre de la tabla de la que queremos extraer los datos
  * $where --> Es un array al que le pasamos [nombre de tabla,valor al que se iguala]
  */
-function select($campos, $tabla, $where){
+function select($campos, $tabla, $where)
+{
     include_once "configDB.php";
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "SELECT ";
-    for($i = 0; $i < count($campos); $i++){
-        $sql.="{$campos[$i]}";
-        if($i < count($campos) -1){
-            $sql.=",";
+    for ($i = 0; $i < count($campos); $i++) {
+        $sql .= "{$campos[$i]}";
+        if ($i < count($campos) - 1) {
+            $sql .= ",";
         }
-        $sql.=" ";
+        $sql .= " ";
     }
-    $sql.=" FROM {$tabla} ";
-    if(count($where)>0){
-        $sql.="WHERE {$where[0]}='{$where[1]}'";
+    $sql .= " FROM {$tabla} ";
+    if (count($where) > 0) {
+        $sql .= "WHERE {$where[0]}='{$where[1]}'";
     }
     // echo $sql;
     // echo "<br/>";
     $resultado = $conexion->query($sql);
     $registros = $resultado->fetchAll(PDO::FETCH_NUM);
     return $registros;
-    
 }
 
 function getIdiomaContrario($idioma)
@@ -163,7 +162,8 @@ function getIdiomaContrario($idioma)
     return $nuevoIdioma;
 }
 
-function getTemaContrario($tema){
+function getTemaContrario($tema)
+{
     $nuevoTema = TEMA_LIGHT;
     if ($tema == TEMA_LIGHT) {
         $nuevoTema = TEMA_DARK;
