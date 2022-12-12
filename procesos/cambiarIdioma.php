@@ -3,15 +3,6 @@ session_start();
 include_once '../admin/configuraciones/funcionesDB.php';
 include_once '../admin/configuraciones/funciones.php';
 
-function getIdiomaContrario($idioma)
-{
-    $nuevoIdioma = LANG_SPANISH;
-    if ($idioma == LANG_SPANISH) {
-        $nuevoIdioma = LANG_ENGLISH;
-    }
-    return $nuevoIdioma;
-}
-
 $idioma = LANG_SPANISH;
 if (isset($_SESSION[SESSION_ID])) {
     //Inició sesion
@@ -25,11 +16,11 @@ if (isset($_SESSION[SESSION_ID])) {
     $resultado = $conexion->exec($sql);
 } else{
     //No inicio sesion
-    if (isset($_COOKIE["lang"])) {
-        $idioma = $_COOKIE["lang"];
+    if (isset($_COOKIE[LANG])) {
+        $idioma = $_COOKIE[LANG];
         $idioma = getIdiomaContrario($idioma);
     }
-    setCookie("lang", $idioma, time() + 60, '/');
+    setCookie(LANG, $idioma, time() + 60*60, '/');
 }
 header('Location: ' . $_SERVER["HTTP_REFERER"]);
 exit();

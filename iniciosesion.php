@@ -27,7 +27,6 @@ $errorUser = $errorPassword = "";
 if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
     $_password = htmlspecialchars($_POST["password"]);
-    $linea;
     if (!empty($_user)) {
         $passReal = existe($_user);
         if ($passReal !== false) {

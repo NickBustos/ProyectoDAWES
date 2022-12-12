@@ -43,13 +43,13 @@ function existe($user)
  */
 function getIdioma()
 {
-    $idioma = "es";
+    $idioma = LANG_SPANISH;
     if (isset($_SESSION[SESSION_ID])) {
         $idioma = selectFromUsuario(["idioma"])[0];
-    } else if (!isset($_COOKIE["lang"])) {
-        setcookie("lang", "es", time() + 60, '/');
-    } else if ($_COOKIE["lang"] == "en") {
-        $idioma = "en";
+    } else if (!isset($_COOKIE[LANG])) {
+        setcookie(LANG, LANG_SPANISH, time() + 60*60, '/');
+    } else if ($_COOKIE[LANG] == LANG_ENGLISH) {
+        $idioma = LANG_ENGLISH;
     }
     $pathIdioma = "admin/idiomas/" . $idioma . "-idioma.php";
     return $pathIdioma;
@@ -143,16 +143,54 @@ function select($campos, $tabla, $where){
         $sql.=" ";
     }
     $sql.=" FROM {$tabla} ";
-    if(isset($where)){
+    if(count($where)>0){
         $sql.="WHERE {$where[0]}='{$where[1]}'";
     }
-    echo $sql;
-    echo "<br/>";
+    // echo $sql;
+    // echo "<br/>";
     $resultado = $conexion->query($sql);
     $registros = $resultado->fetchAll(PDO::FETCH_NUM);
     return $registros;
     
 }
-// include_once "configDB.php";
-// subirUsuario(["pepepe", "aaa", "1998-07-01", "aaaa", "aaa@"]);
 
+function getIdiomaContrario($idioma)
+{
+    $nuevoIdioma = LANG_SPANISH;
+    if ($idioma == LANG_SPANISH) {
+        $nuevoIdioma = LANG_ENGLISH;
+    }
+    return $nuevoIdioma;
+}
+
+function getTemaContrario($tema){
+    $nuevoTema = TEMA_LIGHT;
+    if ($tema == TEMA_LIGHT) {
+        $nuevoTema = TEMA_DARK;
+    }
+    return $nuevoTema;
+}
+
+/**
+ * Elimina todos los datos de la sesión
+ * excepto el id del usuario y su nombre
+ */
+function quitarDatosBatalla()
+{
+    foreach ($_SESSION as $key => $value) {
+        if ($key != SESSION_ID && $key != SESSION_USER) {
+            unset($_SESSION[$key]);
+        }
+    }
+}
+
+/**
+ * Ejecuta como consulta preparada un sql y unos datos 
+ * como array que comparten key con los datos del sql
+ * (Usada en procesar voto)
+ */
+function realizarSql($conexion, $sql, $datos)
+{
+    $preparedSttm = $conexion->prepare($sql);
+    $preparedSttm->execute($datos);
+}

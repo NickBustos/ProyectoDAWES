@@ -1,0 +1,48 @@
+ - Ver cuanto puede pesa imagen para subirse y cambiarlo en registrarse
+ - hacer constante de tamaño max de foto y cambiar donde se use
+ - gestionar elementos y hablar si se puede repetir nombre
+ - enseñar elementos previos al crear batalla
+ - limpiar templates/batalla
+ - borrar creacionBatalla tras coger lo importante
+ - Cuando se borra usuario se borran sus batallas
+ - Al borrar usuario se deberían borrar sus batallas 
+ (opcional pero creo que hace falta porque si no daría error)
+
+validacion de crear batalla + corta - clara
+ $bandos = [
+            [
+                "stringNombre" => "nombre1", "_nombre" => &$_nombre1, "nombre" => &$nombre1, "errorNombre" => &$errorNombre1,
+                "stringImagen" => "img1", "imagen" => &$img1, "errorImagen" => &$errorImg1,
+                "stringExiste" => "elementoExistente1",  "elementoExiste" => &$elementoExistente1
+            ],
+            [
+                "stringNombre" => "nombre2", "_nombre" => &$_nombre2, "nombre" => &$nombre2, "errorNombre" => &$errorNombre2,
+                "stringImagen" => "img2", "imagen" => &$img2, "errorImagen" => &$errorImg2,
+                "stringExiste" => "elementoExistente2",  "elementoExiste" => &$elementoExistente2
+            ]
+        ];
+        foreach ($bandos as $bando) {
+            $bando["_nombre"] = htmlspecialchars($_POST[$bando["stringNombre"]]);
+            if (!empty($bando[1])) {
+                $bando["nombre"] = $bando["_nombre"];
+            } else {
+                $bando["errorNombre"] = $lang["error_vacio"];
+            }
+            if (
+                !empty($_FILES) && !empty($_FILES[$bando["stringImagen"]])
+                && !empty($_FILES[$bando["stringImagen"]]["tmp_name"])
+            ) { //Se asegura de que el usuario ha introducido un archivo
+                $_img = $_FILES[$bando["stringImagen"]];
+                if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
+                    if ($_img['size'] <= 500000) { //Comprueba que el archivo pesa menos de un 500 kilobytes
+                        $bando["imagen"] = getImage($_img);
+                    } else {
+                        $bando["errorImagen"] = $lang["error_file_size"];
+                    }
+                } else {
+                    $bando["errorImagen"] = $lang["error_file_type"];
+                }
+            } else {
+                $bando["errorImagen"] = $lang["error_vacio"];
+            }
+        }
