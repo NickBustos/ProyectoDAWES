@@ -2,10 +2,6 @@
 include 'admin/templates/cabecera.php';
 
 if ((isset($_SESSION[SESSION_ID]))) {
-    $idSesion = $_SESSION[SESSION_ID];
-    $nombreUsuario = datosUsuarioPerfil($idSesion, "nombreusuario")[0];
-    $fotoPerfil = selectFromUsuario(["foto"])[0];
-
 } else {
 }
 
@@ -16,7 +12,13 @@ if ((isset($_SESSION[SESSION_ID]))) {
     <section>
         <div>
             <div class="text-center main-text">
-                <h4>NOMBRE DE USUARIO</h4>
+                <h4><?php
+                    if ((isset($_SESSION[SESSION_ID]))) {
+                        echo [SESSION_USER];
+                    } else {
+                        echo "ÚNETE A NUETRA COMUNIDAD";
+                    }
+                    ?></h4>
                 <br>
                 <div class="medallas">
                     <img src="https://cdn-icons-png.flaticon.com/512/3176/3176294.png" alt=""><img src="https://cdn-icons-png.flaticon.com/512/5551/5551284.png" alt="">
