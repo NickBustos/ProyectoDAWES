@@ -19,6 +19,10 @@ function insertar($tabla, $datos)
     $preparedSttm->execute();
     return $conexion->lastInsertId();
 }
+
+
+
+
 /**
  * Function existe
  * Le pasamos un usuario, en caso de que lo encuentre, nos devuelve la contraseña
@@ -77,7 +81,7 @@ function getMomentoActual()
 function subirUsuario($datos)
 {
 
-    insertar("credencial", [$datos[0], md5($datos[1])]);
+    insertar("credencial", [$datos[0], base64_encode ($datos[1])]);
 
     // Coger modovis e idioma
     $modovis = "light";
