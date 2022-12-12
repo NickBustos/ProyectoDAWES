@@ -4,7 +4,6 @@ function insertar($tabla, $datos)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "INSERT INTO {$tabla} VALUES (";
-    $campos = "";
     for ($i = 0; $i < count($datos); $i++) {
         $sql .= ":{$i}";
         if ($i < count($datos) - 1) {
