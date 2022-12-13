@@ -1,6 +1,5 @@
 <?php
 session_start();
-include_once '../admin/configuraciones/funcionesDB.php';
 include_once '../admin/configuraciones/funciones.php';
 
 if (isset($_POST)) {
@@ -17,7 +16,7 @@ if (isset($_POST)) {
     if (isset($_POST["siguiente"])) {
         quitarDatosBatalla();
 
-    // --------------------------------------------------------- IGNORAR --------------------------------------------------------
+    // --------------------------------------------------------- IGNORAR ---------------------------------------------------------
 
     } else if (isset($_POST["ignorar"])) {
         $sql = "INSERT INTO usuario_batalla VALUES (

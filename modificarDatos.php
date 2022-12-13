@@ -47,17 +47,8 @@ if (!empty($_POST)) {
         }
     }
     if (count($credencialesGuardar) > 0) {
-        $sql = "UPDATE credencial SET ";
-        for ($i = 0; $i < count($credencialesGuardar); $i++) {
-            $sql .= "{$tablasCredenciales[$i]}=?";
-            if ($i < count($credencialesGuardar) - 1) {
-                $sql .= ", ";
-            }
-        }
-        $sql .= " WHERE nombreusuario='{$nameAct}'";
-        // echo $sql . "<br/>";
-        // echo $conexion->prepare($sql)->execute($credencialesGuardar);
-        // echo "<br/>";
+        update("credencial", $tablasCredenciales, $credencialesGuardar, "nombreusuario", $nameAct);
+
         if (in_array("nombreusuario", $tablasCredenciales)) {
             $_SESSION[SESSION_USER] = $newName;
             $nameAct = $newName;
@@ -103,17 +94,8 @@ if (!empty($_POST)) {
     }
 
     if (count($usuarioGuardar) > 0) {
-        $sql = "UPDATE usuario SET ";
-        for ($i = 0; $i < count($usuarioGuardar); $i++) {
-            $sql .= "{$tablasUsuario[$i]}=?";
-            if ($i < count($usuarioGuardar) - 1) {
-                $sql .= ", ";
-            }
-        }
-        $sql .= " WHERE id='{$_SESSION[SESSION_ID]}'";
-        // echo $sql . "<br/>";
-        // echo $conexion->prepare($sql)->execute($usuarioGuardar);
-        // echo "<br/>";
+        update("usuario", $tablasUsuario, $usuarioGuardar, "id", $_SESSION[SESSION_ID]);
+
         if (in_array("fechanacimiento", $tablasUsuario)) {
             $dateAct = $dateNew;
             $errorDate = "Fecha Cambiada";
@@ -122,27 +104,29 @@ if (!empty($_POST)) {
             $mailAct = $mailNew;
             $errorMail = "Mail Cambiado";
         }
-        if(in_array("foto", $tablasUsuario)){
+        if (in_array("foto", $tablasUsuario)) {
             $fotoAct = $fotoNew;
             $errorFoto = "Foto Cambiada";
         }
     }
 }
 ?>
-
-<form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' enctype='multipart/form-data'>
-    Nombre:<input type="text" name='newName' value=<?php echo $nameAct; ?>><?php echo $errorName; ?>
-    <br />
-    Password:<input name='newPass' type="password"><?php echo $errorPass; ?>
-    <br />
-    FechaNac:<input type="date" name='newDate' value=<?php echo $dateAct; ?>><?php echo $errorDate; ?>
-    <br />
-    Email<input type="email" name='newMail' value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>"><?php echo $errorMail; ?>
-    <br />
-    <img src='<?php echo $fotoAct; ?>' width='100px' height='100px'>
-    <input type="file" name='newFoto'><?php echo $errorFoto; ?>
-    <br />
-    <input type="submit">
-</form>
-
+<div style="text-align:center">
+    <form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' class="mx-1 mx-md-4" style="display:inline-block;" enctype='multipart/form-data'>
+        <img src='<?php echo $fotoAct; ?>' width='300px' height='300px'>
+        <br />
+        Nombre:<input type="text" name='newName' value=<?php echo $nameAct; ?>
+            class="form-control"><?php echo $errorName; ?>
+        <br />
+        Password:<input name='newPass' type="password" class="form-control"><?php echo $errorPass; ?>
+        <br />
+        FechaNac:<input type="date" name='newDate' value=<?php echo $dateAct; ?> class="form-control"><?php echo $errorDate; ?>
+        <br />
+        Email:<input type="email" name='newMail' value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>" class="form-control"><?php echo $errorMail; ?>
+        <br />
+        Imagen:<input type="file" name='newFoto' class="form-control"><?php echo $errorFoto; ?>
+        <br />
+        <input type="submit" class="btn btn-primary btn-lg">
+    </form>
+</div>
 <?php include_once "admin/templates/pie.php"; ?>
