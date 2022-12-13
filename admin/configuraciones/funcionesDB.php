@@ -153,6 +153,15 @@ function select($campos, $tabla, $where)
     return $registros;
 }
 
+function imagenBatalla($idUsuario)
+{
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $query = "SELECT foto FROM elemento WHERE id = (SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = 
+    (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = $idUsuario)) OR
+    id = (SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = $idUsuario));";
+}
+
+
 function getIdiomaContrario($idioma)
 {
     $nuevoIdioma = LANG_SPANISH;

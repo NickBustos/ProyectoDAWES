@@ -95,14 +95,4 @@ function getImage($file)
 // }
 
 //----------------------------- OPERACIONES CON SESION -----------------------------
-/**
- * Introduce datos del usuario en sesion
- */
-function iniciarSesion($linea)
-{
-    $_SESSION[SESSION_USER] = getDato(LINE_USER, $linea);
-    $_SESSION[SESSION_PASS] = getDato(LINE_PASS, $linea);
-    $_SESSION[SESSION_MAIL] = getDato(LINE_MAIL, $linea);
-    $_SESSION[SESSION_DATE] = getDato(LINE_DATE, $linea);
-    $_SESSION[SESSION_FILE] = getDato(LINE_FILE, $linea);
-}
+
