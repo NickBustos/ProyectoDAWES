@@ -11,8 +11,14 @@ if (isset($_POST)) {
     $sql = "";
     $datos = [];
     $momento = getMomentoActual();
+
+    // -------------------------------------------------------- SIGUIENTE --------------------------------------------------------
+    
     if (isset($_POST["siguiente"])) {
         quitarDatosBatalla();
+
+    // --------------------------------------------------------- IGNORAR --------------------------------------------------------
+
     } else if (isset($_POST["ignorar"])) {
         $sql = "INSERT INTO usuario_batalla VALUES (
             '', :id_u, :id_b, 'ignorar', :mom
@@ -24,7 +30,14 @@ if (isset($_POST)) {
         ];
         realizarSql($conexion, $sql, $datos);
         quitarDatosBatalla();
+
+        $batallasIgnoradas = selectFromUsuario(["num_batallas_ignoradas"])[0];
+        $batallasIgnoradas++;
+        actualizarUsuario("num_batallas_ignoradas", $batallasIgnoradas, $_SESSION[SESSION_ID]);
+
+    // -------------------------------------------------------- DENUNCIAR --------------------------------------------------------
     } else if (isset($_POST["denunciar"])) {
+
         $sql = "INSERT INTO usuario_batalla VALUES (
             '', :id_u, :id_b, 'denunciar', :mom
         )";
@@ -34,33 +47,24 @@ if (isset($_POST)) {
             "mom" => $momento
         ];
         realizarSql($conexion, $sql, $datos);
+
+        $denuncias = selectFromUsuario(["num_batallas_denunciadas"])[0];
+        $denuncias++;
+        actualizarUsuario("num_batallas_denunciadas", $denuncias, $_SESSION[SESSION_ID]);
+
         $sql = "SELECT count(*) FROM usuario_batalla WHERE accion='denunciar' AND id_batalla='{$_SESSION[SESSION_CURRENT_BATTLE]}'";
         $denuncias = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
 
-        if ($denuncias >= 100) { // CAMBIAR NUMERO
-            // Se calculan las denuncias totales que tiene un usuario (puntos de troll)
+        if ($denuncias >= 10) { // CAMBIAR NUMERO
             $id_usuarioCreador = select(["id_usuario"], "usuario_batalla", ["id_batalla", $_SESSION[SESSION_CURRENT_BATTLE]])[0][0];/*REVISAR*/
-            $sql = "SELECT count(*) 
-                FROM `usuario_batalla` 
-                WHERE accion = 'denunciar'
-                    AND id_batalla IN (
-                        SELECT id_batalla
-                        FROM `usuario_batalla` 
-                        WHERE accion = 'crear'
-                            AND id_usuario = {$id_usuarioCreador}
-                        )";
-
-            $sql = "DELETE FROM `usuario` WHERE id_batalla=?";
-            realizarSql($conexion, $sql, [$_SESSION[SESSION_CURRENT_BATTLE]]);
+            $puntosTroll = select(["num_batallas_denunciadas"], "usuario", ["id", $id_usuarioCreador])[0][0];
+            $puntosTroll++;
+            actualizarUsuario("puntos_troll", $puntosTroll, $id_usuarioCreador);
         }
         quitarDatosBatalla();
-        //Se tienen que mantener los credenciales de denuncia??
-        //Si no como se cuentan puntos de troll??
-        //GESTIONAR ELEMENTO_USUARIO TAMBIÉN
-        //Comprobar si es la única vez que se usan esos elementos y en ese caso borrarlos
-        /*
-        No se borran batallas, se mantienen pero no se dejan ver si tienen muchas denuncias
-        */
+
+    // --------------------------------------------------------- VOTAR ---------------------------------------------------------
+
     } else if (isset($_POST["elementoVotado"])) {
         //VIGILAR: ESTA FUNCION PUEDE NO EXISTIR AL SUBIRLO (HABRÍA QUE CREARLA) https://www.php.net/manual/en/function.str-ends-with.php
         if (str_ends_with(htmlspecialchars($_SERVER["HTTP_REFERER"]), "/crearBatalla.php")) {
@@ -70,6 +74,10 @@ if (isset($_POST)) {
                 $img1 = htmlspecialchars($_POST["img1"]);
                 $_SESSION[SESSION_BATTLE_ELEM_1] = insertar("elemento", ["", $nombre1, $img1, 0]);
                 insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_BATTLE_ELEM_1], "crear", getMomentoActual()]);
+
+                $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
+                $elementosCreados++;
+                actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
             }
             $_SESSION[SESSION_BATTLE_ELEM_2] = $_POST["id2"];
             if ($_SESSION[SESSION_BATTLE_ELEM_2] == -1) { // El elemento2 ha sido creado
@@ -77,6 +85,10 @@ if (isset($_POST)) {
                 $img2 = htmlspecialchars($_POST["img2"]);
                 $_SESSION[SESSION_BATTLE_ELEM_2] = insertar("elemento", ["", $nombre2, $img2, 0]);
                 insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_BATTLE_ELEM_2], "crear", getMomentoActual()]);
+
+                $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
+                $elementosCreados++;
+                actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
             }
             $_SESSION[SESSION_CURRENT_BATTLE] = insertar("batalla_elemento", ["", $_SESSION[SESSION_BATTLE_ELEM_1], $_SESSION[SESSION_BATTLE_ELEM_2]]);
             $elementoVotado = $_SESSION[SESSION_BATTLE_ELEM_1];
@@ -85,6 +97,10 @@ if (isset($_POST)) {
             }
             $_POST["elementoVotado"] = $elementoVotado;
             insertar("usuario_batalla", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CURRENT_BATTLE], "crear", getMomentoActual()]);
+
+            $batallasCreadas = selectFromUsuario(["num_batallas_creadas"])[0];
+            $batallasCreadas++;
+            actualizarUsuario("num_batallas_votadas", $batallasCreadas, $_SESSION[SESSION_ID]);
         }
         $sql = "INSERT INTO voto VALUES (
             :id_u, :id_b, :id_e, :mom
@@ -97,6 +113,10 @@ if (isset($_POST)) {
         ];
         $_SESSION[SESSION_BATTLE_VOTED] = true;
         realizarSql($conexion, $sql, $datos);
+
+        $votos = selectFromUsuario(["num_batallas_votadas"])[0];
+        $votos++;
+        actualizarUsuario("num_batallas_votadas", $votos, $_SESSION[SESSION_ID]);
     }
 }
 
