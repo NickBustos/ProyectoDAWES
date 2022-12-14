@@ -9,7 +9,6 @@
     <?php
     session_start();
     include "admin/configuraciones/funciones.php";
-    include "admin/configuraciones/funcionesDB.php";
     include getIdioma();
 
     /**

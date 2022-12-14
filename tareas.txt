@@ -1,10 +1,8 @@
  - Ver cuanto puede pesa imagen para subirse y cambiarlo en registrarse
  - hacer constante de tamaño max de foto y cambiar donde se use
  - gestionar elementos y hablar si se puede repetir nombre
- - enseñar elementos previos al crear batalla
  - limpiar templates/batalla
  - borrar creacionBatalla tras coger lo importante
- - Cuando se borra usuario se borran sus batallas
  - Al borrar usuario se deberían borrar sus batallas 
  (opcional pero creo que hace falta porque si no daría error)
 
