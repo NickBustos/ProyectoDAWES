@@ -3,11 +3,10 @@
 <?php
 /**
  * Puedo poner a mayores, lo que me ha dicho mario de pedir comprobacion para cambiar la contrasñea
- * 
+ * Borrar usuario tambien
  */
-// var_dump($_SESSION);
-// echo "<br/>";
 
+$idUser = $_SESSION[SESSION_ID];
 $nameAct = $_SESSION[SESSION_USER];
 $datosActuales = selectFromUsuario(["fechanacimiento", "foto", "email"]);
 $dateAct = $datosActuales[0];
@@ -125,27 +124,77 @@ if (!empty($_POST)) {
             $mailAct = $mailNew;
             $errorMail = "Mail Cambiado";
         }
-        if(in_array("foto", $tablasUsuario)){
+        if (in_array("foto", $tablasUsuario)) {
             $fotoAct = $fotoNew;
             $errorFoto = "Foto Cambiada";
         }
     }
 }
+
+if (isset($_POST["delete"])) {
+
+    function delete($tabla, $columna, $dato)
+    {
+        $conexion = new PDO(DSN, USER, PASSWORD);
+        $sql = "DELETE FROM {$tabla} WHERE {$columna} = ? ";
+        $conexion->prepare($sql)->execute([$dato]);
+    }
+
+    delete("usuario_credencial", "nombreusuario", $nameAct);
+    delete("credencial", "nombreusuario", $nameAct);
+    delete("usuario", "id", $idUser);
+    delete("usuario_credencial", "nombreusuario", $nameAct);
+    echo "usuarioBorrad";
+    exit();   
+}
 ?>
+<br><br>
+<div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="container h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="card text-black" style="border-radius: 25px;">
+                            <div class="card-body p-md-5">
+                                <div class="row justify-content-center">
+                                    <div>
+                                        <!-- Para ver como se hace con el lang     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo $lang["iniciosesion"]; ?></p> -->
+                                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo "Página de {$_SESSION[SESSION_USER]}" ?></p>
+                                        <form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' enctype='multipart/form-data'>
+                                            <div class="form-outline mb-4">
+                                                <!-- -------------------- Usuario ----------------------- -->
+                                                Usuario:<input type="text" id="Mdatos" class="form-control" name='newName' value=<?php echo $nameAct; ?>><?php echo $errorName; ?>
+                                            </div>
+                                            <br /> <br />
 
-<form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' enctype='multipart/form-data'>
-    Nombre:<input type="text" name='newName' value=<?php echo $nameAct; ?>><?php echo $errorName; ?>
-    <br />  <br />
-    Password:<input name='newPass' type="password" value = "**********"><?php echo $errorPass; ?>
-    <br />  <br />
-    FechaNac:<input type="date" name='newDate' value=<?php echo $dateAct; ?>><?php echo $errorDate; ?>
-    <br />  <br />
-    Email<input type="email" name='newMail' value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>"><?php echo $errorMail; ?>
-    <br />  <br />
-    <img src='<?php echo $fotoAct; ?>' width='100px' height='100px'>
-    <input type="file" name='newFoto'><?php echo $errorFoto; ?>
-    <br />  <br />   <br />
-    <input type="submit">
-</form>
+                                            <!-- -------------------- Contraseña ----------------------- -->
+                                            <div class="form-outline mb-4">
+                                                Password:<input name='newPass' type="password" id="Mdatos" class="form-control" value="**********"><?php echo $errorPass; ?>
+                                            </div>
+                                            <br /> <br />
+                                            <!-- -------------------- Fecha Nac ----------------------- -->
+                                            <div class="form-outline mb-4">
+                                                FechaNac:<input type="date" name='newDate' id="Mdatos" class="form-control" value=<?php echo $dateAct; ?>><?php echo $errorDate; ?>
+                                            </div>
+                                            <br /> <br />
+                                            <!-- -------------------- Email ----------------------- -->
+                                            <div class="form-outline mb-4">
+                                                Email<input type="email" name='newMail' id="Mdatos" class="form-control" value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>"><?php echo $errorMail; ?>
+                                            </div>
+                                            <br /> <br />
+                                            <!-- -------------------- Foto ----------------------- -->
+                                            <div class="LogoMdatos">
+                                                <img src='<?php echo $fotoAct; ?>' width='200px' height='200px'>
+                                                <input type="file" id="mFoto"><?php echo $errorFoto; ?>
+                                            </div>
+                                            <br /> <br /> <br />
+                                            <!-- -------------------- Boton ----------------------- -->
+                                            <input type="submit">
+                                            <br /> <br /> <br />
+                                            <!-- -------------------- Boton ----------------------- -->
+                                            <input type="submit" name="delete" value="Borrar Cuenta">
+                                            <br /> <br /> <br /> <br /> <br><br><br><br><br>
+                                        </form>
 
-<?php include_once "admin/templates/pie.php"; ?>
+                                        <?php include_once "admin/templates/pie.php"; ?>
