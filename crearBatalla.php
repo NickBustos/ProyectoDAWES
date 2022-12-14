@@ -59,14 +59,14 @@ if (!empty($_POST)) {
         $elementoExistente = select(["nombre", "foto"], "elemento", ["id", $id2])[0];
         if ($id1 != -1) {
             if ($id1 != $id2) {
-                $sql = "SELECT id_elemento2 AS ID FROM `batalla_elemento` WHERE id_elemento1=?
+                $sql = "SELECT id_elemento2 AS ID FROM batalla_elemento WHERE id_elemento1=?
                         UNION
-                        SELECT id_elemento1 AS ID FROM `batalla_elemento` WHERE id_elemento2=?";
+                        SELECT id_elemento1 AS ID FROM batalla_elemento WHERE id_elemento2=?";
                 $preparedSttm = $conexion->prepare($sql);
-                $preparedSttm->execute([$id1, $id2]);
+                $preparedSttm->execute([$id1, $id1]);
                 $idses = $preparedSttm->fetchAll(PDO::FETCH_COLUMN, 0); //coge todas las 1ª columnas (no importa porque solo hay 1) en 1 array
                 $encontrado = array_search($id2, $idses);
-                if ($encontrado == false) {
+                if ($encontrado === false) {
                     $nombre2 = $elementoExistente[0];
                     $img2 = $elementoExistente[1];
                 } else {
@@ -151,8 +151,11 @@ if (!empty($_POST)) {
                                                         $opciones = "<option value=''></option>";
                                                         $listaElementos = select(["id", "nombre"], "elemento", []);
                                                         foreach ($listaElementos as $elementoExistente) {
-                                                            
-                                                            $opciones .= "<option value='{$elementoExistente[0]}'>{$elementoExistente[1]}</option>";
+                                                            if ($elementoExistente[0] == $id1) {
+                                                                $opciones .= "<option value='{$elementoExistente[0]}' selected>{$elementoExistente[1]}</option>";
+                                                            } else {
+                                                                $opciones .= "<option value='{$elementoExistente[0]}'>{$elementoExistente[1]}</option>";
+                                                            }
                                                         }
                                                         echo $opciones . "</select><br/>";
                                                         echo
@@ -174,16 +177,24 @@ if (!empty($_POST)) {
                                                 <p class='text-center h1 fw-bold mt-4'><?php echo ($preview) ? $nombre2 : $lang["elemento2"]; ?></p>
                                                 <div class='voteBatalla'>
                                                     <?php
-                                                    echo ($preview) ?
-                                                        "<input type='hidden' name='nombre2' value='{$nombre2}'>
+                                                    if ($preview) {
+                                                        echo "<input type='hidden' name='nombre2' value='{$nombre2}'>
                                                         <input type='hidden' name='img2' value='{$img2}'>
                                                         <input type='hidden' name='id2' value='{$id2}'>
                                                         <button name='elementoVotado' type='submit' class='submitBatalla btn btn-primary btn-lg' value='2'>
                                                             <img class='imagenUser' src='imagenes/thumbsUp.png'>
-                                                        </button>"
-                                                        :
-                                                        "<select class='form-control' name='elementoExistente2'>
-                                                        " . $opciones . "</select>{$errorElementoExistente}<br/>
+                                                        </button>";
+                                                    }else{
+                                                        echo "<select class='form-control' name='elementoExistente2'>";
+                                                        $opciones = "<option value=''></option>";
+                                                        foreach ($listaElementos as $elementoExistente) {
+                                                            if ($elementoExistente[0] == $id2) {
+                                                                $opciones .= "<option value='{$elementoExistente[0]}' selected>{$elementoExistente[1]}</option>";
+                                                            } else {
+                                                                $opciones .= "<option value='{$elementoExistente[0]}'>{$elementoExistente[1]}</option>";
+                                                            }
+                                                        }
+                                                        echo $opciones . "</select>{$errorElementoExistente}<br/>
                                                         <label class='form-label' for='nombre2'>{$lang['nombre']}</label>
                                                         <input class='form-control' name='nombre2' type='text' value='{$nombre2}'>
                                                         {$errorNombre2}
@@ -191,6 +202,7 @@ if (!empty($_POST)) {
                                                         <label class='form-label' for='img2'>{$lang['imagen']}</label>
                                                         <input class='form-control' name='img2' type='file' accept='image/png'>
                                                         {$errorImg2}";
+                                                    }
                                                     ?>
                                                 </div>
                                             </div>

@@ -12,11 +12,11 @@ if (isset($_POST)) {
     $momento = getMomentoActual();
 
     // -------------------------------------------------------- SIGUIENTE --------------------------------------------------------
-    
+
     if (isset($_POST["siguiente"])) {
         quitarDatosBatalla();
 
-    // --------------------------------------------------------- IGNORAR ---------------------------------------------------------
+        // --------------------------------------------------------- IGNORAR ---------------------------------------------------------
 
     } else if (isset($_POST["ignorar"])) {
         $sql = "INSERT INTO usuario_batalla VALUES (
@@ -34,7 +34,7 @@ if (isset($_POST)) {
         $batallasIgnoradas++;
         actualizarUsuario("num_batallas_ignoradas", $batallasIgnoradas, $_SESSION[SESSION_ID]);
 
-    // -------------------------------------------------------- DENUNCIAR --------------------------------------------------------
+        // -------------------------------------------------------- DENUNCIAR --------------------------------------------------------
     } else if (isset($_POST["denunciar"])) {
 
         $sql = "INSERT INTO usuario_batalla VALUES (
@@ -62,7 +62,7 @@ if (isset($_POST)) {
         }
         quitarDatosBatalla();
 
-    // --------------------------------------------------------- VOTAR ---------------------------------------------------------
+        // --------------------------------------------------------- VOTAR ---------------------------------------------------------
 
     } else if (isset($_POST["elementoVotado"])) {
         //VIGILAR: ESTA FUNCION PUEDE NO EXISTIR AL SUBIRLO (HABRÍA QUE CREARLA) https://www.php.net/manual/en/function.str-ends-with.php
@@ -99,7 +99,7 @@ if (isset($_POST)) {
 
             $batallasCreadas = selectFromUsuario(["num_batallas_creadas"])[0];
             $batallasCreadas++;
-            actualizarUsuario("num_batallas_votadas", $batallasCreadas, $_SESSION[SESSION_ID]);
+            actualizarUsuario("num_batallas_creadas", $batallasCreadas, $_SESSION[SESSION_ID]);
         }
         $sql = "INSERT INTO voto VALUES (
             :id_u, :id_b, :id_e, :mom
