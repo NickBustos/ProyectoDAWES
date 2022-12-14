@@ -36,15 +36,35 @@ if ((isset($_SESSION[SESSION_ID]))) {
         <div class="filaBatallas">
             <div class="row-center">
                 <?php
-                $totalBatallas = selectFromUsuario(["num_batallas_creadas"])[0];
-                if ($totalBatallas == "0") {
-                    echo  '<h4>
+                if (isset($_SESSION[SESSION_ID])) {
+                    $totalBatallas = selectFromUsuario(["num_batallas_creadas"])[0];
+                    echo $totalBatallas;
+                    if ($totalBatallas == "0") {
+                        echo  '<h4>
                         ¡Vaya, parece que este usuario no ha creado batallas aún!
                         </h4>';
-                } else {
-                    for ($i = 0; $i < $totalBatallas; $i++) {
-                        $imagenBatallaU = "";
+                    } else {
+                        for ($i = 0; $i < $totalBatallas; $i++) {
+                            $imagenBatallaU = '<div class="filaBatallas">
+                            <div class="row-center">
+                                <div class="card-group">
+                                    <div class="card">
+                                        ' . imagenBatalla($_SESSION[SESSION_ID])[$i] . '
+                                        <span class="btn-circle btn-or">OR</span>
+                                        <img class="card-img-top" data-src="#" alt="luigi" style="height: 15px;">
+                                        <div class="card-body">
+                                            <h4 class="card-title">Batalla #' . $i . '</h4>
+                                            <p class="card-text">Mario vs Luigi</p>
+                                        </div>
+                                    </div>';
+                        }
+                        echo "</div>
+                        </div>";
                     }
+                } else {
+                    echo  '<h4>
+                        ¡Registrate y crea batallas épicas!
+                        </h4>';
                 }
 
                 ?>

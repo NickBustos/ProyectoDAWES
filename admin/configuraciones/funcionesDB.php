@@ -156,9 +156,10 @@ function select($campos, $tabla, $where)
 function imagenBatalla($idUsuario)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
-    $query = "SELECT foto FROM elemento WHERE id = (SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = 
-    (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = $idUsuario)) OR
-    id = (SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = $idUsuario));";
+    $query = 'SELECT foto FROM elemento WHERE id = ANY (SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = $idUsuario AND accion LIKE ("crear")) UNION ALL SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = $idUsuario AND accion LIKE ("crear")));';
+    $resultado = $conexion->query($query);
+    $registro = $resultado->fetch(PDO::FETCH_NUM);
+    return $registro;
 }
 
 
@@ -204,7 +205,8 @@ function realizarSql($conexion, $sql, $datos)
     $preparedSttm->execute($datos);
 }
 
-function actualizarUsuario($campo, $actualizacion, $id){
+function actualizarUsuario($campo, $actualizacion, $id)
+{
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "UPDATE usuario SET {$campo}=? WHERE id={$id}";
     $conexion->prepare($sql)->execute([$actualizacion]);
