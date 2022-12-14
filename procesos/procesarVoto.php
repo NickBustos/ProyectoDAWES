@@ -99,7 +99,7 @@ if (isset($_POST)) {
 
             $batallasCreadas = selectFromUsuario(["num_batallas_creadas"])[0];
             $batallasCreadas++;
-            actualizarUsuario("num_batallas_votadas", $batallasCreadas, $_SESSION[SESSION_ID]);
+            actualizarUsuario("num_batallas_creadas", $batallasCreadas, $_SESSION[SESSION_ID]);
         }
         $sql = "INSERT INTO voto VALUES (
             :id_u, :id_b, :id_e, :mom

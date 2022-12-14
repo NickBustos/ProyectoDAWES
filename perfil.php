@@ -38,25 +38,29 @@ if ((isset($_SESSION[SESSION_ID]))) {
                 <?php
                 if (isset($_SESSION[SESSION_ID])) {
                     $totalBatallas = selectFromUsuario(["num_batallas_creadas"])[0];
-                    echo $totalBatallas;
+                    echo "<br>";
                     if ($totalBatallas == "0") {
                         echo  '<h4>
                         ¡Vaya, parece que este usuario no ha creado batallas aún!
                         </h4>';
                     } else {
+                        $acum = 0;
                         for ($i = 0; $i < $totalBatallas; $i++) {
                             $imagenBatallaU = '<div class="filaBatallas">
                             <div class="row-center">
                                 <div class="card-group">
                                     <div class="card">
-                                        ' . imagenBatalla($_SESSION[SESSION_ID])[$i] . '
-                                        <span class="btn-circle btn-or">OR</span>
-                                        <img class="card-img-top" data-src="#" alt="luigi" style="height: 15px;">
+                                        <img class="imagenUser" src="' . imagenBatalla($_SESSION[SESSION_ID])[$acum] . '">
+                                        <span class="btn-circle btn-or">OR</span> 
+                                        <img class="imagenUser" src="' . imagenBatalla($_SESSION[SESSION_ID])[$acum + 1] . '">
                                         <div class="card-body">
                                             <h4 class="card-title">Batalla #' . $i . '</h4>
-                                            <p class="card-text">Mario vs Luigi</p>
+                                            <p class="card-text">Algo vs Algo</p>
                                         </div>
                                     </div>';
+                            $acum = $acum + $i + 2;
+
+                            echo $imagenBatallaU;
                         }
                         echo "</div>
                         </div>";
