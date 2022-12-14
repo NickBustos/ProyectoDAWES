@@ -16,7 +16,7 @@ if (!isset($_SESSION[SESSION_ID])) {
  */
 $nombre1 = $nombre2 = $img1 = $img2 = "";
 $_nombre1 = $_nombre2 = $_img = "";
-$errorNombre1 = $errorNombre2 = $errorImg1 = $errorImg2 = "&nbsp;";
+$errorNombre1 = $errorNombre2 = $errorImg1 = $errorImg2 = $errorElementoExistente = "&nbsp;";
 $elementoExistente1 = $elementoExistente2 = "";
 $id1 = $id2 = $elementoExistente = -1;
 $preview = false;
@@ -49,7 +49,7 @@ if (!empty($_POST)) {
             } else {
                 $errorImg1 = $lang["error_file_type"];
             }
-        }else{
+        } else {
             $errorImg1 = $lang["error_vacio"];
         }
     }
@@ -57,8 +57,28 @@ if (!empty($_POST)) {
     if ($_POST["elementoExistente2"] != "") {
         $id2 = $_POST["elementoExistente2"];
         $elementoExistente = select(["nombre", "foto"], "elemento", ["id", $id2])[0];
-        $nombre2 = $elementoExistente[0];
-        $img2 = $elementoExistente[1];
+        if ($id1 != -1) {
+            if ($id1 != $id2) {
+                $sql = "SELECT id_elemento2 AS ID FROM `batalla_elemento` WHERE id_elemento1=?
+                        UNION
+                        SELECT id_elemento1 AS ID FROM `batalla_elemento` WHERE id_elemento2=?";
+                $preparedSttm = $conexion->prepare($sql);
+                $preparedSttm->execute([$id1, $id2]);
+                $idses = $preparedSttm->fetchAll(PDO::FETCH_COLUMN, 0); //coge todas las 1ª columnas (no importa porque solo hay 1) en 1 array
+                $encontrado = array_search($id2, $idses);
+                if ($encontrado == false) {
+                    $nombre2 = $elementoExistente[0];
+                    $img2 = $elementoExistente[1];
+                } else {
+                    $errorElementoExistente = $lang["error_batallaExiste"];
+                }
+            } else {
+                $errorElementoExistente = $lang["error_elementosIguales"];
+            }
+        } else {
+            $nombre2 = $elementoExistente[0];
+            $img2 = $elementoExistente[1];
+        }
     } else {
         $_nombre2 = htmlspecialchars($_POST["nombre2"]);
         if (!empty($_nombre2)) {
@@ -69,7 +89,7 @@ if (!empty($_POST)) {
         if (
             !empty($_FILES) && !empty($_FILES["img2"]) &&
             !empty($_FILES["img2"]["tmp_name"])
-        ){
+        ) {
             $_img = $_FILES["img2"];
             if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
                 if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 750 kilobytes
@@ -80,50 +100,10 @@ if (!empty($_POST)) {
             } else {
                 $errorImg2 = $lang["error_file_type"];
             }
-        }else {
+        } else {
             $errorImg2 = $lang["error_vacio"];
         }
     }
-
-
-    // if (!empty($_FILES)) { //Se asegura de que el usuario ha introducido al menos un archivo
-    //     if ( // si existe primera imagen
-    //         !empty($_FILES["img1"]) &&
-    //         !empty($_FILES["img1"]["tmp_name"])
-    //     ) {
-    //         $_img = $_FILES["img1"];
-    //         if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
-    //             if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 500 kilobytes
-    //                 $img1 = getImage($_img);
-    //             } else {
-    //                 $errorImg1 = $lang["error_file_size"];
-    //             }
-    //         } else {
-    //             $errorImg1 = $lang["error_file_type"];
-    //         }
-    //     } else {
-    //         $errorImg1 = $lang["error_vacio"];
-    //     }
-    //     if ( // si existe segunda imagen
-    //         !empty($_FILES["img2"]) &&
-    //         !empty($_FILES["img2"]["tmp_name"])
-    //     ) {
-    //         $_img = $_FILES["img2"];
-    //         if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
-    //             if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 750 kilobytes
-    //                 $img2 = getImage($_img);
-    //             } else {
-    //                 $errorImg2 = $lang["error_file_size"];
-    //             }
-    //         } else {
-    //             $errorImg2 = $lang["error_file_type"];
-    //         }
-    //     } else {
-    //         $errorImg2 = $lang["error_vacio"];
-    //     }
-    // } else {
-    //     $errorImg1 = $errorImg2 = $lang["error_vacio"];
-    // }
     if (!empty($nombre1) && !empty($nombre2) && !empty($img1) && !empty($img2)) {
         $preview = true;
     }
@@ -171,9 +151,10 @@ if (!empty($_POST)) {
                                                         $opciones = "<option value=''></option>";
                                                         $listaElementos = select(["id", "nombre"], "elemento", []);
                                                         foreach ($listaElementos as $elementoExistente) {
+                                                            
                                                             $opciones .= "<option value='{$elementoExistente[0]}'>{$elementoExistente[1]}</option>";
                                                         }
-                                                        echo $opciones . "</select>";
+                                                        echo $opciones . "</select><br/>";
                                                         echo
                                                         "<label class='form-label' for='nombre1'>{$lang['nombre']}</label>
                                                         <input class='form-control' name='nombre1' type='text' value='{$nombre1}'>
@@ -202,7 +183,7 @@ if (!empty($_POST)) {
                                                         </button>"
                                                         :
                                                         "<select class='form-control' name='elementoExistente2'>
-                                                        " . $opciones . "</select>
+                                                        " . $opciones . "</select>{$errorElementoExistente}<br/>
                                                         <label class='form-label' for='nombre2'>{$lang['nombre']}</label>
                                                         <input class='form-control' name='nombre2' type='text' value='{$nombre2}'>
                                                         {$errorNombre2}
