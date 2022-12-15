@@ -44,7 +44,7 @@
 }
 
 
-.medallas img{
+.medallas img {
     height: 40px !important;
 }
 
@@ -70,7 +70,7 @@
     flex-direction: column;
     flex-basis: 100%;
     flex: 1;
-    padding:10px;
+    padding: 10px;
 }
 
 .bando:nth-child(odd) {
@@ -93,6 +93,13 @@
     width: 50px;
     height: 50px;
     border-radius: 20px;
+}
+
+.card>.imagenUser {
+    width: 130px;
+    height: 100px;
+    border-radius: 50px;
+    margin: auto;
 }
 
 .desplegable {
@@ -143,7 +150,7 @@
     text-align: center;
     font-weight: 600;
     text-transform: uppercase;
-    margin:auto;
+    margin: auto;
 }
 
 .fondo {
