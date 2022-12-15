@@ -40,8 +40,8 @@ if (!empty($_POST)) {
             !empty($_FILES["img1"]["tmp_name"])
         ) {
             $_img = $_FILES["img1"];
-            if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
-                if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 500 kilobytes
+            if ($_img["type"] === "image/png") {
+                if ($_img['size'] <= IMAGE_MAX_SIZE) {
                     $img1 = getImage($_img);
                 } else {
                     $errorImg1 = $lang["error_file_size"];
@@ -91,8 +91,8 @@ if (!empty($_POST)) {
             !empty($_FILES["img2"]["tmp_name"])
         ) {
             $_img = $_FILES["img2"];
-            if ($_img["type"] === "image/png") { //Comprueba que el archivo es una imagen png
-                if ($_img['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 750 kilobytes
+            if ($_img["type"] === "image/png") {
+                if ($_img['size'] <= IMAGE_MAX_SIZE) {
                     $img2 = getImage($_img);
                 } else {
                     $errorImg2 = $lang["error_file_size"];
@@ -213,7 +213,6 @@ if (!empty($_POST)) {
                                                     <?php echo ($preview) ? $lang['volver'] : $lang['subirBatalla']; ?>
                                                 </p>
                                             </button>
-
                                         </div>
                                     </form>&nbsp;
                                     <!--holi-->

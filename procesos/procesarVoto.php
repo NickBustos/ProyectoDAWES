@@ -10,6 +10,7 @@ if (isset($_POST)) {
     $sql = "";
     $datos = [];
     $momento = getMomentoActual();
+    $newLocation="../index.php";
 
     // -------------------------------------------------------- SIGUIENTE --------------------------------------------------------
 
@@ -66,7 +67,8 @@ if (isset($_POST)) {
 
     } else if (isset($_POST["elementoVotado"])) {
         //VIGILAR: ESTA FUNCION PUEDE NO EXISTIR AL SUBIRLO (HABRÍA QUE CREARLA) https://www.php.net/manual/en/function.str-ends-with.php
-        if (str_ends_with(htmlspecialchars($_SERVER["HTTP_REFERER"]), "/crearBatalla.php")) {
+        $origen = htmlspecialchars(strtolower($_SERVER["HTTP_REFERER"]));
+        if (str_ends_with($origen, "/crearbatalla.php")) {
             $_SESSION[SESSION_BATTLE_ELEM_1] = $_POST["id1"];
             if ($_SESSION[SESSION_BATTLE_ELEM_1] == -1) { // El elemento1 ha sido creado
                 $nombre1 = htmlspecialchars($_POST["nombre1"]);
@@ -110,13 +112,19 @@ if (isset($_POST)) {
             "id_e" => $_POST["elementoVotado"],
             "mom" => $momento
         ];
+        
         $_SESSION[SESSION_BATTLE_VOTED] = true;
         realizarSql($conexion, $sql, $datos);
 
         $votos = selectFromUsuario(["num_batallas_votadas"])[0];
         $votos++;
         actualizarUsuario("num_batallas_votadas", $votos, $_SESSION[SESSION_ID]);
+
+        // ---------------------------------------------------- RETURN DE VOTAR ----------------------------------------------------
+
+    }else if (isset($_POST["return"])) {
+        $newLocation = "../crearBatalla.php";
     }
 }
 
-header("Location: ../index.php");
+header("Location: {$newLocation}");

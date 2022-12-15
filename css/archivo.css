@@ -65,8 +65,10 @@
     flex: 1;
     padding:10px;
 }
-.bando:nth-child(odd) {
-    border-right: solid lightgrey 5px;;
+@media screen and (min-width:600px){
+    .bando:nth-child(odd) {
+        border-right: solid lightgrey 5px;;
+    }
 }
 .submitBatalla{
     display:block;

@@ -1,6 +1,9 @@
 <?php
 //-------------------------------------- VALUES --------------------------------------
 
+//Imagenes:
+define("IMAGE_MAX_SIZE", 750000);
+
 //Fecha:
 define("DATE_TODAY", date("Y-m-d"));//última disponible para formulario
 define("DATE_FIRST", date("1900-01-01"));//primera disponible para formulario
@@ -51,7 +54,6 @@ define("TEMA", "modovis");
 define("TEMA_LIGHT", "light");
 define("TEMA_DARK", "dark");
 
-//--------------------------------------- BBDD ---------------------------------------
 
 
 ?>
