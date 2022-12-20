@@ -1,6 +1,5 @@
 <?php
 session_start();
-include_once '../admin/configuraciones/funcionesDB.php';
 include_once '../admin/configuraciones/funciones.php';
 
 $idioma = LANG_SPANISH;
