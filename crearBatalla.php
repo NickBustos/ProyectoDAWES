@@ -215,7 +215,6 @@ if (!empty($_POST)) {
                                             </button>
                                         </div>
                                     </form>&nbsp;
-                                    <!--holi-->
                                 </div>
                             </div>
                         </div>

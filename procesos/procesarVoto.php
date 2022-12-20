@@ -128,6 +128,12 @@ if (isset($_POST)) {
 
     } else if (isset($_POST["return"])) {
         $destino = "../crearBatalla.php";
+
+        // ----------------------------------------------------- BORRAR BATALLA -----------------------------------------------------
+
+    } else if (isset($_POST["deleteBattle"])) { 
+        insertar("usuario_batalla", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CURRENT_BATTLE], "eliminar", getMomentoActual()]);
+        quitarDatosBatalla();
     }
 }
 

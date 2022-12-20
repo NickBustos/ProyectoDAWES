@@ -64,10 +64,7 @@
                                 }
                                 if ($batalla == "") { // No hay batalla disponible
                                     echo "<p class='text-center fw-bold h1'>NO QUEDAN BATALLAS DISPLONIBLES</p>";
-                                    echo "
-                                        <form action='crearBatalla.php'>
-                                            <input type='submit' class='submitBatalla btn btn-primary btn-lg' value='Crear batalla'>
-                                        </form>";
+                                    echo "<a type='button' class='submitBatalla btn btn-primary btn-lg' href='crearBatalla.php'>Crear batalla</a>";
                                 } else {
                                     // Guardar datos de batalla en sesión para poder hacer operaciones con ellos
                                     $_SESSION[SESSION_CURRENT_BATTLE] = $batalla;
@@ -94,10 +91,25 @@
 
                                     // Comenzar a cargar elementos HTML en variable $mostrar (crear formulario y cabecera)
                                     $mostrar = "<form method='post' class='subirBatalla' id='subirBatalla' action='procesos/procesarVoto.php'>";
+                                    $rol = selectFromUsuario(["rol"])[0];
+                                    $classAdmin = $imagenAdmin = "";
+                                    if($rol == "admin"){
+                                        $classAdmin ="style='justify-content: space-between;'";
+                                        $imagenAdmin = "
+                                        <div class='desplegable' style='margin-right:0'>
+                                            <img class='imagenUser' src='imagenes/options.png'>
+                                            <div class='contenido-desplegable' style='margin-left:0'>
+                                                <button type='submit' name='deleteBattle' style='background: none; color: white; border: none; padding: 0; font: inherit; cursor: pointer; outline: inherit;'>
+                                                    BORRAR
+                                                </button>
+                                            </div>
+                                        </div>";
+                                    }
                                     $mostrar .= "
-                                            <header class='rowBatalla headerBatalla'>
+                                            <header class='rowBatalla headerBatalla' {$classAdmin}>
                                                 <img class='imagenUser' src='{$foto}'>
                                                 <p class='text-center fw-bold h1'>{$name_user}</p>
+                                                {$imagenAdmin}
                                             </header>
                                             <div class='rowBatalla'>";
 
