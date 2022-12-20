@@ -51,6 +51,15 @@
             <li class="nav-item" style="margin: auto;">
                 <a class="nav-link" href="contacto.php"><?php echo $lang["contacto"]; ?></a>
             </li>
+
+            <?php
+            if (isset($_SESSION[SESSION_ID])) {
+                echo 
+                "<li class='nav-item' style='margin: auto;'>
+                    <a class='nav-link' href='crearBatalla.php'>{$lang['subirBatalla']}</a>
+                </li>";
+            }
+            ?>
         </ul>
         <div class="desplegable">
             <img class="imagenUser" src="
@@ -66,6 +75,14 @@
                 }
                 ?>">
             <div class="contenido-desplegable">
+                <?php
+                /**
+                 * Si el usuario ha iniciado sesión muestra la opción de entrar a su pagina personal.
+                 */
+                if (isset($_SESSION[SESSION_ID])) {
+                    echo "<a href='paginaPersonal.php'> " . $lang['paginaPersonal'] . "</a>";
+                }
+                ?>
                 <?php
                 /**
                  * Muestra el mensaje correspondiente para cambiar el tema y el idioma.

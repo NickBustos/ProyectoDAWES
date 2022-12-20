@@ -8,7 +8,8 @@ $lang = array( //CABECERA
     "modoC" => "Modo claro",
     "modoN" => "Modo noche",
     "idioma" => "Cambiar a inglés",
-    "cerrar" => "Cerrar sesión"
+    "cerrar" => "Cerrar sesión",
+    "paginaPersonal" => "Mi página"
 
 );
 $lang += array( //ACERCADE
