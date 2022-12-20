@@ -146,7 +146,7 @@ if (!empty($_POST)) {
                                                         echo
                                                         "<select class='form-control' name='elementoExistente1'>";
                                                         $conexion = new PDO(DSN, USER, PASSWORD);
-                                                        $sql = "SELECT id, nombre FROM elemento ORDER BY 2";
+                                                        $sql = "SELECT id, nombre FROM elemento ORDER BY nombre";
                                                         $resultado = $conexion->query($sql);
                                                         $opciones = "<option value=''></option>";
                                                         $listaElementos = select(["id", "nombre"], "elemento", []);
