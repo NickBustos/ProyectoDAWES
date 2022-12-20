@@ -1,10 +1,12 @@
 <?php include_once "admin/templates/cabecera.php"; ?>
 
 <?php
+/**
+ * Puedo poner a mayores, lo que me ha dicho mario de pedir comprobacion para cambiar la contrasñea
+ * Borrar usuario tambien
+ */
 
-// var_dump($_SESSION);
-// echo "<br/>";
-
+$idUser = $_SESSION[SESSION_ID];
 $nameAct = $_SESSION[SESSION_USER];
 $datosActuales = selectFromUsuario(["fechanacimiento", "foto", "email"]);
 $dateAct = $datosActuales[0];
@@ -47,8 +49,17 @@ if (!empty($_POST)) {
         }
     }
     if (count($credencialesGuardar) > 0) {
-        update("credencial", $tablasCredenciales, $credencialesGuardar, "nombreusuario", $nameAct);
-
+        $sql = "UPDATE credencial SET ";
+        for ($i = 0; $i < count($credencialesGuardar); $i++) {
+            $sql .= "{$tablasCredenciales[$i]}=?";
+            if ($i < count($credencialesGuardar) - 1) {
+                $sql .= ", ";
+            }
+        }
+        $sql .= " WHERE nombreusuario='{$nameAct}'";
+        echo $sql . "<br/>";
+        echo $conexion->prepare($sql)->execute($credencialesGuardar);
+        echo "<br/>";
         if (in_array("nombreusuario", $tablasCredenciales)) {
             $_SESSION[SESSION_USER] = $newName;
             $nameAct = $newName;
@@ -94,8 +105,17 @@ if (!empty($_POST)) {
     }
 
     if (count($usuarioGuardar) > 0) {
-        update("usuario", $tablasUsuario, $usuarioGuardar, "id", $_SESSION[SESSION_ID]);
-
+        $sql = "UPDATE usuario SET ";
+        for ($i = 0; $i < count($usuarioGuardar); $i++) {
+            $sql .= "{$tablasUsuario[$i]}=?";
+            if ($i < count($usuarioGuardar) - 1) {
+                $sql .= ", ";
+            }
+        }
+        $sql .= " WHERE id='{$_SESSION[SESSION_ID]}'";
+        echo $sql . "<br/>";
+        echo $conexion->prepare($sql)->execute($usuarioGuardar);
+        echo "<br/>";
         if (in_array("fechanacimiento", $tablasUsuario)) {
             $dateAct = $dateNew;
             $errorDate = "Fecha Cambiada";
@@ -110,23 +130,74 @@ if (!empty($_POST)) {
         }
     }
 }
+
+if (isset($_POST["delete"])) {
+
+
+    delete("usuario_credencial", "nombreusuario", $nameAct);
+    delete("credencial", "nombreusuario", $nameAct);
+    delete("usuario", "id", $idUser);
+    delete("usuario_credencial", "nombreusuario", $nameAct);
+    echo "usuarioBorrad";
+    exit();
+}
 ?>
-<div style="text-align:center">
-    <form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' class="mx-1 mx-md-4" style="display:inline-block;" enctype='multipart/form-data'>
-        <img src='<?php echo $fotoAct; ?>' width='300px' height='300px'>
-        <br />
-        Nombre:<input type="text" name='newName' value=<?php echo $nameAct; ?>
-            class="form-control"><?php echo $errorName; ?>
-        <br />
-        Password:<input name='newPass' type="password" class="form-control"><?php echo $errorPass; ?>
-        <br />
-        FechaNac:<input type="date" name='newDate' value=<?php echo $dateAct; ?> class="form-control"><?php echo $errorDate; ?>
-        <br />
-        Email:<input type="email" name='newMail' value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>" class="form-control"><?php echo $errorMail; ?>
-        <br />
-        Imagen:<input type="file" name='newFoto' class="form-control"><?php echo $errorFoto; ?>
-        <br />
-        <input type="submit" class="btn btn-primary btn-lg">
-    </form>
+<br><br>
+<div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="container h-100">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                        <div class="card text-black" style="border-radius: 25px;">
+                            <div class="card-body p-md-5">
+                                <div class="row justify-content-center">
+                                    <div>
+                                        <!-- Para ver como se hace con el lang     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo $lang["iniciosesion"]; ?></p> -->
+                                        <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?php echo "Página de {$_SESSION[SESSION_USER]}" ?></p>
+                                        <form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' enctype='multipart/form-data'>
+                                            <div class="form-outline mb-4">
+                                                <!-- -------------------- Usuario ----------------------- -->
+                                                Usuario:<input type="text" id="Mdatos" class="form-control" name='newName' value=<?php echo $nameAct; ?>><?php echo $errorName; ?>
+                                            </div>
+                                            <br /> <br />
+
+                                            <!-- -------------------- Contraseña ----------------------- -->
+                                            <div class="form-outline mb-4">
+                                                Password:<input name='newPass' type="password" id="Mdatos" class="form-control" value=""><?php echo $errorPass; ?>
+                                            </div>
+                                            <br /> <br />
+                                            <!-- -------------------- Fecha Nac ----------------------- -->
+                                            <div class="form-outline mb-4">
+                                                FechaNac:<input type="date" name='newDate' id="Mdatos" class="form-control" value=<?php echo $dateAct; ?>><?php echo $errorDate; ?>
+                                            </div>
+                                            <br /> <br />
+                                            <!-- -------------------- Email ----------------------- -->
+                                            <div class="form-outline mb-4">
+                                                Email<input type="email" name='newMail' id="Mdatos" class="form-control" value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>"><?php echo $errorMail; ?>
+                                            </div>
+                                            <br /> <br />
+                                            <!-- -------------------- Foto ----------------------- -->
+                                            <div class="LogoMdatos">
+                                                <img src='<?php echo $fotoAct; ?>' width='200px' height='200px'>
+                                                <input type="file" id="mFoto"><?php echo $errorFoto; ?>
+                                            </div>
+                                            <br /> <br /> <br />
+                                            <!-- -------------------- Boton ----------------------- -->
+                                            <input type="submit">
+                                            <br /> <br /> <br />
+                                            <!-- -------------------- Boton ----------------------- -->
+                                            <input type="submit" name="delete" value="Borrar Cuenta">
+                                            <br /> <br /> <br /> <br /> <br><br><br><br><br>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <?php include_once "admin/templates/pie.php"; ?>

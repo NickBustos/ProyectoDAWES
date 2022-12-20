@@ -43,6 +43,10 @@
     }
 }
 
+.medallas img {
+    height: 40px !important;
+}
+
 .subirBatalla{
     border:solid lightgrey 5px;
     padding:5%;

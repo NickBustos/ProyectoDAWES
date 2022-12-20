@@ -96,20 +96,21 @@ function insertar($tabla, $datos)
  * $where = Array al que le pasamos [nombre de tabla, valor al que se iguala]
  * return array de registros (arrays de columnas)
  */
-function select($campos, $tabla, $where){
+function select($campos, $tabla, $where)
+{
     include_once "configDB.php";
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "SELECT ";
-    for($i = 0; $i < count($campos); $i++){
-        $sql.="{$campos[$i]}";
-        if($i < count($campos) -1){
-            $sql.=",";
+    for ($i = 0; $i < count($campos); $i++) {
+        $sql .= "{$campos[$i]}";
+        if ($i < count($campos) - 1) {
+            $sql .= ",";
         }
-        $sql.=" ";
+        $sql .= " ";
     }
-    $sql.=" FROM {$tabla} ";
-    if(count($where)>0){
-        $sql.="WHERE {$where[0]}='{$where[1]}'";
+    $sql .= " FROM {$tabla} ";
+    if (count($where) > 0) {
+        $sql .= "WHERE {$where[0]}='{$where[1]}'";
     }
     $resultado = $conexion->query($sql);
     $registros = $resultado->fetchAll(PDO::FETCH_NUM);
@@ -129,12 +130,13 @@ function realizarSql($conexion, $sql, $datos)
 /**
  * 
  */
-function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor){
+function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor)
+{
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "UPDATE {$tabla} SET";
-    for($i = 0; $i < count($setTablas); $i++){
+    for ($i = 0; $i < count($setTablas); $i++) {
         $sql .= " {$setTablas[$i]}=?";
-        if($i < count($setTablas) - 1){
+        if ($i < count($setTablas) - 1) {
             $sql .= ",";
         }
         $sql .= " WHERE {$whereColumna}='{$whereValor}'";
@@ -142,6 +144,13 @@ function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor){
     // echo $sql . "<br/>";
     // $sql = "UPDATE {$tabla} SET {$setTabla}=? WHERE $whereTabla={$whereValor}";
     $conexion->prepare($sql)->execute($setValores);
+}
+
+function delete($tabla, $columna, $dato)
+{
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $sql = "DELETE FROM {$tabla} WHERE {$columna} = ? ";
+    $conexion->prepare($sql)->execute([$dato]);
 }
 
 //---------------------------------- BBDD USUARIO ---------------------------------
@@ -154,14 +163,14 @@ function selectFromUsuario($campos)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "SELECT ";
-    for($i = 0; $i < count($campos); $i++){
-        $sql.="{$campos[$i]}";
-        if($i < count($campos) -1){
-            $sql.=",";
+    for ($i = 0; $i < count($campos); $i++) {
+        $sql .= "{$campos[$i]}";
+        if ($i < count($campos) - 1) {
+            $sql .= ",";
         }
-        $sql.=" ";
+        $sql .= " ";
     }
-    $sql.=" FROM usuario WHERE id='" . $_SESSION[SESSION_ID] . "'";
+    $sql .= " FROM usuario WHERE id='" . $_SESSION[SESSION_ID] . "'";
     $resultado = $conexion->query($sql);
     $registro = $resultado->fetch(PDO::FETCH_NUM);
     return $registro;
@@ -219,7 +228,8 @@ function subirUsuario($datos)
  * $actualizacion = nuevo valor de columna
  * $id = id de usuario
  */
-function actualizarUsuario($campo, $actualizacion, $id){
+function actualizarUsuario($campo, $actualizacion, $id)
+{
     update("usuario", [$campo], [$actualizacion], "id", $id);
 }
 
@@ -236,7 +246,7 @@ function getIdioma()
     if (isset($_SESSION[SESSION_ID])) {
         $idioma = selectFromUsuario(["idioma"])[0];
     } else if (!isset($_COOKIE[LANG])) {
-        setcookie(LANG, LANG_SPANISH, time() + 60*60, '/');
+        setcookie(LANG, LANG_SPANISH, time() + 60 * 60, '/');
     } else if ($_COOKIE[LANG] == LANG_ENGLISH) {
         $idioma = LANG_ENGLISH;
     }
@@ -261,10 +271,37 @@ function getIdiomaContrario($idioma)
  * Funcion que devuelve el tema contrario al introducido
  * Light => dark y viceversa.
  */
-function getTemaContrario($tema){
+function getTemaContrario($tema)
+{
     $nuevoTema = TEMA_LIGHT;
     if ($tema == TEMA_LIGHT) {
         $nuevoTema = TEMA_DARK;
     }
     return $nuevoTema;
 }
+
+
+
+
+
+//---PREGUNTAR
+
+
+
+/**
+ * Devuelve las imagenes de todos elementos creados o no, utilizados para crear batallas.
+ * Para ello solo se necesita pasar un id de usuario para que la query se encargue 
+ * de realizar la busqueda.
+ */
+function imagenBatalla($idUsuario)
+{
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $query = 'SELECT foto FROM elemento WHERE id = ANY (SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")) UNION ALL SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")));';
+    $resultado = $conexion->query($query);
+    $registro = $resultado->fetchAll(PDO::FETCH_COLUMN);
+    return $registro;
+}
+
+
+
+
