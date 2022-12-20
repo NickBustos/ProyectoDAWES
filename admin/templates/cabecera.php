@@ -18,8 +18,8 @@
      * 
      */
     $css = "<link rel='stylesheet' href='./css/archivo.css' />";
-    if(isset($_SESSION[SESSION_ID])){
-        if(selectFromUsuario([TEMA])[0] === "dark"){
+    if (isset($_SESSION[SESSION_ID])) {
+        if (selectFromUsuario([TEMA])[0] === "dark") {
             $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
         }
     } else if (!isset($_SESSION[TEMA])) {
@@ -29,7 +29,7 @@
     }
     echo $css;
 
-    $conexion= new PDO(DSN, USER, PASSWORD);// La creamos aquí porque al final siempre la usamos, para tenerla preparada
+    $conexion = new PDO(DSN, USER, PASSWORD); // La creamos aquí porque al final siempre la usamos, para tenerla preparada
     ?>
 </head>
 
@@ -39,7 +39,7 @@
             <img src="imagenes/logo.png" alt="Logo">
         </a>
         <ul class="nav navbar-nav">
-            
+
             <li class="nav-item active " style="margin: auto;">
                 <a class="nav-link" href="index.php"><?php echo $lang["inicio"]; ?></a>
             </li>
@@ -51,6 +51,15 @@
             <li class="nav-item" style="margin: auto;">
                 <a class="nav-link" href="contacto.php"><?php echo $lang["contacto"]; ?></a>
             </li>
+
+            <?php
+            if (isset($_SESSION[SESSION_ID])) {
+                echo 
+                "<li class='nav-item' style='margin: auto;'>
+                    <a class='nav-link' href='crearBatalla.php'>{$lang['subirBatalla']}</a>
+                </li>";
+            }
+            ?>
         </ul>
         <div class="desplegable">
             <img class="imagenUser" src="
@@ -68,20 +77,28 @@
             <div class="contenido-desplegable">
                 <?php
                 /**
+                 * Si el usuario ha iniciado sesión muestra la opción de entrar a su pagina personal.
+                 */
+                if (isset($_SESSION[SESSION_ID])) {
+                    echo "<a href='paginaPersonal.php'> " . $lang['paginaPersonal'] . "</a>";
+                }
+                ?>
+                <?php
+                /**
                  * Muestra el mensaje correspondiente para cambiar el tema y el idioma.
                  */
                 $mensaje = "<a href='procesos/cambiarTema.php'>" . $lang["modoN"] . "</a>";
-                    if(isset($_SESSION[SESSION_ID])){
-                        if(selectFromUsuario([TEMA])[0]===TEMA_DARK){
-                            $mensaje = "<a href='procesos/cambiarTema.php'>" . $lang["modoC"] . "</a>";
-                        }
-                    }else if(isset($_SESSION["modovis"]) && $_SESSION["modovis"]==="dark"){
+                if (isset($_SESSION[SESSION_ID])) {
+                    if (selectFromUsuario([TEMA])[0] === TEMA_DARK) {
                         $mensaje = "<a href='procesos/cambiarTema.php'>" . $lang["modoC"] . "</a>";
                     }
-                    echo $mensaje;
+                } else if (isset($_SESSION["modovis"]) && $_SESSION["modovis"] === "dark") {
+                    $mensaje = "<a href='procesos/cambiarTema.php'>" . $lang["modoC"] . "</a>";
+                }
+                echo $mensaje;
                 ?>
                 <a href="procesos/cambiarIdioma.php"><?php echo $lang["idioma"]; ?></a>
-                
+
                 <?php
                 /**
                  * Si el usuario ha iniciado sesión muestra la opción de cerrar sesión.

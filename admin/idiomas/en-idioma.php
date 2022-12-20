@@ -8,7 +8,8 @@ $lang = array( //CABECERA
     "modoC" => "Light mode",
     "modoN" => "Batman mode",
     "idioma" => "Espagnolo",
-    "cerrar" => "Log out"
+    "cerrar" => "Log out",
+    "paginaPersonal" => "My Page"
 
 );
 $lang += array( //ACERCADE
@@ -96,6 +97,8 @@ $lang += array( //SUBIRBATALLA
     "volver" => "Return",
     "upload" => "IF YOU WANT TO UPLOAD THE BATTLE, ¡VOTE!",
     "elemento1" => "Element 1",
-    "elemento2" => "Element 2"
+    "elemento2" => "Element 2",
+    "error_batallaExiste"=> ERROR_IN . "This battle already exists" . ERROR_OUT,
+    "error_elementosIguales"=> ERROR_IN . "Elements are the same" . ERROR_OUT
 
 );

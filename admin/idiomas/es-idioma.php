@@ -8,7 +8,8 @@ $lang = array( //CABECERA
     "modoC" => "Modo claro",
     "modoN" => "Modo noche",
     "idioma" => "Cambiar a inglés",
-    "cerrar" => "Cerrar sesión"
+    "cerrar" => "Cerrar sesión",
+    "paginaPersonal" => "Mi página"
 
 );
 $lang += array( //ACERCADE
@@ -95,6 +96,8 @@ $lang += array( //SUBIRBATALLA
     "volver" => "Volver",
     "upload" => "SI QUIERES SUBIR LA BATALLA, ¡VOTA!",
     "elemento1" => "Elemento 1",
-    "elemento2" => "Elemento 2"
+    "elemento2" => "Elemento 2",
+    "error_batallaExiste"=> ERROR_IN . "La batalla ya existe" . ERROR_OUT,
+    "error_elementosIguales"=> ERROR_IN . "Los elementos son iguales" . ERROR_OUT
 
 );
