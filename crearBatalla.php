@@ -146,10 +146,9 @@ if (!empty($_POST)) {
                                                         echo
                                                         "<select class='form-control' name='elementoExistente1'>";
                                                         $conexion = new PDO(DSN, USER, PASSWORD);
-                                                        $sql = "SELECT id, nombre FROM elemento ORDER BY nombre";
-                                                        $resultado = $conexion->query($sql);
+                                                        $sql = "SELECT id, nombre FROM elemento ORDER BY nombre";// Revisar
+                                                        $listaElementos = $conexion->query($sql)->fetchAll(PDO::FETCH_NUM);
                                                         $opciones = "<option value=''></option>";
-                                                        $listaElementos = select(["id", "nombre"], "elemento", []);
                                                         foreach ($listaElementos as $elementoExistente) {
                                                             if ($elementoExistente[0] == $id1) {
                                                                 $opciones .= "<option value='{$elementoExistente[0]}' selected>{$elementoExistente[1]}</option>";

@@ -233,6 +233,22 @@ function actualizarUsuario($campo, $actualizacion, $id)
     update("usuario", [$campo], [$actualizacion], "id", $id);
 }
 
+//---------------------------------- BBDD BATALLA ---------------------------------
+
+/**
+ * Devuelve las imagenes de todos elementos creados o no, utilizados para crear batallas.
+ * Para ello solo se necesita pasar un id de usuario para que la query se encargue 
+ * de realizar la busqueda.
+ */
+function imagenBatalla($idUsuario)
+{
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $query = 'SELECT foto FROM elemento WHERE id = ANY (SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")) UNION ALL SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")));';
+    $resultado = $conexion->query($query);
+    $registro = $resultado->fetchAll(PDO::FETCH_COLUMN);
+    return $registro;
+}
+
 //------------------------------- IDIOMA / TEMA ---------------------------------
 
 /**
@@ -278,28 +294,6 @@ function getTemaContrario($tema)
         $nuevoTema = TEMA_DARK;
     }
     return $nuevoTema;
-}
-
-
-
-
-
-//---PREGUNTAR
-
-
-
-/**
- * Devuelve las imagenes de todos elementos creados o no, utilizados para crear batallas.
- * Para ello solo se necesita pasar un id de usuario para que la query se encargue 
- * de realizar la busqueda.
- */
-function imagenBatalla($idUsuario)
-{
-    $conexion = new PDO(DSN, USER, PASSWORD);
-    $query = 'SELECT foto FROM elemento WHERE id = ANY (SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")) UNION ALL SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")));';
-    $resultado = $conexion->query($query);
-    $registro = $resultado->fetchAll(PDO::FETCH_COLUMN);
-    return $registro;
 }
 
 

@@ -61,7 +61,22 @@ if (isset($_POST)) {
                 $puntosTroll = select(["num_batallas_denunciadas"], "usuario", ["id", $id_usuarioCreador])[0][0];
                 $puntosTroll++;
                 actualizarUsuario("puntos_troll", $puntosTroll, $id_usuarioCreador);
+
+                // Esto no se si hace falta hacerlo (o se puede) 
+                // (es ver si los elementos de batallas elminadas se borrar):
+                // $elementos = [$_SESSION[SESSION_BATTLE_ELEM_1], $_SESSION[SESSION_BATTLE_ELEM_2]];
+                // $sql = "SELECT COUNT(*) FROM batalla_elemento where id_elemento1=? OR id_elemento2=?";
+                // $preparedSttm = $conexion->prepare($sql);
+                // foreach ($elemtos as $elemento) {
+                //     $datos = [$elemento, $elemento];
+                //     $preparedSttm->execute($datos);
+                //     $usosElemento = $preparedSttm->fetchAll()[0];
+                //     if ($usosElemento - 1 == 0) {
+                //         //borrar elemento
+                //     }
+                // }
             }
+
             quitarDatosBatalla();
         } catch (PDOException $e) {
         } catch (Exception $e) {
@@ -107,7 +122,7 @@ if (isset($_POST)) {
             }
             $sql = "INSERT INTO voto VALUES (
             :id_u, :id_b, :id_e, :mom
-        )";
+            )";
             $datos = [
                 "id_u" => $_SESSION[SESSION_ID],
                 "id_b" => $_SESSION[SESSION_CURRENT_BATTLE],
@@ -131,7 +146,7 @@ if (isset($_POST)) {
 
         // ----------------------------------------------------- BORRAR BATALLA -----------------------------------------------------
 
-    } else if (isset($_POST["deleteBattle"])) { 
+    } else if (isset($_POST["deleteBattle"])) {
         insertar("usuario_batalla", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CURRENT_BATTLE], "eliminar", getMomentoActual()]);
         quitarDatosBatalla();
     }
