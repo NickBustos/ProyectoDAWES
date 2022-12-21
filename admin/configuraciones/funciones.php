@@ -231,10 +231,19 @@ function actualizarUsuario($campo, $actualizacion, $id)
  * Para ello solo se necesita pasar un id de usuario para que la query se encargue 
  * de realizar la busqueda.
  */
-function imagenBatalla($idUsuario)
+function buscarBatalla($idUsuario)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
-    $query = 'SELECT foto FROM elemento WHERE id = ANY (SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")) UNION ALL SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")));';
+    $query = 'SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")) UNION ALL SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear"));';
+    $resultado = $conexion->query($query);
+    $registro = $resultado->fetchAll(PDO::FETCH_COLUMN);
+    return $registro;
+}
+
+function infoBatalla($idElemento, $info)
+{
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $query = 'SELECT ' . $info . ' FROM elemento WHERE id = ' . $idElemento . '';
     $resultado = $conexion->query($query);
     $registro = $resultado->fetchAll(PDO::FETCH_COLUMN);
     return $registro;
