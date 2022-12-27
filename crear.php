@@ -1,47 +1,106 @@
 <?php
 include_once "admin/templates/cabecera.php";
-define("ELEMENTS_PAGE", 2);
+define("ELEMENTS_PAGE", 5);
+define("SESSION_CREAR_ELEM_1", "crearElem1");
+define("SESSION_CREAR_ELEM_2", "crearElem2");
 
-var_dump($_SESSION);
-echo "<br/>";
-var_dump($_POST);
-echo "<br/>";
+// var_dump($_SESSION);
+// echo "<br/>";
+// var_dump($_POST);
+// echo "<br/>";
 
-if (isset($_POST["id1"])) {
-    $_SESSION["crearElem1"] = $_POST["id1"];
-} else if (isset($_POST["nombre1"])) {
-    $nombre1 = htmlspecialchars($_POST["nombre1"]);
-    $img1 = getImage($_FILES["img1"]);
-    $_SESSION["crearElem1"] = insertar("elemento", ["", $nombre1, $img1, 0]);
-    insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION["crearElem1"], "crear", getMomentoActual()]);
+$nombre = $img = "";
+$_nombre = $_img = "";
+$errorNombre = $errorImg = "";
 
-    $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
-    $elementosCreados++;
-    actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
-} else if (isset($_POST["id2"])) {
-    $_SESSION["crearElem2"] = $_POST["id2"];
-} else if (isset($_POST["nombre2"])) {
-    $nombre2 = htmlspecialchars($_POST["nombre2"]);
-    $img2 = getImage($_FILES["img2"]);
-    $_SESSION["crearElem2"] = insertar("elemento", ["", $nombre2, $img2, 0]);
-    insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION["crearElem2"], "crear", getMomentoActual()]);
+// ELEMENTO 1
+if (isset($_POST["id1"])) {// Existente
+    $_SESSION[SESSION_CREAR_ELEM_1] = $_POST["id1"];
+} else if (isset($_POST["nombre1"])) {// Crear
+    $_nombre = trim(htmlspecialchars($_POST["nombre1"]));
+    if (!empty($_nombre)) {
+        $nombre = $_nombre;
+    } else {
+        $errorNombre = $lang["error_vacio"];
+    }
 
-    $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
-    $elementosCreados++;
-    actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
+    if (
+        !empty($_FILES) && !empty($_FILES["img1"]) &&
+        !empty($_FILES["img1"]["tmp_name"])
+    ) {
+        $_img = $_FILES["img1"];
+        if ($_img["type"] === "image/png") {
+            if ($_img['size'] <= IMAGE_MAX_SIZE) {
+                $img = getImage($_img);
+            } else {
+                $errorImg = $lang["error_file_size"];
+            }
+        } else {
+            $errorImg = $lang["error_file_type"];
+        }
+    } else {
+        $errorImg = $lang["error_vacio"];
+    }
+
+    if ($errorNombre == "" && $errorImg == "") {
+        $_SESSION[SESSION_CREAR_ELEM_1] = insertar("elemento", ["", $nombre, $img, 0]);
+        insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CREAR_ELEM_1], "crear", getMomentoActual()]);
+
+        $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
+        $elementosCreados++;
+        actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
+        $nombre = "";
+    }
+// ELEMENTO 2
+} else if (isset($_POST["id2"])) {// Existente
+    $_SESSION[SESSION_CREAR_ELEM_2] = $_POST["id2"];
+} else if (isset($_POST["nombre2"])) {// Crear
+    $_nombre = trim(htmlspecialchars($_POST["nombre2"]));
+    if (!empty($_nombre)) {
+        $nombre = $_nombre;
+    } else {
+        $errorNombre = $lang["error_vacio"];
+    }
+
+    if (
+        !empty($_FILES) && !empty($_FILES["img2"]) &&
+        !empty($_FILES["img2"]["tmp_name"])
+    ) {
+        $_img = $_FILES["img2"];
+        if ($_img["type"] === "image/png") {
+            if ($_img['size'] <= IMAGE_MAX_SIZE) {
+                $img = getImage($_img);
+            } else {
+                $errorImg = $lang["error_file_size"];
+            }
+        } else {
+            $errorImg = $lang["error_file_type"];
+        }
+    } else {
+        $errorImg = $lang["error_vacio"];
+    }
+
+    if ($errorNombre == "" && $errorImg == "") {
+        $_SESSION[SESSION_CREAR_ELEM_2] = insertar("elemento", ["", $nombre, $img, 0]);
+        insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CREAR_ELEM_2], "crear", getMomentoActual()]);
+
+        $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
+        $elementosCreados++;
+        actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
+    }
 }
 
-if (isset($_SESSION["crearElem2"])) {
+if (isset($_SESSION[SESSION_CREAR_ELEM_2])) {
     $sql = "SELECT nombre, foto FROM elemento WHERE id=?";
     $preparedSttm = $conexion->prepare($sql);
-    $preparedSttm->execute([$_SESSION['crearElem1']]);
+    $preparedSttm->execute([$_SESSION[SESSION_CREAR_ELEM_1]]);
     $elemento1 = $preparedSttm->fetch(PDO::FETCH_NUM);
     $nombre1 = $elemento1[0];
     $img1 = $elemento1[1];
 
     $sql = "SELECT nombre, foto FROM elemento WHERE id=?";
     $preparedSttm = $conexion->prepare($sql);
-    $preparedSttm->execute([$_SESSION['crearElem2']]);
+    $preparedSttm->execute([$_SESSION[SESSION_CREAR_ELEM_2]]);
     $elemento2 = $preparedSttm->fetch(PDO::FETCH_NUM);
     $nombre2 = $elemento2[0];
     $img2 = $elemento2[1];
@@ -87,10 +146,13 @@ if (isset($_SESSION["crearElem2"])) {
 
 <?php } else { ?>
     <form method="post" enctype="multipart/form-data">
-        <h1><?= (isset($_SESSION["crearElem1"])) ? "Elemento 2" : "Elemento 1"; ?></h1>
-        Nombre:<input type="text" name="<?= (isset($_SESSION["crearElem1"])) ? "nombre2" : "nombre1"; ?>" value="">
+        <h1><?= (isset($_SESSION["crearElem1"])) ? $lang["elemento2"] : $lang["elemento1"]; ?></h1>
+        <?= $lang["nombre"]; ?><input type="text" name="<?= (isset($_SESSION["crearElem1"])) ? "nombre2" : "nombre1"; ?>" value="<?= $nombre; ?>">
+        <?= $errorNombre; ?>
         <br />
-        Foto:<input type="file" name="<?= (isset($_SESSION["crearElem1"])) ? "img2" : "img1"; ?>" value="">
+        <?= $lang["imagen"]; ?><input type="file" name="<?= (isset($_SESSION["crearElem1"])) ? "img2" : "img1"; ?>">
+        <?= $errorImg; ?>
+        <br />
         <input type="submit">
     </form>
 <?php
@@ -101,7 +163,7 @@ if (isset($_SESSION["crearElem2"])) {
         $numElementos--;
     }
 
-    if ($numElementos > 0) {// PAGINACIÓN
+    if ($numElementos > 0) { // PAGINACIÓN
         $paginas = ceil($numElementos / ELEMENTS_PAGE);
 
         $paginaActual = 1;
