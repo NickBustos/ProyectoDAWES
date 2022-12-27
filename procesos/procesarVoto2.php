@@ -84,35 +84,14 @@ if (isset($_POST)) {
         // --------------------------------------------------------- VOTAR ---------------------------------------------------------
     } else if (isset($_POST["elementoVotado"])) {
         try {
-            
+
             //VIGILAR: ESTA FUNCION PUEDE NO EXISTIR AL SUBIRLO (HABRÍA QUE CREARLA) https://www.php.net/manual/en/function.str-ends-with.php
             $origen = htmlspecialchars(strtolower($_SERVER["HTTP_REFERER"]));
-            if (str_ends_with($origen, "/crearbatalla.php")) {
+            $referer = explode("/", strtolower($_SERVER["HTTP_REFERER"]));
+            if (str_starts_with($referer[count($referer) - 1], "crear.php")) {
+                $_SESSION[SESSION_BATTLE_ELEM_1] = $_SESSION["crearElem1"];
+                $_SESSION[SESSION_BATTLE_ELEM_2] = $_SESSION["crearElem2"];
 
-                $_SESSION[SESSION_BATTLE_ELEM_1] = $_POST["id1"];
-                if ($_SESSION[SESSION_BATTLE_ELEM_1] == -1) { // El elemento1 ha sido creado
-                    $nombre1 = htmlspecialchars($_POST["nombre1"]);
-                    $img1 = htmlspecialchars($_POST["img1"]);
-                    $_SESSION[SESSION_BATTLE_ELEM_1] = insertar("elemento", ["", $nombre1, $img1, 0]);
-                    insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_BATTLE_ELEM_1], "crear", getMomentoActual()]);
-
-                    $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
-                    $elementosCreados++;
-                    actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
-                }
-
-                $_SESSION[SESSION_BATTLE_ELEM_2] = $_POST["id2"];
-
-                if ($_SESSION[SESSION_BATTLE_ELEM_2] == -1) { // El elemento2 ha sido creado
-                    $nombre2 = htmlspecialchars($_POST["nombre2"]);
-                    $img2 = htmlspecialchars($_POST["img2"]);
-                    $_SESSION[SESSION_BATTLE_ELEM_2] = insertar("elemento", ["", $nombre2, $img2, 0]);
-                    insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_BATTLE_ELEM_2], "crear", getMomentoActual()]);
-
-                    $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
-                    $elementosCreados++;
-                    actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
-                }
                 $_SESSION[SESSION_CURRENT_BATTLE] = insertar("batalla_elemento", ["", $_SESSION[SESSION_BATTLE_ELEM_1], $_SESSION[SESSION_BATTLE_ELEM_2]]);
                 $elementoVotado = $_SESSION[SESSION_BATTLE_ELEM_1];
                 if ($_POST["elementoVotado"] == 2) {
@@ -146,8 +125,8 @@ if (isset($_POST)) {
         }
         // ---------------------------------------------------- RETURN DE VOTAR ----------------------------------------------------
 
-    } else if (isset($_POST["return"])) {
-        $destino = "../crearBatalla.php";
+    } else if (isset($_POST["reiniciar"])) {
+        $destino = "../crear.php";
         quitarDatosBatalla();
 
         // ----------------------------------------------------- BORRAR BATALLA -----------------------------------------------------

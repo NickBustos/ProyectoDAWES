@@ -80,7 +80,7 @@ function insertar($tabla, $datos)
             $sql .= ")";
         }
     }
-    echo $sql;
+    // echo $sql;
     $preparedSttm = $conexion->prepare($sql);
     foreach ($datos as $key => &$val) {
         $preparedSttm->bindParam(":{$key}", $val);
