@@ -1,5 +1,9 @@
 <?php
 include "admin/templates/cabecera.php";
+if (isset($_SESSION[SESSION_ID])) {
+   echo "<a type='button' class='submitBatalla btn btn-primary btn-lg' href='home.php'>Volver</a>";
+   exit();
+} 
 
 /**
  * Creación de variables.

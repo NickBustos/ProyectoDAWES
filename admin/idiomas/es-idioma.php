@@ -90,6 +90,7 @@ $lang += array( //SESIÓNINICIADA
 );
 $lang += array( //SUBIRBATALLA
 
+    "noBatallasDisponibles" => "NO QUEDAN BATALLAS DISPLONIBLES EN ESTE MOMENTO",
     "subirBatalla" => "Crear batalla",
     "nombre" => "Nombre:",
     "imagen" => "Imagen:",
@@ -109,5 +110,14 @@ $lang += array( //PERFIL
     "batalla" => " batalla",
     "batallas" => " batallas",
     "sinBatallas" => "¡Vaya, parece que este usuario no ha creado batallas aún!",
-    "registrateYCrea" => "¡Registrate y crea batallas épicas!"
+    "registrateYCrea" => "¡Registrate y crea batallas épicas!",
+    "bat_creadas_1"=>"Comprometido",
+    "bat_creadas_2"=>"Adicto",
+    "bat_creadas_3"=>"Vicioso",
+    "bat_votadas_1"=>"Greta Thunberg",
+    "bat_votadas_2"=>"Sindicalista",
+    "bat_votadas_3"=>"Votante",
+    "bat_denunciadas_1"=>"Madero",
+    "bat_denunciadas_2"=>"Moderador",
+    "bat_denunciadas_3"=>"Vigilante"
 );

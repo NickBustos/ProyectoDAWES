@@ -1,8 +1,5 @@
 <?php
 include_once "admin/templates/cabecera.php";
-define("ELEMENTS_PAGE", 4);
-define("SESSION_CREAR_ELEM_1", "crearElem1");
-define("SESSION_CREAR_ELEM_2", "crearElem2");
 
 //Si no ha iniciado sesión no muestra nada
 if (!isset($_SESSION[SESSION_ID])) {

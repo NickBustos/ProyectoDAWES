@@ -247,7 +247,12 @@ function actualizarUsuario($campo, $actualizacion, $id)
 function buscarBatalla($idUsuario)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
-    $query = 'SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")) UNION ALL SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear"));';
+    $query = 'SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = ANY (
+        SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")
+        ) 
+        UNION ALL SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = ANY (
+            SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")
+        );';
     $resultado = $conexion->query($query);
     $registro = $resultado->fetchAll(PDO::FETCH_COLUMN);
     return $registro;

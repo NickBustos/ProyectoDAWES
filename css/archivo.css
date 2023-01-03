@@ -43,8 +43,19 @@
     }
 }
 
+.medallas {
+    display: flex;
+    justify-content: center;
+}
+
 .medallas img {
     height: 40px !important;
+}
+
+.medallaTabla {
+    /* display:inline-block; */
+    width:10%;
+    /* text-align: center; */
 }
 
 .subirBatalla{
@@ -103,7 +114,6 @@
 
 .bando:nth-child(odd) {
     border-right: solid lightgrey 5px;
-    ;
 }
 
 .submitBatalla {
