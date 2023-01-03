@@ -101,3 +101,13 @@ $lang += array( //SUBIRBATALLA
     "error_elementosIguales"=> ERROR_IN . "Los elementos son iguales" . ERROR_OUT
 
 );
+
+$lang += array( //PERFIL
+    "unete" => "ÚNETE A NUETRA COMUNIDAD",
+    "tituloDescripcion" => "Descripción del usuario",
+    "esteUsuario" => "Este usuario ha creado ",
+    "batalla" => " batalla",
+    "batallas" => " batallas",
+    "sinBatallas" => "¡Vaya, parece que este usuario no ha creado batallas aún!",
+    "registrateYCrea" => "¡Registrate y crea batallas épicas!"
+);

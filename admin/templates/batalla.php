@@ -64,7 +64,7 @@
                                 }
                                 if ($batalla == "") { // No hay batalla disponible
                                     echo "<p class='text-center fw-bold h1'>NO QUEDAN BATALLAS DISPLONIBLES</p>";
-                                    echo "<a type='button' class='submitBatalla btn btn-primary btn-lg' href='crearBatalla.php'>Crear batalla</a>";
+                                    echo "<a type='button' class='submitBatalla btn btn-primary btn-lg' href='crear.php'>Crear batalla</a>";
                                 } else {
                                     // Guardar datos de batalla en sesión para poder hacer operaciones con ellos
                                     $_SESSION[SESSION_CURRENT_BATTLE] = $batalla;

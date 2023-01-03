@@ -4,10 +4,12 @@ define("ELEMENTS_PAGE", 4);
 define("SESSION_CREAR_ELEM_1", "crearElem1");
 define("SESSION_CREAR_ELEM_2", "crearElem2");
 
-// var_dump($_SESSION);
-// echo "<br/>";
-// var_dump($_POST);
-// echo "<br/>";
+//Si no ha iniciado sesión no muestra nada
+if (!isset($_SESSION[SESSION_ID])) {
+    echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
+    echo "<img src='imagenes/luigi.png'><br/>";
+    exit();
+}
 
 $nombre = $img = "";
 $_nombre = $_img = "";

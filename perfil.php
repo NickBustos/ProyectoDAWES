@@ -1,10 +1,5 @@
 <?php
 include 'admin/templates/cabecera.php';
-
-if ((isset($_SESSION[SESSION_ID]))) {
-} else {
-}
-
 ?>
 
 <section>
@@ -14,33 +9,35 @@ if ((isset($_SESSION[SESSION_ID]))) {
                 if ((isset($_SESSION[SESSION_ID]))) {
                     echo $_SESSION[SESSION_USER];
                 } else {
-                    echo "ÚNETE A NUETRA COMUNIDAD";
+                    echo $lang["unete"];
                 }
-                ?></h4>
+                ?>
+            </h4>
             <br>
             <div class="medallas">
                 <img src="https://cdn-icons-png.flaticon.com/512/3176/3176294.png" alt=""><img src="https://cdn-icons-png.flaticon.com/512/5551/5551284.png" alt="">
             </div><br>
         </div>
         <div class="row d-flex justify-content-center">
-            <img class="rounded-circle" src="<?php if (isset($_SESSION[SESSION_ID])) {
-                                                    echo selectFromUsuario(["foto"])[0];
-                                                } else {
-                                                    echo "imagenes/nouser.png";
-                                                } ?>" alt="">
+            <img class="rounded-circle" src="
+                <?php if (isset($_SESSION[SESSION_ID])) {
+                    echo selectFromUsuario(["foto"])[0];
+                } else {
+                    echo "imagenes/nouser.png";
+                } ?>" alt="">
             <div class="text-center"><br>
-                <p> Descripción del usuario </p>
+                <p> <?= $lang["tituloDescripcion"] ?></p>
                 <?php
                 if (isset($_SESSION[SESSION_ID])) {
                     $totalBatallas = selectFromUsuario(["num_batallas_creadas"])[0];
                     if ($totalBatallas == "1") {
-                        echo  '<h6>
-                    Este usuario ha creado ' . $totalBatallas . ' batalla
-                    </h6>';
+                        echo  '<h6>' .
+                            $lang["esteUsuario"] . $totalBatallas . $lang["batalla"] .
+                            '</h6>';
                     } else {
-                        echo  '<h6>
-                        Este usuario ha creado ' . $totalBatallas . ' batallas
-                        </h6>';
+                        echo  '<h6>' .
+                            $lang["esteUsuario"] . $totalBatallas . $lang["batallas"] .
+                            '</h6>';
                     }
                 }
                 ?>
@@ -53,9 +50,9 @@ if ((isset($_SESSION[SESSION_ID]))) {
                     $totalBatallas = selectFromUsuario(["num_batallas_creadas"])[0];
                     echo "<br>";
                     if ($totalBatallas == "0") {
-                        echo  '<h4>
-                        ¡Vaya, parece que este usuario no ha creado batallas aún!
-                        </h4>';
+                        echo  '<h4>' .
+                            $lang["sinBatallas"] .
+                            '</h4>';
                     } else {
                         $acum = 0;
                         for ($i = 0; $i < $totalBatallas; $i++) {
@@ -79,9 +76,9 @@ if ((isset($_SESSION[SESSION_ID]))) {
                         </div>";
                     }
                 } else {
-                    echo  '<h4>
-                        ¡Registrate y crea batallas épicas!
-                        </h4>';
+                    echo  '<h4>'
+                        . $lang["registrateYCrea"] .
+                        '</h4>';
                 }
 
                 ?>

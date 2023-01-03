@@ -56,7 +56,7 @@
             if (isset($_SESSION[SESSION_ID])) {
                 echo 
                 "<li class='nav-item' style='margin: auto;'>
-                    <a class='nav-link' href='crearBatalla.php'>{$lang['subirBatalla']}</a>
+                    <a class='nav-link' href='crear.php'>{$lang['subirBatalla']}</a>
                 </li>";
             }
             ?>
@@ -80,7 +80,7 @@
                  * Si el usuario ha iniciado sesión muestra la opción de entrar a su pagina personal.
                  */
                 if (isset($_SESSION[SESSION_ID])) {
-                    echo "<a href='paginaPersonal.php'> " . $lang['paginaPersonal'] . "</a>";
+                    echo "<a href='perfil.php'> " . $lang['paginaPersonal'] . "</a>";
                 }
                 ?>
                 <?php
