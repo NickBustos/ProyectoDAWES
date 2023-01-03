@@ -19,8 +19,7 @@ if ((isset($_SESSION[SESSION_ID]))) {
                 ?></h4>
             <br>
             <div class="medallas">
-                <img src="https://cdn-icons-png.flaticon.com/512/3176/3176294.png" alt="">
-                <img src="https://cdn-icons-png.flaticon.com/512/5551/5551284.png" alt="">
+                <img src="https://cdn-icons-png.flaticon.com/512/3176/3176294.png" alt=""><img src="https://cdn-icons-png.flaticon.com/512/5551/5551284.png" alt="">
             </div><br>
         </div>
         <div class="row d-flex justify-content-center">
@@ -30,11 +29,24 @@ if ((isset($_SESSION[SESSION_ID]))) {
                                                     echo "imagenes/nouser.png";
                                                 } ?>" alt="">
             <div class="text-center"><br>
-                <p> Hola, soy un usuario random XD</p>
-                <p>Imagen del usuario</p>
+                <p> Descripción del usuario </p>
+                <?php
+                if (isset($_SESSION[SESSION_ID])) {
+                    $totalBatallas = selectFromUsuario(["num_batallas_creadas"])[0];
+                    if ($totalBatallas == "1") {
+                        echo  '<h6>
+                    Este usuario ha creado ' . $totalBatallas . ' batalla
+                    </h6>';
+                    } else {
+                        echo  '<h6>
+                        Este usuario ha creado ' . $totalBatallas . ' batallas
+                        </h6>';
+                    }
+                }
+                ?>
             </div>
         </div><br><br>
-        <div class="filaBatallas">
+        <div class="filaBatallas" style="margin-left:25px; margin-right:25px    ">
             <div class="row-center">
                 <?php
                 if (isset($_SESSION[SESSION_ID])) {
@@ -47,19 +59,19 @@ if ((isset($_SESSION[SESSION_ID]))) {
                     } else {
                         $acum = 0;
                         for ($i = 0; $i < $totalBatallas; $i++) {
-                            $imagenBatallaU = '<div class="filaBatallas">
+                            $imagenBatallaU = '<div class="filaBatallas" style="margin-left:25px; margin-right:25px">
                             <div class="row-center">
                                 <div class="card-group">
                                     <div class="card">
-                                        <img class="imagenUser" src="' . imagenBatalla($_SESSION[SESSION_ID])[$acum] . '">
+                                        <img class="imagenUser" src="' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum], "foto")[0] . '">
                                         <span class="btn-circle btn-or">OR</span> 
-                                        <img class="imagenUser" src="' . imagenBatalla($_SESSION[SESSION_ID])[$acum + 1] . '">
+                                        <img class="imagenUser" src="' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum + 1], "foto")[0] . '">
                                         <div class="card-body">
-                                            <h4 class="card-title">Batalla #' . $i . '</h4>
-                                            <p class="card-text">Algo vs Algo</p>
+                                            <h4 class="card-title">Batalla #' . $i + 1 . '</h4>
+                                            <p class="card-text">' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum], "nombre")[0] . ' vs ' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum + 1], "nombre")[0] . '</p>
                                         </div>
                                     </div>';
-                            $acum = $acum + $i + 2;
+                            $acum = $acum + $i + 1;
 
                             echo $imagenBatallaU;
                         }
