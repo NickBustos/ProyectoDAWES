@@ -104,9 +104,12 @@
                  * Si el usuario ha iniciado sesión muestra la opción de cerrar sesión.
                  */
                 if (isset($_SESSION[SESSION_ID])) {
+                    echo "<a href='modificarDatos.php'>" . $lang['modificarDatos'] . "</a>";
                     echo "<a href='procesos/cerrarsesion.php'> " . $lang['cerrar'] . "</a>";
+                    
                 }
                 ?>
+
 
             </div>
         </div>

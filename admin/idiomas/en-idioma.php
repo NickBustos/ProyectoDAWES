@@ -38,7 +38,8 @@ $lang += array( //INDEX
 
     "bienvenido" => "Welcome to Mum OR Dad",
     "iniciarsesion" => "Sign in",
-    "registarse" => "Sign up"
+    "registarse" => "Sign up",
+    "modificarDatos" => "Modify data"
 
 );
 $lang += array( //INICIOSESIÓN
