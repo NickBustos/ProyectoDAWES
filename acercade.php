@@ -1,6 +1,5 @@
 <?php
 include 'admin/templates/cabecera.php';
-include getIdioma("acercade.php");
 ?>
 <div class="row-center">
     <div class="col-md-3">

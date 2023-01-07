@@ -1,6 +1,5 @@
 <?php 
 include 'admin/templates/cabecera.php';
-include getIdioma("contacto.php");
 ?>
 <div class="contact1">
     <div class="container-contact1">

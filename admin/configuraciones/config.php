@@ -1,6 +1,9 @@
 <?php
 //-------------------------------------- VALUES --------------------------------------
 
+//Imagenes:
+define("IMAGE_MAX_SIZE", 750000);
+
 //Fecha:
 define("DATE_TODAY", date("Y-m-d"));//última disponible para formulario
 define("DATE_FIRST", date("1900-01-01"));//primera disponible para formulario
@@ -18,12 +21,13 @@ define("LINE_FILE", 4);
 define("LINE_SEPARATOR", ";");
 
 //Datos guardados en sesion de usuario
+define("SESSION_ID", "id");
 define("SESSION_USER", "user");
-define("SESSION_PASS", "pass");
-define("SESSION_MAIL", "mail");
-define("SESSION_DATE", "date");
-define("SESSION_FILE", "avatar");
-define("SESSION_TEMA", "tema");
+define("SESSION_CURRENT_BATTLE", "current_battle");
+define("SESSION_BATTLE_ELEM_1", "battle_elem1");
+define("SESSION_BATTLE_ELEM_2", "battle_elem2");
+define("SESSION_BATTLE_VOTED", "battle_voted");
+
 
 //------------------------------------- PATTERNS -------------------------------------
 
@@ -39,5 +43,28 @@ define("PATTERN_CHARACTER_SEPARATOR", "/[".LINE_SEPARATOR."]/");//Verifica que h
 //Etiquetas para dar formato HTML a los errores
 define("ERROR_IN", "<span style='color:red'>");
 define("ERROR_OUT", "</span>");
+
+//-------------------------------------- IDIOMA ---------------------------------------
+define("LANG_ENGLISH", "en");
+define("LANG_SPANISH", "es");
+define("LANG", "lang");
+
+//------------------------------------- MODOVIS ---------------------------------------
+define("TEMA", "modovis");
+define("TEMA_LIGHT", "light");
+define("TEMA_DARK", "dark");
+
+//----------------------------------- CREAR BATTLE ------------------------------------
+define("ELEMENTS_PAGE", 4);
+define("SESSION_CREAR_ELEM_1", "crearElem1");
+define("SESSION_CREAR_ELEM_2", "crearElem2");
+
+//----------------------------------- PERFIL ------------------------------------
+define("PERFIL_USUARIO", 0);
+define("PERFIL_FOTO", 2);
+define("PERFIL_BATALLAS_CREADAS", 8);
+define("PERFIL_BATALLAS_VOTADAS", 9);
+define("PERFIL_BATALLAS_DENUNCIADAS", 11);
+
 
 ?>
