@@ -126,15 +126,15 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
                             <div class="row-center">
                                 <div class="card-group">
                                     <div class="card">
-                                        <img class="imagenUser" src="' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum], "foto")[0] . '">
+                                        <img class="imagenUser" src="' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum]["id_elemento1"], "foto")[0] . '">
                                         <span class="btn-circle btn-or">OR</span> 
-                                        <img class="imagenUser" src="' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum + 1], "foto")[0] . '">
+                                        <img class="imagenUser" src="' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum]["id_elemento2"], "foto")[0] . '">
                                         <div class="card-body">
                                             <h4 class="card-title">Batalla #' . $i + 1 . '</h4>
-                                            <p class="card-text">' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum], "nombre")[0] . ' vs ' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum + 1], "nombre")[0] . '</p>
+                                            <p class="card-text">' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum]["id_elemento1"], "nombre")[0] . ' vs ' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum]["id_elemento2"], "nombre")[0] . '</p>
                                         </div>
                                     </div>';
-                            $acum = $acum + $i + 1;
+                            $acum = $acum + 1;
 
                             echo $imagenBatallaU;
                         }
