@@ -15,6 +15,7 @@ if ($idUsuario > -1) {
     $datosUsuario = select(["nombreusuario"], "usuario_credencial", ["id_usuario", $idUsuario])[0];
     $datosUsuario += select(["*"], "usuario", ["id", $idUsuario])[0];
 }
+var_dump($datosUsuario);
 
 /* 
 [nombreusuario, fechaNacimiento, foto, mail, modovis, idioma, rol,
@@ -126,16 +127,21 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
                             <div class="row-center">
                                 <div class="card-group">
                                     <div class="card">
-                                        <img class="imagenUser" src="' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum]["id_elemento1"], "foto")[0] . '">
+                                        <img class="imagenUser" src="' 
+                                        . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "foto")[0] . '">
                                         <span class="btn-circle btn-or">OR</span> 
-                                        <img class="imagenUser" src="' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum]["id_elemento2"], "foto")[0] . '">
+                                        <img class="imagenUser" src="' 
+                                        . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "foto")[0] . '">
                                         <div class="card-body">
                                             <h4 class="card-title">Batalla #' . $i + 1 . '</h4>
-                                            <p class="card-text">' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum]["id_elemento1"], "nombre")[0] . ' vs ' . infoBatalla(buscarBatalla($_SESSION[SESSION_ID])[$acum]["id_elemento2"], "nombre")[0] . '</p>
+                                            <p class="card-text">' 
+                                            . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "nombre")[0] . 
+                                            ' vs '
+                                            . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "nombre")[0] . 
+                                            '</p>
                                         </div>
                                     </div>';
                             $acum = $acum + 1;
-
                             echo $imagenBatallaU;
                         }
                         echo "</div>
