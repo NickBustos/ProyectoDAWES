@@ -15,7 +15,6 @@
      * Inicia sesión.
      * Si no hay un tema definido en $_SESSION lo crea con el valor "claro".
      * Si el valor del tema es "noche" carga el css correspondiente.
-     * 
      */
     $css = "<link rel='stylesheet' href='./css/archivo.css' />";
     if (isset($_SESSION[SESSION_ID])) {

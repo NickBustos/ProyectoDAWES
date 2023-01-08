@@ -39,7 +39,7 @@ if (!empty($_POST)) {
         if ($passReal !== false) {
             $user = $_user;
             if (!empty($_password)) {
-                $_password = base64_encode($_password);
+                $_password = md5($_password);
                 if ($_password === $passReal) {
                     $conexion = new PDO(DSN, USER, PASSWORD);
                     $sql = "SELECT DISTINCT id_usuario FROM usuario_credencial WHERE nombreusuario='{$user}'";

@@ -1,23 +1,28 @@
 <?php
 include 'admin/templates/cabecera.php';
+// Iniciamos el id a -1 para el caso de que el usuario no haya iniciado sesión y no esté mirando ningún perfil
 $idUsuario = -1;
+// Si a iniciado sesión se coge su id
 if (isset($_SESSION[SESSION_ID])) {
     $idUsuario = $_SESSION[SESSION_ID];
 }
+// Si hay get (ha entrado a enlace de batalla) se coge el id del usuario creador de la batalla
 if (isset($_GET) && !empty($_GET) && isset($_GET["usuario"])) {
     $_idUsuario = htmlspecialchars($_GET["usuario"]);
     if (preg_match('/^\d+$/', $_idUsuario) == 1 && count(select(["id"], "usuario", ["id", $_idUsuario])) > 0) {
         $idUsuario = $_idUsuario;
     }
 }
+// Si hay usuario guarda todos sus datos en el array $datosusuario
 $datosUsuario = [];
 if ($idUsuario > -1) {
     $datosUsuario = select(["nombreusuario"], "usuario_credencial", ["id_usuario", $idUsuario])[0];
     $datosUsuario += select(["*"], "usuario", ["id", $idUsuario])[0];
 }
-var_dump($datosUsuario);
+//var_dump($datosUsuario);
 
 /* 
+Orden de datos:
 [nombreusuario, fechaNacimiento, foto, mail, modovis, idioma, rol,
 num_elementos_creados, num_batallas_creadas, num_batallas_votadas, 
 num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]

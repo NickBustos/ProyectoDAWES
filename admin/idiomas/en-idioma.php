@@ -121,5 +121,6 @@ $lang += array( //PERFIL
     "bat_votadas_3"=>"Greta Thunberg",
     "bat_denunciadas_1"=>"Pig",
     "bat_denunciadas_2"=>"Moderator",
-    "bat_denunciadas_3"=>"Daredevil"
+    "bat_denunciadas_3"=>"Daredevil",
+    "usuarioBorrado"=>"Deleted user"
 );

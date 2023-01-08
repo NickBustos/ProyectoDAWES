@@ -14,8 +14,12 @@ $errorNombre = $errorImg = "";
 $nombre1 = $nombre2 = $img1 = $img2 = "";
 
 // ELEMENTO 1
-if (isset($_POST["id1"])) { // Existente
+// Ha cogido elemento existente
+if (isset($_POST["id1"])) {
     $_SESSION[SESSION_CREAR_ELEM_1] = $_POST["id1"];
+    // Ha cogido elemento no existente
+    // Validaciones 
+    // En caso de que esté todo bien lo sube
 } else if (isset($_POST["nombre1"])) { // Crear
     $_nombre = trim(htmlspecialchars($_POST["nombre1"]));
     if (!empty($_nombre)) {
@@ -100,9 +104,7 @@ if (isset($_POST["id1"])) { // Existente
                             <div class="card-body p-md-5">
                                 <div class="row justify-content-center">
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?= (isset($_SESSION[SESSION_CREAR_ELEM_2])) ? $lang["upload"] : $lang["subirBatalla"]; ?></p>
-                                    <form method='post' class='subirBatalla' id='subirBatalla' enctype="multipart/form-data" 
-                                    action='<?= (isset($_SESSION[SESSION_CREAR_ELEM_2])) ? "procesos/procesarVoto2.php" : $_SERVER["PHP_SELF"]; ?>' 
-                                    <?= (isset($_SESSION[SESSION_CREAR_ELEM_2])) ? "":"style='border-bottom:0; border-radius:0; padding-bottom:0px;'"; ?>>
+                                    <form method='post' class='subirBatalla' id='subirBatalla' enctype="multipart/form-data" action='<?= (isset($_SESSION[SESSION_CREAR_ELEM_2])) ? "procesos/procesarVoto.php" : $_SERVER["PHP_SELF"]; ?>' <?= (isset($_SESSION[SESSION_CREAR_ELEM_2])) ? "" : "style='border-bottom:0; border-radius:0; padding-bottom:0px;'"; ?>>
                                         <header class='rowBatalla headerBatalla'>
                                             <img class='imagenUser' src='<?= selectFromUsuario(["foto"])[0]; ?>'>
                                             <p class='text-center fw-bold h1'><?= $_SESSION[SESSION_USER]; ?></p>
@@ -213,15 +215,17 @@ if (isset($_POST["id1"])) { // Existente
                                                 <div class='subirBatalla' style='border-top:0; border-radius:0; padding-top:0px;'>
                                                 <div class='rowBatalla'>
                                                 <div class='bando' style='display:flex; flex-direction:row; border:0'>";
+                                                // Por cada elemento crea un formulario con un boton de submit que es la imagen del elemento
                                                 foreach ($elementos as $elemento) {
                                     ?>
-                                            <form method='post' action='<?= $_SERVER['PHP_SELF']?>' style='box-sizing: border-box; width:25%;'>
+                                            <form method='post' action='<?= $_SERVER['PHP_SELF'] ?>' style='box-sizing: border-box; width:25%;'>
                                                 <input type='hidden' name='<?= $id ?>' value='<?= $elemento[0] ?>'>
-                                                <button type='submit' >
+                                                <button type='submit'>
                                                     <img src='<?= $elemento[2] ?>' width='100px' height='100px'>
                                                 </button>
                                             </form>
                                 <?php
+                                                    // PAGINACION
                                                 }
                                                 echo "</div></div><br/>";
                                                 if ($paginas > 1) {

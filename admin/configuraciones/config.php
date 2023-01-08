@@ -60,6 +60,7 @@ define("SESSION_CREAR_ELEM_1", "crearElem1");
 define("SESSION_CREAR_ELEM_2", "crearElem2");
 
 //----------------------------------- PERFIL ------------------------------------
+// índices de array $datosusuario de perfil
 define("PERFIL_USUARIO", 0);
 define("PERFIL_FOTO", 2);
 define("PERFIL_BATALLAS_CREADAS", 8);
