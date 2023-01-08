@@ -317,3 +317,16 @@ function getTemaContrario($tema)
     }
     return $nuevoTema;
 }
+
+//----------------------------- Función para registrar los datos en la BD sin el modo Visualización y sin Idioma-----------------------------
+$conexion_db = new PDO(DSN,USER,PASSWORD);
+
+function insertarCliente($fechaNac, $image, $email, $rol){
+
+    if(isset($conexion_db)){
+        $sql = "INSERT INTO 'USUARIO' ('FechaNacimiento','FotoURL', 'Email', 'Rol' VALUES ('[$fechaNac]','[$image]','[$email]','[$rol]')";
+        $pdostmt = $conexion_db->prepare(($sql));
+        $pdostmt->execute();
+
+}
+}

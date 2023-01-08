@@ -192,6 +192,9 @@ if (!empty($_POST)) {
                                                             <label class="form-label" for="form3Example1c"><?php echo $lang["fecha"]; ?></label>
                                                         </div>
                                             </div>
+
+
+                                            <!-- Imagen -->
                                             <?php echo $errorAvatar ?>
                                             <div class="d-flex flex-row align-items-center mb-1">
                                                 <input class="form-control" name="avatar" type="file" id="formFile" accept="image/png">

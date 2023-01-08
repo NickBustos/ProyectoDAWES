@@ -139,7 +139,7 @@ if (isset($_POST["delete"])) {
     delete("usuario", "id", $idUser);
     delete("usuario_credencial", "nombreusuario", $nameAct);
     echo "usuarioBorrad";
-    exit();
+    //exit();
 }
 ?>
 <br><br>

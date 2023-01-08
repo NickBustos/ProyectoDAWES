@@ -42,6 +42,18 @@
         scroll-behavior: smooth
     }
 }
+/* Página de modificar Usuario */
+
+.LogoMdatos{
+    width: 100px;
+    display: inline-flex;
+}
+.LogoMdatos img{
+    margin: auto 5px;
+    float: left;
+    width: 150px;
+    height: 38px;
+}
 
 .medallas img {
     height: 40px !important;
