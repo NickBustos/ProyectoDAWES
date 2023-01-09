@@ -128,7 +128,7 @@
                                     if($id_usuario > -1){
                                         $mostrar .= "<a href='perfil.php?usuario={$id_usuario}' style='color:white;'>{$name_user}</a>";
                                     }else{
-                                        $mostrar .="{$name_user}";
+                                        $mostrar .= "{$name_user}";
                                     }
                                     $mostrar .="</p>
                                                 {$imagenAdmin}
