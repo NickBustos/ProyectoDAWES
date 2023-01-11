@@ -178,6 +178,8 @@
         delete("usuario", "id", $idUser);
         delete("usuario_credencial", "nombreusuario", $nameAct);
         header("Location: procesos/cerrarsesion.php");
+    }else if(isset($_POST["inicio"])){
+        header("Location: index.php");
     }
     ?>
     <br><br>
@@ -218,17 +220,24 @@
                                                 <!-- -------------------- Foto ----------------------- -->
                                                 <div class="LogoMdatos">
                                                     <img src='<?php echo $fotoAct; ?>' width='200px' height='200px'>
-                                                    <input type="file" name="newFoto"><br/><?php echo $errorFoto; ?>
+                                                    <input type="file" name="newFoto"><br /><?php echo $errorFoto; ?>
                                                 </div>
                                                 <br /> <br /> <br />
                                                 <!-- -------------------- Boton ----------------------- -->
-                                                <input type="submit">
+                                                <button type="submit" class='modificarDatos btn btn-primary btn-lg'>
+                                                    <p class="text-center h1 fw-bold">Enviar</p>
+                                                </button>
                                                 <br /> <br /> <br />
                                                 <!-- -------------------- Boton ----------------------- -->
-                                                <input type="submit" name="delete" value="Borrar Cuenta">
+                                                <button type="submit" class='modificarDatosBorrar' name="delete">
+                                                    <p class="text-center h1 fw-bold">Borrar Cuenta</p>
+                                                </button>
+                                                <br /> <br /> <br />
+                                                <!-- -------------------- Boton ----------------------- -->
+                                                <button type="submit" class='modificarDatos btn btn-primary btn-lg' name="inicio">
+                                                    <p class="text-center h1 fw-bold">Inicio</p>
+                                                </button>
                                             </form>
-                                            <br /> <br />
-                                                <a type='button' class='submitBatalla btn btn-primary btn-lg' href='index.php'>Inicio</a>;
                                         </div>
                                     </div>
                                 </div>
