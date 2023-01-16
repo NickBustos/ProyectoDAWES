@@ -98,7 +98,6 @@ function insertar($tabla, $datos)
  */
 function select($campos, $tabla, $where)
 {
-    include_once "configDB.php";
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "SELECT ";
     for ($i = 0; $i < count($campos); $i++) {
