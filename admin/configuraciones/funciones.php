@@ -339,3 +339,7 @@ function set_error_manager($gestorErrores = "miGestorDeErrores"){
 function default_error_manager(){
     restore_error_handler(); // le paso el control de errores a PHP
 }
+
+function startsWith($cadena, $string) {
+    return substr_compare($cadena, $string, 0, strlen($string)) === 0;
+}
