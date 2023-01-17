@@ -151,7 +151,6 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
                             $elementos = $conexion->query($sql)->fetchAll(PDO::FETCH_NUM);
 
                             echo "
-                            </form>
                             <div>
                             <div>
                             <div>";
@@ -164,22 +163,23 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
 
 
                             foreach ($elementos as $elemento) {
-                                $imagenBatallaU = '<div class="filaBatallas" style="margin-left:25px; margin-right:25px">
+                                $imagenBatallaU = '
+                            <div class="filaBatallas" style="margin-left:25px; margin-right:25px">
                                 <div class="row-center">
                                     <div class="card-group">
                                         <div class="card">
                                             <img class="imagenUser" src="'
-                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "foto")[0] . '">
+                                            . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "foto")[0] . '">
                                             <span class="btn-circle btn-or">OR</span> 
                                             <img class="imagenUser" src="'
-                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "foto")[0] . '">
+                                            . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "foto")[0] . '">
                                             <div class="card-body">
                                                 <h4 class="card-title">Batalla #' . $acum + 1 . '</h4>
                                                 <p class="card-text">'
-                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "nombre")[0] .
-                                    ' vs '
-                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "nombre")[0] .
-                                    '</p>
+                                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "nombre")[0] .
+                                                    ' vs '
+                                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "nombre")[0] .
+                                                '</p>
                                             </div>
                                         </div>';
                                 $acum = $acum + 1;
@@ -220,7 +220,7 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
 
 
             </div>
-        </div><br><br>'
+        </div><br><br>
 
     </div>
 </section>
