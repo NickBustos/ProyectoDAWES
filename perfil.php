@@ -126,31 +126,89 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
                             $lang["sinBatallas"] .
                             '</h4>';
                     } else {
-                        $acum = 0;
-                        for ($i = 0; $i < $totalBatallas; $i++) {
-                            $imagenBatallaU = '<div class="filaBatallas" style="margin-left:25px; margin-right:25px">
-                            <div class="row-center">
-                                <div class="card-group">
-                                    <div class="card">
-                                        <img class="imagenUser" src="' 
-                                        . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "foto")[0] . '">
-                                        <span class="btn-circle btn-or">OR</span> 
-                                        <img class="imagenUser" src="' 
-                                        . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "foto")[0] . '">
-                                        <div class="card-body">
-                                            <h4 class="card-title">Batalla #' . $i + 1 . '</h4>
-                                            <p class="card-text">' 
-                                            . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "nombre")[0] . 
-                                            ' vs '
-                                            . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "nombre")[0] . 
-                                            '</p>
-                                        </div>
-                                    </div>';
-                            $acum = $acum + 1;
-                            echo $imagenBatallaU;
+                        if ($totalBatallas > 0) { // PAGINACIÓN
+                            $paginas = ceil($totalBatallas / ELEMENTS_PAGE);
+
+                            $paginaActual = 1;
+                            if (isset($_GET["pagina"])) {
+                                $destino = htmlspecialchars($_GET["pagina"]);
+                                if (is_numeric($destino)) {
+                                    $destino = floor($destino);
+                                    if ($destino >= 1 && $destino <= $paginas) {
+                                        $paginaActual = $destino;
+                                    }
+                                }
+                            }
+                            $offset = ($paginaActual - 1) * ELEMENTS_PAGE;
+                            //$sql = "SELECT id FROM usuario_batalla WHERE id = '" . $idUsuario . "  LIMIT BY " . ELEMENTS_PAGE . "'";
+                            $id = "id1";
+                            $sql = "SELECT id FROM usuario_batalla ";
+                            if (isset($_SESSION[SESSION_ID])) {
+                                $sql .= "WHERE id_usuario = '" . $_SESSION[SESSION_ID] . "' AND accion LIKE ('crear')";
+                                $id = "id2";
+                            }
+                            $sql .= " ORDER BY id_batalla LIMIT {$offset}, " . ELEMENTS_PAGE;
+                            $elementos = $conexion->query($sql)->fetchAll(PDO::FETCH_NUM);
+
+                            echo "
+                            </form>
+                            <div>
+                            <div>
+                            <div>";
+                            // Por cada elemento crea un formulario con un boton de submit que es la imagen del elemento
+                            if ($paginaActual == 1) {
+                                $acum = 0;
+                            } else{
+                                $acum = $paginaActual + 2;
+                            }
+
+
+                            foreach ($elementos as $elemento) {
+                                $imagenBatallaU = '<div class="filaBatallas" style="margin-left:25px; margin-right:25px">
+                                <div class="row-center">
+                                    <div class="card-group">
+                                        <div class="card">
+                                            <img class="imagenUser" src="'
+                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "foto")[0] . '">
+                                            <span class="btn-circle btn-or">OR</span> 
+                                            <img class="imagenUser" src="'
+                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "foto")[0] . '">
+                                            <div class="card-body">
+                                                <h4 class="card-title">Batalla #' . $acum + 1 . '</h4>
+                                                <p class="card-text">'
+                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "nombre")[0] .
+                                    ' vs '
+                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "nombre")[0] .
+                                    '</p>
+                                            </div>
+                                        </div>';
+                                $acum = $acum + 1;
+                                echo $imagenBatallaU;
+                ?>
+
+                <?php
+                                // PAGINACION
+                            }
+                            echo "</div></div><br/>";
+                            if ($paginas > 1) {
+
+                                $enlaces = "<div class='rowBatalla text-center fw-bold h1'>
+                                <div class='bando' style='display:inline-block; border:0'>";
+                                if ($paginaActual > 1) {
+                                    $anterior = $paginaActual - 1;
+                                    $enlaces .= "<a href='{$_SERVER["PHP_SELF"]}?pagina={$anterior}'><</a>";
+                                }
+                                for ($i = 1; $i <= $paginas; $i++) {
+                                    $enlaces .= "<a href='{$_SERVER["PHP_SELF"]}?pagina={$i}'> {$i} </a>";
+                                }
+                                if ($paginaActual < $paginas) {
+                                    $siguiente = $paginaActual + 1;
+                                    $enlaces .= "<a href='{$_SERVER["PHP_SELF"]}?pagina={$siguiente}'>></a>";
+                                }
+                                $enlaces .= "</div></div></div>";
+                                echo $enlaces;
+                            }
                         }
-                        echo "</div>
-                        </div>";
                     }
                 } else {
                     echo  '<h4>'
@@ -163,56 +221,6 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
 
             </div>
         </div><br><br>'
-
-
-
-
-
-
-
-
-        <!--  '<div class="filaBatallas">
-            <div class="row-center">
-                <div class="card-group">
-                    <div class="card">
-                        <img class="card-img-top" data-src="#" alt="mario" style="height: 15px;">
-                        <span class="btn-circle btn-or">OR</span>
-                        <img class="card-img-top" data-src="#" alt="luigi" style="height: 15px;">
-                        <div class="card-body">
-                            <h4 class="card-title">Batalla #1</h4>
-                            <p class="card-text">Mario vs Luigi</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" data-src="holder.js/100x180/" alt="Nesquick" style="height: 15px;">
-                        <span class="btn-circle btn-or">OR</span>
-                        <img class="card-img-top" data-src="holder.js/100x180/" alt="Colacao" style="height: 15px;">
-                        <div class="card-body">
-                            <h4 class="card-title">Batalla #2</h4>
-                            <p class="card-text">Colacao vs Nesquick</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" data-src="holder.js/100x180/" alt="Foto1" style="height: 15px;">
-                        <span class="btn-circle btn-or">OR</span>
-                        <img class="card-img-top" data-src="holder.js/100x180/" alt="Foto2" style="height: 15px;">
-                        <div class="card-body">
-                            <h4 class="card-title">Batalla #3</h4>
-                            <p class="card-text">Algo vs Cosa</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img class="card-img-top" data-src="holder.js/100x180/" alt="Foto1" style="height: 15px;">
-                        <span class="btn-circle btn-or">OR</span>
-                        <img class="card-img-top" data-src="holder.js/100x180/" alt="Foto2" style="height: 15px;">
-                        <div class="card-body">
-                            <h4 class="card-title">Batalla #4</h4>
-                            <p class="card-text">Pelado vs Hippie</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>'-->
 
     </div>
 </section>
