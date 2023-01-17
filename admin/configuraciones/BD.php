@@ -1,58 +1,50 @@
 <?php
 
-class DB
+class BD
 {
     const HOST = "localhost"; // o 127.0.0.1
     const USER = "root";
     const PASSWORD = "";
-    const NAME = "dbempresa";
+    const NAME = "dbbatallas";
     const DRIVER = "mysql"; //PARA PDO
-    const DSN = DB::DRIVER . ":host=" . DB::HOST . ";dbname=" . DB::NAME;
+    const DSN = BD::DRIVER . ":host=" . BD::HOST . ";dbname=" . BD::NAME;
 
     // const HOST = "sql307.byethost22.com";// o 127.0.0.1
     // const USER = "b22_32770819";
     // const PASSWORD = "grupoDAWES";
-    // const DB = "b22_32770819_dbbatallas";
+    // const BD = "b22_32770819_dbbatallas";
     // const DRIVER = "mysql"; //PARA PDO
-    // const DSN = DRIVER . ":host=" . HOST . ";dbname=" . DB;
+    // const DSN = DRIVER . ":host=" . HOST . ";dbname=" . BD;
 
     private $conexion;
 
-    function __construct($conect)
+    public function __construct($conect)
     {
         if ($conect) {
             $this->startConexion();
         }
     }
 
-    function startConexion()
+    public function startConexion()
     {
-        $this->conexion = new PDO(DB::DSN, DB::USER, DB::PASSWORD);
+        $this->conexion = new PDO(BD::DSN, BD::USER, BD::PASSWORD);
     }
 
-    function isConnected()
+    public function isConnected()
     {
         return (isset($this->conexion));
     }
 
-    function getConexion()
+    public function getConexion()
     {
         return $this->conexion;
     }
 
     // ----------------------------------------- GENERALES ----------------------------------------
 
-    function select($campos, $tabla, $where)
+    public function select($campos, $tabla, $where=[])
     {
-        $sql = "SELECT ";
-        for ($i = 0; $i < count($campos); $i++) {
-            $sql .= "{$campos[$i]}";
-            if ($i < count($campos) - 1) {
-                $sql .= ",";
-            }
-            $sql .= " ";
-        }
-        $sql .= " FROM {$tabla} ";
+        $sql = "SELECT " . implode(", ", $campos) . " FROM {$tabla} ";
         if (count($where) > 0) {
             $sql .= "WHERE {$where[0]}='{$where[1]}'";
         }
@@ -61,7 +53,7 @@ class DB
         return $registros;
     }
 
-    function insertar($tabla, $datos)
+    public function insertar($tabla, $datos)
     {
         $sql = "INSERT INTO {$tabla} VALUES (";
         for ($i = 0; $i < count($datos); $i++) {
@@ -80,7 +72,7 @@ class DB
         return $this->conexion->lastInsertId();
     }
 
-    function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor)
+    public function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor)
     {
         $sql = "UPDATE {$tabla} SET";
         for ($i = 0; $i < count($setTablas); $i++) {
@@ -93,13 +85,13 @@ class DB
         $this->conexion->prepare($sql)->execute($setValores);
     }
 
-    function delete($tabla, $columna, $dato)
+    public function delete($tabla, $columna, $dato)
     {
         $sql = "DELETE FROM {$tabla} WHERE {$columna} = ? ";
         $this->conexion->prepare($sql)->execute([$dato]);
     }
 
-    function realizarSql($sql, $datos)
+    public function realizarSql($sql, $datos)
     {
         $preparedSttm = $this->conexion->prepare($sql);
         $preparedSttm->execute($datos);
@@ -107,7 +99,7 @@ class DB
 
     // ------------------------------------------ USUARIO -----------------------------------------
 
-    function selectFromUsuario($campos)
+    public function selectFromUsuario($campos)
     {
         $conexion = new PDO(DSN, USER, PASSWORD);
         $sql = "SELECT ";
@@ -124,7 +116,7 @@ class DB
         return $registro;
     }
 
-    function existe($user)
+    public function existe($user)
     {
         $sql = "SELECT password FROM credencial WHERE nombreusuario = '{$user}'";
         $resultado = $this->conexion->query($sql);
@@ -134,7 +126,7 @@ class DB
         return false;
     }
 
-    function subirUsuario($datos)
+    public function subirUsuario($datos)
     {
 
         $this->insertar("credencial", [$datos[0], md5($datos[1])]);
@@ -163,14 +155,14 @@ class DB
         return $id;
     }
 
-    function actualizarUsuario($campo, $actualizacion, $id)
+    public function actualizarUsuario($campo, $actualizacion, $id)
     {
         $this->update("usuario", [$campo], [$actualizacion], "id", $id);
     }
 
     //------------------------------------------ BATALLA ------------------------------------------
 
-    function buscarBatalla($idUsuario)
+    public function buscarBatalla($idUsuario)
     {
         $query =
             'SELECT id_elemento1, id_elemento2 
@@ -185,7 +177,7 @@ class DB
         return $arr;
     }
 
-    function infoBatalla($idElemento, $info)
+    public function infoBatalla($idElemento, $info)
     {
         $query = "SELECT " . $info . " FROM elemento WHERE id = '" . $idElemento . "'";
         $resultado = $this->conexion->query($query);
@@ -193,3 +185,6 @@ class DB
         return $registro;
     }
 }
+
+$bd = new BD(true);
+$bd->select(["*"], "usuario");
