@@ -1,5 +1,6 @@
 <?php
 include 'admin/templates/cabecera.php';
+include 'admin/configuraciones/Persona.php';
 // Iniciamos el id a -1 para el caso de que el usuario no haya iniciado sesión y no esté mirando ningún perfil
 $idUsuario = -1;
 // Si a iniciado sesión se coge su id
@@ -16,6 +17,7 @@ if (isset($_GET) && !empty($_GET) && isset($_GET["usuario"])) {
 // Si hay usuario guarda todos sus datos en el array $datosusuario
 
 
+//usuario = new Persona(select(["nombreusuario"]
 $datosUsuario = [];
 if ($idUsuario > -1) {
     $datosUsuario = select(["nombreusuario"], "usuario_credencial", ["id_usuario", $idUsuario])[0];
@@ -160,7 +162,7 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
                             // Por cada elemento crea un formulario con un boton de submit que es la imagen del elemento
                             if ($paginaActual == 1) {
                                 $acum = 0;
-                            } else{
+                            } else {
                                 $acum = $paginaActual + 2;
                             }
 
