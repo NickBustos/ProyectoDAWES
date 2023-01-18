@@ -12,14 +12,6 @@ define("DATE_FIRST", date("1900-01-01"));//primera disponible para formulario
 define("MIN_PASS_LENGTH", 8);//Contraseña: tamaño minimo
 define("MAX_PASS_LENGTH", 16);//Contraseña: tamaño máximo
 
-//Numeros de posiciones en arrays de línea de registrados.txt
-define("LINE_USER", 0);
-define("LINE_PASS", 1);
-define("LINE_MAIL", 2);
-define("LINE_DATE", 3);
-define("LINE_FILE", 4);
-define("LINE_SEPARATOR", ";");
-
 //Datos guardados en sesion de usuario
 define("SESSION_ID", "id");
 define("SESSION_USER", "user");
@@ -36,7 +28,6 @@ define("PATTERN_USER", "/([A-ZÁ-Ú]{1}[-a-zá-ú]+\s?)+/A");
 define("PATTERN_PASS_MINUS", '/[a-z]/');//Verifica que hay una minuscula
 define("PATTERN_PASS_MAYUS", '/[A-Z]/');//Verifica que hay una mayuscula
 define("PATTERN_PASS_NUMBER", '/[0-9]/');//Verifica que hay un numero
-define("PATTERN_CHARACTER_SEPARATOR", "/[".LINE_SEPARATOR."]/");//Verifica que hay ";"
 
 //-------------------------------------- ERRORS --------------------------------------
 
@@ -60,7 +51,7 @@ define("SESSION_CREAR_ELEM_1", "crearElem1");
 define("SESSION_CREAR_ELEM_2", "crearElem2");
 
 //----------------------------------- PERFIL ------------------------------------
-// índices de array $datosusuario de perfil
+// índices de array $datosusuario de perfil => se cambiara con objetos
 define("PERFIL_USUARIO", 0);
 define("PERFIL_FOTO", 2);
 define("PERFIL_BATALLAS_CREADAS", 8);
