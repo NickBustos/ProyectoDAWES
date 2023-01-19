@@ -79,11 +79,10 @@ if (isset($_POST)) {
         // Si viene de crear se crea la batalla y se inserta el voto
         // Si viene de index solamente se inserta el voto
         try {
-            //VIGILAR: ESTA FUNCION PUEDE NO EXISTIR AL SUBIRLO (HABRÍA QUE CREARLA) https://www.php.net/manual/en/function.str-ends-with.php
             $origen = htmlspecialchars(strtolower($_SERVER["HTTP_REFERER"]));
             $referer = explode("/", strtolower($_SERVER["HTTP_REFERER"]));
             // Si la url transformada en minúscula empieza con crear.php viene de alli
-            if (str_starts_with($referer[count($referer) - 1], "crear.php")) {
+            if(startsWith($referer[count($referer) - 1], "crear.php")){
                 // Para que se lleve a cabo procesamiento de la misma manera se guarda datos de elemento creados en elementos de batalla
                 $_SESSION[SESSION_BATTLE_ELEM_1] = $_SESSION[SESSION_CREAR_ELEM_1];
                 $_SESSION[SESSION_BATTLE_ELEM_2] = $_SESSION[SESSION_CREAR_ELEM_2];

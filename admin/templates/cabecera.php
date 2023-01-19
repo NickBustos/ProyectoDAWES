@@ -53,7 +53,7 @@
 
             <?php
             if (isset($_SESSION[SESSION_ID])) {
-                echo 
+                echo
                 "<li class='nav-item' style='margin: auto;'>
                     <a class='nav-link' href='crear.php'>{$lang['subirBatalla']}</a>
                 </li>";
@@ -105,7 +105,6 @@
                 if (isset($_SESSION[SESSION_ID])) {
                     echo "<a href='modificarDatos.php'>" . $lang['modificarDatos'] . "</a>";
                     echo "<a href='procesos/cerrarsesion.php'> " . $lang['cerrar'] . "</a>";
-                    
                 }
                 ?>
 

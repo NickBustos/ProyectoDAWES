@@ -205,7 +205,10 @@ if (isset($_POST["id1"])) {
                                                 $id = "id1";
                                                 $sql = "SELECT id, nombre, foto FROM elemento ";
                                                 if (isset($_SESSION["crearElem1"])) {
-                                                    $sql .= "WHERE id!={$_SESSION["crearElem1"]} ";
+                                                    $sql .= "WHERE id!={$_SESSION["crearElem1"]} AND id NOT IN 
+                                                    (SELECT id_elemento2 AS ID FROM batalla_elemento WHERE id_elemento1={$_SESSION["crearElem1"]}
+                                                                UNION
+                                                                SELECT id_elemento1 AS ID FROM batalla_elemento WHERE id_elemento2={$_SESSION["crearElem1"]})";
                                                     $id = "id2";
                                                 }
                                                 $sql .= "ORDER BY nombre LIMIT {$offset}, " . ELEMENTS_PAGE;

@@ -98,7 +98,6 @@ function insertar($tabla, $datos)
  */
 function select($campos, $tabla, $where)
 {
-    include_once "configDB.php";
     $conexion = new PDO(DSN, USER, PASSWORD);
     $sql = "SELECT ";
     for ($i = 0; $i < count($campos); $i++) {
@@ -235,7 +234,6 @@ function actualizarUsuario($campo, $actualizacion, $id)
 //---------------------------------- BBDD BATALLA ---------------------------------
 
 /**
- * Devuelve las imagenes de todos elementos creados o no, utilizados para crear batallas.
  * Para ello solo se necesita pasar un id de usuario para que la query se encargue 
  * de realizar la busqueda.
  * Array bidimensional columna2 = elemento1, columna2 = elemento2 y fila= batalla
@@ -243,7 +241,7 @@ function actualizarUsuario($campo, $actualizacion, $id)
 function buscarBatalla($idUsuario)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
-    $query = 
+    $query =
         'SELECT id_elemento1, id_elemento2 
         FROM batalla_elemento 
         WHERE id_batalla = ANY 
@@ -264,7 +262,7 @@ function buscarBatalla($idUsuario)
 function infoBatalla($idElemento, $info)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
-    $query = "SELECT " . $info . " FROM elemento WHERE id = '" . $idElemento . "'";
+    $query = "SELECT " . $info . " FROM elemento WHERE id = '" . $idElemento ."'";
     $resultado = $conexion->query($query);
     $registro = $resultado->fetchAll(PDO::FETCH_COLUMN);
     return $registro;
@@ -331,12 +329,18 @@ function miGestorDeErrores($nivel, $mensaje)
 /**
  * Establecer sistema de gestores propio
  */
-function set_error_manager($gestorErrores = "miGestorDeErrores"){
+function set_error_manager($gestorErrores = "miGestorDeErrores")
+{
     set_error_handler($gestorErrores);
 }
 /**
  * Volver a gestor de errores de php
  */
-function default_error_manager(){
+function default_error_manager()
+{
     restore_error_handler(); // le paso el control de errores a PHP
+}
+
+function startsWith($cadena, $string) {
+    return substr_compare($cadena, $string, 0, strlen($string)) === 0;
 }
