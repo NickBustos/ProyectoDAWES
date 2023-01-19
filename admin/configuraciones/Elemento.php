@@ -1,6 +1,6 @@
 <?php
 require "BD.php";// quitar?
-class Bando
+class Elemento
 {
     private int $id;
     private $foto;
@@ -11,8 +11,8 @@ class Bando
     {
         $this->id = $id;
         $this->bd = $bd;
-        return $this->bd->select(["nombre"], "elemento", ["id_elemento", $this->id])[0];
-        return $this->bd->select(["foto"], "elemento", ["id_elemento", $this->id])[0];
+        $this->nombre = $this->bd->select(["nombre"], "elemento", ["id", $this->id])[0][0];
+        $this->foto = $this->bd->select(["foto"], "elemento", ["id", $this->id])[0][0];
     }
 
     public function getNombre(){
@@ -45,11 +45,13 @@ class Bando
         $infoBando =
             "<div class='bando'>
                 <div style='display:flex; justify-content:center;'>
-                    <img width='200px' height='200px' src='{$this->getFoto()}'>
+                    <img width='200px' height='200px' src='{$this->foto}'>
                 </div>
-                <p class='text-center h1 fw-bold mt-4'>{$this->getNombre()}</p>
+                <p class='text-center h1 fw-bold mt-4'>{$this->nombre}</p>
                 <div class='voteBatalla'>{$infoDiv}</div>
             </div>";
         return $infoBando;
     }
 }
+$e = new Elemento(4, new BD(true));
+echo $e->printComplex(true, 2);
