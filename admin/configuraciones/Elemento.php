@@ -5,14 +5,12 @@ class Elemento
     private int $id;
     private $foto;
     private $nombre;
-    private BD $bd;
 
     public function __construct($id, $bd)
     {
         $this->id = $id;
-        $this->bd = $bd;
-        $this->nombre = $this->bd->select(["nombre"], "elemento", ["id", $this->id])[0][0];
-        $this->foto = $this->bd->select(["foto"], "elemento", ["id", $this->id])[0][0];
+        $this->nombre = BD::select(["nombre"], "elemento", ["id", $this->id])[0][0];
+        $this->foto = BD::select(["foto"], "elemento", ["id", $this->id])[0][0];
     }
 
     public function getNombre(){
@@ -26,9 +24,9 @@ class Elemento
     public function getVotos($batalla)// revisar
     {
         $sql = "SELECT COUNT(*) FROM voto 
-                WHERE id_elemento='{$this->id}'
-                    AND id_batalla='{$batalla}'";
-        return $this->bd->getConexion()->query($sql)->fetch(PDO::FETCH_NUM)[0];
+                WHERE id_elemento=?
+                    AND id_batalla=?";
+        return BD::realizarSql(BD::crearConexion(), $sql, [$this->id, $batalla])[0][0];
     }
 
     public function printComplex($voted, $batalla = -1)
@@ -53,5 +51,5 @@ class Elemento
         return $infoBando;
     }
 }
-$e = new Elemento(4, new BD(true));
-echo $e->printComplex(true, 2);
+$e = new Elemento(9, new BD(true));
+echo $e->printComplex(true, 3);
