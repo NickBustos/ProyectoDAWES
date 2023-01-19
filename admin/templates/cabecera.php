@@ -15,7 +15,6 @@
      * Inicia sesión.
      * Si no hay un tema definido en $_SESSION lo crea con el valor "claro".
      * Si el valor del tema es "noche" carga el css correspondiente.
-     * 
      */
     $css = "<link rel='stylesheet' href='./css/archivo.css' />";
     if (isset($_SESSION[SESSION_ID])) {
@@ -56,7 +55,7 @@
             if (isset($_SESSION[SESSION_ID])) {
                 echo 
                 "<li class='nav-item' style='margin: auto;'>
-                    <a class='nav-link' href='crearBatalla.php'>{$lang['subirBatalla']}</a>
+                    <a class='nav-link' href='crear.php'>{$lang['subirBatalla']}</a>
                 </li>";
             }
             ?>
@@ -80,7 +79,7 @@
                  * Si el usuario ha iniciado sesión muestra la opción de entrar a su pagina personal.
                  */
                 if (isset($_SESSION[SESSION_ID])) {
-                    echo "<a href='paginaPersonal.php'> " . $lang['paginaPersonal'] . "</a>";
+                    echo "<a href='perfil.php'> " . $lang['paginaPersonal'] . "</a>";
                 }
                 ?>
                 <?php
@@ -104,9 +103,12 @@
                  * Si el usuario ha iniciado sesión muestra la opción de cerrar sesión.
                  */
                 if (isset($_SESSION[SESSION_ID])) {
+                    echo "<a href='modificarDatos.php'>" . $lang['modificarDatos'] . "</a>";
                     echo "<a href='procesos/cerrarsesion.php'> " . $lang['cerrar'] . "</a>";
+                    
                 }
                 ?>
+
 
             </div>
         </div>

@@ -8,14 +8,10 @@
                             <div class="row justify-content-center">
                                 <?php
                                 /**
-                                 * Realizamos un select, para recoger todas las batallas
-                                 * Por cada batalla el id del elemento 1 es batalla[0] y el id del elemento 2 es batalla [1].
-                                 * Cada elemento esta formado, por el nombre y la foto.
-                                 * A continuación mostramos los elementos, haciendo un echo $mostrar.
-                                 * Por cada batalla encontrado, se realiza un while
+                                 * Coge una batalla aleatorio o en caso de que estes viendo o haciendo operaciones con una esa
+                                 * Te muestra sus datos si no has votado con las opciones de votar (votar elemento1, votar elemento2, ignorar y denunciar)
+                                 * Si has votado te muestra los resultados y el boton de siguiente
                                  */
-                                // $conexion = new PDO(DSN, USER, PASSWORD); YA LA HE CREADO EN CABECERA
-
                                 $batalla = $elemento1 = $elemento2 = "";
                                 $nameDeBoton = "ignorar"; // de base el boton es ignorar
 
@@ -29,6 +25,13 @@
                                         $nameDeBoton = "siguiente"; // si ha votado es siguiente
                                     }
                                 } else {
+                                    /**
+                                     * Coger una batalla aleatoriamente
+                                     * que no ha creado el usuario
+                                     * que no ha votado
+                                     * que no tiene 10 o más denuncias
+                                     * que no ha sido eliminada
+                                     */
                                     $sql = "SELECT be.id_elemento1, be.id_elemento2, be.id_batalla
                                     FROM batalla_elemento be 
                                     WHERE be.id_batalla NOT IN (
@@ -63,30 +66,40 @@
                                     $registroBatalla->fetch(PDO::FETCH_BOUND);
                                 }
                                 if ($batalla == "") { // No hay batalla disponible
-                                    echo "<p class='text-center fw-bold h1'>NO QUEDAN BATALLAS DISPLONIBLES</p>";
-                                    echo "
-                                        <form action='crearBatalla.php'>
-                                            <input type='submit' class='submitBatalla btn btn-primary btn-lg' value='Crear batalla'>
-                                        </form>";
+                                    echo "<p class='text-center fw-bold h1'>" . $lang["noBatallasDisponibles"] . "</p>";
+                                    echo "<a type='button' class='submitBatalla btn btn-primary btn-lg' href='crear.php'>" . $lang["subirBatalla"] . "</a>";
                                 } else {
-                                    // Guardar datos de batalla en sesión para poder hacer operaciones con ellos
+                                    // Guardar datos de batalla en sesión para poder hacer operaciones con ellos y volver luego a la misma batalla
                                     $_SESSION[SESSION_CURRENT_BATTLE] = $batalla;
                                     $_SESSION[SESSION_BATTLE_ELEM_1] = $elemento1;
                                     $_SESSION[SESSION_BATTLE_ELEM_2] = $elemento2;
 
                                     // Coger id del usuario dueño de la batalla
                                     $sql = "SELECT id_usuario FROM usuario_batalla WHERE id_batalla='{$batalla}' AND accion='crear'";
-                                    $id_usuario = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
+                                    try {
+                                        set_error_manager();
+                                        $id_usuario = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
+                                    } catch (Exception $e) {
+                                        $id_usuario = -1;
+                                    }finally{
+                                        default_error_manager();
+                                    }
+
 
                                     // Coger datos del usuario dueño de la batalla
-                                    $foto = $name_user = "";
-                                    $sql = "SELECT DISTINCT u.foto, c.nombreusuario FROM usuario u 
+                                    if ($id_usuario > -1) {
+                                        $foto = $name_user = "";
+                                        $sql = "SELECT DISTINCT u.foto, c.nombreusuario FROM usuario u 
                                                     INNER JOIN usuario_credencial c ON u.id=c.id_usuario 
                                                     WHERE u.id='{$id_usuario}'";
-                                    $resultado = $conexion->query($sql);
-                                    $resultado->bindColumn(1, $foto);
-                                    $resultado->bindColumn(2, $name_user);
-                                    $resultado->fetch(PDO::FETCH_BOUND);
+                                        $resultado = $conexion->query($sql);
+                                        $resultado->bindColumn(1, $foto);
+                                        $resultado->bindColumn(2, $name_user);
+                                        $resultado->fetch(PDO::FETCH_BOUND);
+                                    }else{
+                                        $foto = "imagenes/nouser.png";
+                                        $name_user = $lang["usuarioBorrado"];
+                                    }
 
                                     // Coger bandos de la batalla
                                     $sql = "SELECT id, nombre, foto FROM elemento WHERE id='$elemento1' OR id='$elemento2'";
@@ -94,13 +107,33 @@
 
                                     // Comenzar a cargar elementos HTML en variable $mostrar (crear formulario y cabecera)
                                     $mostrar = "<form method='post' class='subirBatalla' id='subirBatalla' action='procesos/procesarVoto.php'>";
+                                    $rol = selectFromUsuario(["rol"])[0];
+                                    $classAdmin = $imagenAdmin = "";
+                                    if ($rol == "admin") {
+                                        $classAdmin = "style='justify-content: space-between;'";
+                                        $imagenAdmin = "
+                                        <div class='desplegable' style='margin-right:0'>
+                                            <img class='imagenUser' src='imagenes/options.png'>
+                                            <div class='contenido-desplegable' style='margin-left:0'>
+                                                <button type='submit' name='deleteBattle' style='background: none; color: white; border: none; padding: 0; font: inherit; cursor: pointer; outline: inherit;'>
+                                                    BORRAR
+                                                </button>
+                                            </div>
+                                        </div>";
+                                    }
                                     $mostrar .= "
-                                            <header class='rowBatalla headerBatalla'>
-                                                <img class='imagenUser' src='{$foto}'>
-                                                <p class='text-center fw-bold h1'>{$name_user}</p>
+                                            <header class='rowBatalla headerBatalla' {$classAdmin}>
+                                                <a href='perfil.php?usuario={$id_usuario}'><img class='imagenUser' src='{$foto}'></a>
+                                                <p class='text-center fw-bold h1'>";
+                                    if($id_usuario > -1){
+                                        $mostrar .= "<a href='perfil.php?usuario={$id_usuario}' style='color:white;'>{$name_user}</a>";
+                                    }else{
+                                        $mostrar .= "{$name_user}";
+                                    }
+                                    $mostrar .="</p>
+                                                {$imagenAdmin}
                                             </header>
                                             <div class='rowBatalla'>";
-
                                     // Por cada bando de la batalla se carga la imagen y el nombre del elemento que lo compone y el botón o el nº de votos.
                                     while ($bando = $bandos->fetch(PDO::FETCH_NAMED)) {
                                         $infoBando =

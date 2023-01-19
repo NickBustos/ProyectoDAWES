@@ -1,5 +1,12 @@
 <?php
-include "admin/templates/cabecera.php";
+include "admin/templates/cabecera.php"; 
+//Si ha iniciado sesión no muestra nada
+if (isset($_SESSION[SESSION_ID])) {
+    echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
+    echo "<img src='imagenes/luigi.png'><br/>";
+    echo "<a type='button' class='submitBatalla btn btn-primary btn-lg' href='home.php'>Volver</a>";
+    exit();
+}
 
 /**
  * Creación de variables.
@@ -32,7 +39,7 @@ if (!empty($_POST)) {
         if ($passReal !== false) {
             $user = $_user;
             if (!empty($_password)) {
-                $_password = base64_encode($_password);
+                $_password = md5($_password);
                 if ($_password === $passReal) {
                     $conexion = new PDO(DSN, USER, PASSWORD);
                     $sql = "SELECT DISTINCT id_usuario FROM usuario_credencial WHERE nombreusuario='{$user}'";

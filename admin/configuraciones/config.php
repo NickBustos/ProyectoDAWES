@@ -44,16 +44,28 @@ define("PATTERN_CHARACTER_SEPARATOR", "/[".LINE_SEPARATOR."]/");//Verifica que h
 define("ERROR_IN", "<span style='color:red'>");
 define("ERROR_OUT", "</span>");
 
-//-------------------------------------- IDIOMA --------------------------------------
+//-------------------------------------- IDIOMA ---------------------------------------
 define("LANG_ENGLISH", "en");
 define("LANG_SPANISH", "es");
 define("LANG", "lang");
 
-//------------------------------------- MODOVIS --------------------------------------
+//------------------------------------- MODOVIS ---------------------------------------
 define("TEMA", "modovis");
 define("TEMA_LIGHT", "light");
 define("TEMA_DARK", "dark");
 
+//----------------------------------- CREAR BATTLE ------------------------------------
+define("ELEMENTS_PAGE", 4);
+define("SESSION_CREAR_ELEM_1", "crearElem1");
+define("SESSION_CREAR_ELEM_2", "crearElem2");
+
+//----------------------------------- PERFIL ------------------------------------
+// índices de array $datosusuario de perfil
+define("PERFIL_USUARIO", 0);
+define("PERFIL_FOTO", 2);
+define("PERFIL_BATALLAS_CREADAS", 8);
+define("PERFIL_BATALLAS_VOTADAS", 9);
+define("PERFIL_BATALLAS_DENUNCIADAS", 11);
 
 
 ?>

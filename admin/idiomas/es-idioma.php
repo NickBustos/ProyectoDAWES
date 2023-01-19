@@ -38,7 +38,8 @@ $lang += array( //INDEX
 
     "bienvenido" => "Bienvenido a Mum OR Dad",
     "iniciarsesion" => "Iniciar sesión",
-    "registarse" => "Registrarse"
+    "registarse" => "Registrarse",
+    "modificarDatos" => "Modificar datos"
 );
 $lang += array( //INICIOSESIÓN
 
@@ -90,6 +91,7 @@ $lang += array( //SESIÓNINICIADA
 );
 $lang += array( //SUBIRBATALLA
 
+    "noBatallasDisponibles" => "NO QUEDAN BATALLAS DISPLONIBLES EN ESTE MOMENTO",
     "subirBatalla" => "Crear batalla",
     "nombre" => "Nombre:",
     "imagen" => "Imagen:",
@@ -100,4 +102,24 @@ $lang += array( //SUBIRBATALLA
     "error_batallaExiste"=> ERROR_IN . "La batalla ya existe" . ERROR_OUT,
     "error_elementosIguales"=> ERROR_IN . "Los elementos son iguales" . ERROR_OUT
 
+);
+
+$lang += array( //PERFIL
+    "unete" => "ÚNETE A NUETRA COMUNIDAD",
+    "tituloDescripcion" => "Descripción del usuario",
+    "esteUsuario" => "Este usuario ha creado ",
+    "batalla" => " batalla",
+    "batallas" => " batallas",
+    "sinBatallas" => "¡Vaya, parece que este usuario no ha creado batallas aún!",
+    "registrateYCrea" => "¡Registrate y crea batallas épicas!",
+    "bat_creadas_1"=>"Comprometido",
+    "bat_creadas_2"=>"Adicto",
+    "bat_creadas_3"=>"Vicioso",
+    "bat_votadas_1"=>"Votante",
+    "bat_votadas_2"=>"Sindicalista",
+    "bat_votadas_3"=>"Greta Thunberg",
+    "bat_denunciadas_1"=>"Madero",
+    "bat_denunciadas_2"=>"Moderador",
+    "bat_denunciadas_3"=>"Vigilante",
+    "usuarioBorrado"=>"Usuario eliminado"
 );

@@ -1,5 +1,12 @@
 <?php
 include "admin/templates/cabecera.php";
+// Si ha iniciado sesión
+if (isset($_SESSION[SESSION_ID])) {
+    echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
+    echo "<img src='imagenes/luigi.png'><br/>";
+    echo "<a type='button' class='submitBatalla btn btn-primary btn-lg' href='home.php'>Volver</a>";
+    exit();
+}
 
 /**
  * Creación de variables.

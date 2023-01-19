@@ -38,7 +38,8 @@ $lang += array( //INDEX
 
     "bienvenido" => "Welcome to Mum OR Dad",
     "iniciarsesion" => "Sign in",
-    "registarse" => "Sign up"
+    "registarse" => "Sign up",
+    "modificarDatos" => "Modify data"
 
 );
 $lang += array( //INICIOSESIÓN
@@ -91,6 +92,7 @@ $lang += array( //SESIÓNINICIADA
 );
 $lang += array( //SUBIRBATALLA
 
+    "noBatallasDisponibles" => "THERE IS NO AVAILABLE BATTLES AT THE MOMENT",
     "subirBatalla" => "Create battle",
     "nombre" => "Name:",
     "imagen" => "Image:",
@@ -101,4 +103,24 @@ $lang += array( //SUBIRBATALLA
     "error_batallaExiste"=> ERROR_IN . "This battle already exists" . ERROR_OUT,
     "error_elementosIguales"=> ERROR_IN . "Elements are the same" . ERROR_OUT
 
+);
+
+$lang += array( //PERFIL
+    "unete" => "JOIN OUR COMUNITY NOW",
+    "tituloDescripcion" => "User description",
+    "esteUsuario" => "This user has created ",
+    "batalla" => " battle",
+    "batallas" => " battles",
+    "sinBatallas" => "¡Whoopsie-daisy, it looks like this user hasn't created a battle yet!",
+    "registrateYCrea" => "¡Join us and create epic battles!",
+    "bat_creadas_1"=>"Engaged",
+    "bat_creadas_2"=>"Adict",
+    "bat_creadas_3"=>"Vicious",
+    "bat_votadas_1"=>"Voter",
+    "bat_votadas_2"=>"Sindicalist",
+    "bat_votadas_3"=>"Greta Thunberg",
+    "bat_denunciadas_1"=>"Pig",
+    "bat_denunciadas_2"=>"Moderator",
+    "bat_denunciadas_3"=>"Daredevil",
+    "usuarioBorrado"=>"Deleted user"
 );

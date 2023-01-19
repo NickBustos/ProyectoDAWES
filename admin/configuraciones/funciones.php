@@ -80,7 +80,7 @@ function insertar($tabla, $datos)
             $sql .= ")";
         }
     }
-    echo $sql;
+    // echo $sql;
     $preparedSttm = $conexion->prepare($sql);
     foreach ($datos as $key => &$val) {
         $preparedSttm->bindParam(":{$key}", $val);
@@ -117,19 +117,6 @@ function select($campos, $tabla, $where)
     return $registros;
 }
 
-/**
- * Ejecuta como consulta preparada un sql y unos datos en array
- * (Usada en procesar voto)
- */
-function realizarSql($conexion, $sql, $datos)
-{
-    $preparedSttm = $conexion->prepare($sql);
-    $preparedSttm->execute($datos);
-}
-
-/**
- * 
- */
 function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
@@ -145,6 +132,25 @@ function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor)
     // $sql = "UPDATE {$tabla} SET {$setTabla}=? WHERE $whereTabla={$whereValor}";
     $conexion->prepare($sql)->execute($setValores);
 }
+
+function delete($tabla, $columna, $dato)
+{
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $sql = "DELETE FROM {$tabla} WHERE {$columna} = ? ";
+    $conexion->prepare($sql)->execute([$dato]);
+}
+
+/**
+ * Ejecuta como consulta preparada un sql y unos datos en array
+ * (Usada en procesar voto)
+ */
+function realizarSql($conexion, $sql, $datos)
+{
+    $preparedSttm = $conexion->prepare($sql);
+    $preparedSttm->execute($datos);
+}
+
+
 
 //---------------------------------- BBDD USUARIO ---------------------------------
 
@@ -226,21 +232,43 @@ function actualizarUsuario($campo, $actualizacion, $id)
     update("usuario", [$campo], [$actualizacion], "id", $id);
 }
 
+//---------------------------------- BBDD BATALLA ---------------------------------
 
 /**
  * Devuelve las imagenes de todos elementos creados o no, utilizados para crear batallas.
  * Para ello solo se necesita pasar un id de usuario para que la query se encargue 
  * de realizar la busqueda.
+ * Array bidimensional columna2 = elemento1, columna2 = elemento2 y fila= batalla
  */
-function imagenBatalla($idUsuario)
+function buscarBatalla($idUsuario)
 {
     $conexion = new PDO(DSN, USER, PASSWORD);
-    $query = 'SELECT foto FROM elemento WHERE id = ANY (SELECT id_elemento1 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")) UNION ALL SELECT id_elemento2 FROM batalla_elemento WHERE id_batalla = ANY (SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear")));';
+    $query = 
+        'SELECT id_elemento1, id_elemento2 
+        FROM batalla_elemento 
+        WHERE id_batalla = ANY 
+            ( SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear"));';
+    $resultado = $conexion->query($query);
+    $arr = array();
+    while ($row = $resultado->fetch(PDO::FETCH_ASSOC)) {
+        $arr[] = $row;
+    }
+    return $arr;
+}
+
+/**
+ * Coger informacion relativa a los elementos 
+ * @param $idElemento = id
+ * @param $info = [foto, nombre, etc]
+ */
+function infoBatalla($idElemento, $info)
+{
+    $conexion = new PDO(DSN, USER, PASSWORD);
+    $query = "SELECT " . $info . " FROM elemento WHERE id = '" . $idElemento . "'";
     $resultado = $conexion->query($query);
     $registro = $resultado->fetchAll(PDO::FETCH_COLUMN);
     return $registro;
 }
-
 
 
 
@@ -291,15 +319,24 @@ function getTemaContrario($tema)
     return $nuevoTema;
 }
 
-//----------------------------- Función para registrar los datos en la BD sin el modo Visualización y sin Idioma-----------------------------
-$conexion_db = new PDO(DSN,USER,PASSWORD);
-
-function insertarCliente($fechaNac, $image, $email, $rol){
-
-    if(isset($conexion_db)){
-        $sql = "INSERT INTO 'USUARIO' ('FechaNacimiento','FotoURL', 'Email', 'Rol' VALUES ('[$fechaNac]','[$image]','[$email]','[$rol]')";
-        $pdostmt = $conexion_db->prepare(($sql));
-        $pdostmt->execute();
-
+/**
+ * Sistema gestor de errores segun el que no se muestran errores
+ */
+function miGestorDeErrores($nivel, $mensaje)
+{
+    switch ($nivel) {
+        default:
+    }
 }
+/**
+ * Establecer sistema de gestores propio
+ */
+function set_error_manager($gestorErrores = "miGestorDeErrores"){
+    set_error_handler($gestorErrores);
+}
+/**
+ * Volver a gestor de errores de php
+ */
+function default_error_manager(){
+    restore_error_handler(); // le paso el control de errores a PHP
 }
