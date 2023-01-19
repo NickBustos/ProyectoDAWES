@@ -3,20 +3,24 @@ require "BD.php";// quitar?
 class Bando
 {
     private int $id;
+    private $foto;
+    private $nombre;
     private BD $bd;
 
     public function __construct($id, $bd)
     {
         $this->id = $id;
         $this->bd = $bd;
+        return $this->bd->select(["nombre"], "elemento", ["id_elemento", $this->id])[0];
+        return $this->bd->select(["foto"], "elemento", ["id_elemento", $this->id])[0];
     }
 
     public function getNombre(){
-        return $this->bd->select(["nombre"], "elemento", ["id_elemento", $this->id])[0];// Es nombre?
+        return $this->nombre;
     }
 
     public function getFoto(){
-        return $this->bd->select(["foto"], "elemento", ["id_elemento", $this->id])[0];
+        return $this->foto;
     }
 
     public function getVotos($batalla)// revisar
