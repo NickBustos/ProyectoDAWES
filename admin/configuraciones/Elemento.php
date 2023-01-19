@@ -1,6 +1,6 @@
 <?php
 require "BD.php";// quitar?
-class Bando
+class Elemento
 {
     private int $id;
     private $foto;
@@ -18,18 +18,15 @@ class Bando
     public function getNombre(){
         return $this->nombre;
     }
+    
+
+    
 
     public function getFoto(){
         return $this->foto;
     }
 
-    public function getVotos($batalla)// revisar
-    {
-        $sql = "SELECT COUNT(*) FROM voto 
-                WHERE id_elemento='{$this->id}'
-                    AND id_batalla='{$batalla}'";
-        return $this->bd->getConexion()->query($sql)->fetch(PDO::FETCH_NUM)[0];
-    }
+  
 
     public function printComplex($voted, $batalla = -1)
     {

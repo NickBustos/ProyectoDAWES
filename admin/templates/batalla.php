@@ -105,6 +105,14 @@
                                     $sql = "SELECT id, nombre, foto FROM elemento WHERE id='$elemento1' OR id='$elemento2'";
                                     $bandos = $conexion->query($sql);
 
+
+
+
+                                    // Mi parte a pintar
+
+
+
+
                                     // Comenzar a cargar elementos HTML en variable $mostrar (crear formulario y cabecera)
                                     $mostrar = "<form method='post' class='subirBatalla' id='subirBatalla' action='procesos/procesarVoto.php'>";
                                     $rol = selectFromUsuario(["rol"])[0];
@@ -134,6 +142,17 @@
                                                 {$imagenAdmin}
                                             </header>
                                             <div class='rowBatalla'>";
+
+
+
+
+                                    //Parte M.Montalvillo
+
+
+
+
+
+                                            
                                     // Por cada bando de la batalla se carga la imagen y el nombre del elemento que lo compone y el botón o el nº de votos.
                                     while ($bando = $bandos->fetch(PDO::FETCH_NAMED)) {
                                         $infoBando =
@@ -167,6 +186,14 @@
                                         }
                                         $mostrar .= $infoBando;
                                     }
+
+
+
+
+                                    //Mi parte a pintar
+
+
+
 
                                     //Se añaden los botones next y denunciar y se cierra el formulario y el div iniciados
                                     $mostrar .= "</div>
