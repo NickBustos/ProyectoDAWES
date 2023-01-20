@@ -1,5 +1,4 @@
 <?php
-require "funciones.php";
 class BD
 {
     const HOST = "localhost"; // o 127.0.0.1

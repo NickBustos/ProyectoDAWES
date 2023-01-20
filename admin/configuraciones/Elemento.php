@@ -1,5 +1,4 @@
 <?php
-require "BD.php";// quitar?
 class Elemento
 {
     private int $id;

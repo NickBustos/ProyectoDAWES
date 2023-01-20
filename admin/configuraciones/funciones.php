@@ -1,6 +1,11 @@
 <?php
 include 'config.php';
 include 'configDB.php';
+include 'BD.php';
+include 'Elemento.php';
+include 'Batalla.php';
+include 'Usuario.php';
+
 
 //------------------------------------- FECHAS --------------------------------------
 /**

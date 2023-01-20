@@ -1,7 +1,4 @@
-<link rel="stylesheet" href="../../css/archivo.css">
 <?php
-session_start();
-require_once "Elemento.php";
 class Batalla
 {
     private $id;
@@ -71,6 +68,10 @@ class Batalla
         $this->elements = [];
         array_push($this->elements, new Elemento($id_elementos[0]));
         array_push($this->elements, new Elemento($id_elementos[1]));
+    }
+
+    public function removeUser(){
+        $this->id_creator = null;
     }
 
     public function printComplex() // RETOCAR
