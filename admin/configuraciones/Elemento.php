@@ -6,7 +6,7 @@ class Elemento
     private $foto;
     private $nombre;
 
-    public function __construct($id, $bd)
+    public function __construct($id)
     {
         $this->id = $id;
         $this->nombre = BD::select(["nombre"], "elemento", ["id", $this->id])[0][0];
@@ -37,7 +37,7 @@ class Elemento
         }else{
             $infoDiv = 
                 "<button name='elementoVotado' type='submit' class='submitBatalla btn btn-primary btn-lg' value='{$this->id}'>
-                    <img class='imagenUser' src='imagenes/thumbsUp.png'>
+                    <img class='imagenUser' src='../../imagenes/thumbsUp.png'>
                 </button>";
         }
         $infoBando =
@@ -51,5 +51,5 @@ class Elemento
         return $infoBando;
     }
 }
-$e = new Elemento(9, new BD(true));
-echo $e->printComplex(true, 3);
+// $e = new Elemento(9, new BD(true));
+// echo $e->printComplex(true, 3);

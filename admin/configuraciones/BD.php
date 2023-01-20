@@ -30,9 +30,6 @@ class BD
             $sql .= "WHERE {$where[0]}='{$where[1]}'";
         }
         return BD::realizarSql($conexion, $sql, [], $fetch);
-        //         $resultado = $conexion->query($sql);
-        // $registros = $resultado->fetchAll($fetch);
-        // return $registros;
     }
 
     public static function insertar($tabla, $datos)
@@ -86,6 +83,7 @@ class BD
     }
 
     // ------------------------------------------ USUARIO -----------------------------------------
+    // REVISARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 
     public static function selectFromUsuario($campos)
     {
