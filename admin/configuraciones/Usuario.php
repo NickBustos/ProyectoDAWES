@@ -38,7 +38,7 @@ class Usuario
 
     // Insert de que ha ignorado batalla
     // Quita los datos de la batalla de la sesion para que muestre una nueva
-    public function ignorarBatalla($batalla, $elemento)
+    public function ignorarBatalla($batalla)
     {
         $sql = "INSERT INTO usuario_batalla VALUES (
                 '', :id_u, :id_b, 'ignorar', :mom
