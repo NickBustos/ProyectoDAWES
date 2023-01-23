@@ -1,6 +1,11 @@
 <?php
 include 'config.php';
 include 'configDB.php';
+include 'BD.php';
+include 'Elemento.php';
+include 'Batalla.php';
+include 'Usuario.php';
+
 
 //------------------------------------- FECHAS --------------------------------------
 /**
@@ -344,3 +349,4 @@ function default_error_manager()
 function startsWith($cadena, $string) {
     return substr_compare($cadena, $string, 0, strlen($string)) === 0;
 }
+//>>>>>>>>> Temporary merge branch 2
