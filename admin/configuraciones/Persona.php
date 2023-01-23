@@ -2,13 +2,13 @@
 
 class Persona
 {
-    public $perfilId = '';
-    public $perfilFoto = '';
-    public $perfilBatallasCreadas = '';
-    public $perfilVotos = '';
-    public $perfilDenuncias = '';
+    private $perfilId;
+    private $perfilFoto;
+    private $perfilBatallasCreadas;
+    private $perfilVotos;
+    private $perfilDenuncias;
 
-    /*function __construct(int $perfilId, int $perfilFoto, int $perfil)
+    /*function __construct()
     {
         
     }*/
