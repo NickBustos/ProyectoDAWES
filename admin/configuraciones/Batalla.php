@@ -49,7 +49,7 @@ class Batalla
             if (count($registroBatalla) > 0) {
                 $batalla = new Batalla($registroBatalla[0][0]);
                 $_SESSION[SESSION_CURRENT_BATTLE] = $batalla->id;
-                $_SESSION[SESSION_BATTLE_VOTED];
+                $_SESSION[SESSION_BATTLE_VOTED] = false;
             }
         }
         return $batalla;
@@ -85,11 +85,10 @@ class Batalla
     public function printComplex($usuario) // RETOCAR
     {
         $voted = $_SESSION[SESSION_BATTLE_VOTED];
-        // $voted = false;
         $nameDeBoton = "ignorar";
         if ($voted) $nameDeBoton = "siguiente";
 
-        $foto = "../../imagenes/nouser.png"; // CONSTANTES???
+        $foto = "imagenes/nouser.png"; // CONSTANTES???
         $name_user = "Usuario borrado";
 
         if ($this->id_creator != null) {
@@ -104,7 +103,7 @@ class Batalla
             $classAdmin = "style='justify-content: space-between;'";
             $opcionesAdmin = "
                 <div class='desplegable' style='margin-right:0'>
-                    <img class='imagenUser' src='../../imagenes/options.png'>
+                    <img class='imagenUser' src='imagenes/options.png'>
                     <div class='contenido-desplegable' style='margin-left:0'>
                         <button type='submit' name='deleteBattle' style='background: none; color: white; border: none; padding: 0; font: inherit; cursor: pointer; outline: inherit;'>
                             DELETE
@@ -112,7 +111,6 @@ class Batalla
                     </div>
                 </div>";
         }
-        $mostrar = "";
         if ($this->id_creator == null) {
             $mostrar .=
                 "<header class='rowBatalla headerBatalla' {$classAdmin}>
@@ -145,12 +143,12 @@ class Batalla
             "</div>
             <div class='rowBatalla'>
                 <button type='submit' class='submitBatalla btn btn-primary btn-lg' name='{$nameDeBoton}'>
-                    <img class='imagenUser' src='../../imagenes/next.png'>
+                    <img class='imagenUser' src='imagenes/next.png'>
                 </button>";
         if (!$voted) {
             $mostrar .=
                 "<button type='submit' class='submitBatalla btn btn-secondary btn-lg' name='denunciar'>
-                    <img class='imagenUser' src='../../imagenes/denunciar.png'>
+                    <img class='imagenUser' src='imagenes/denunciar.png'>
                 </button>";
         }
         $mostrar .=

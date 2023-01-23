@@ -12,12 +12,11 @@ class Elemento
         $this->foto = BD::select(["foto"], "elemento", ["id", $this->id])[0][0];
     }
 
-    public function getNombre(){
-        return $this->nombre;
-    }
-
-    public function getFoto(){
-        return $this->foto;
+    public function __get($var)
+    {
+        if (property_exists(__CLASS__, $var)) {
+            return $this->$var;
+        }
     }
 
     public function getVotos($batalla)// revisar
@@ -36,7 +35,7 @@ class Elemento
         }else{
             $infoDiv = 
                 "<button name='elementoVotado' type='submit' class='submitBatalla btn btn-primary btn-lg' value='{$this->id}'>
-                    <img class='imagenUser' src='../../imagenes/thumbsUp.png'>
+                    <img class='imagenUser' src='imagenes/thumbsUp.png'>
                 </button>";
         }
         $infoBando =

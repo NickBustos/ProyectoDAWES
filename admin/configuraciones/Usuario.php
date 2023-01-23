@@ -175,7 +175,7 @@ class Usuario
         BD::actualizarUsuario("num_batallas_votadas",  $this->num_batallas_votadas, $this->id);
     }
 
-    private function limpiarSesion($datossesion)
+    public function limpiarSesion($datossesion)
     {
         foreach ($datossesion as $dato) {
             unset($_SESSION[$dato]);
