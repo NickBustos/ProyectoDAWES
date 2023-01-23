@@ -1,19 +1,21 @@
 <?php
 class Usuario
 {
-    private $id;
-    private $nombreusuario;
-    private $num_batallas_ignoradas;
-    private $num_batallas_denunciadas;
-    private $num_batallas_creadas;
-    private $num_batallas_votadas;
-
-    public static function login($nombreusuario)
-    {
-        $_SESSION[SESSION_USER] = $nombreusuario;
-        $_SESSION[SESSION_ID] = BD::select(["id_usuario"], "usuario_credencial", ["nombreusuario", $nombreusuario]);
-        BD::insertar("usuario_credencial", [$_SESSION[SESSION_ID], $nombreusuario, "loguear", getMomentoActual()]);
-    }
+    private string $nombreusuario;
+    private string $password;
+    private string $id;
+    private string $fechanacimiento;
+    private string $foto;
+    private string $email;
+    private string $modovis;
+    private string $idioma;
+    private string $rol;
+    private string $num_elementos_creados;
+    private int $num_batallas_creadas;
+    private int $num_batallas_votadas;
+    private int $num_batallas_ignoradas;
+    private int $num_batallas_denunciadas;
+    private int $puntos_troll;
 
     public function __construct($id, $nombreusuario)
     {
@@ -23,11 +25,55 @@ class Usuario
             ...BD::select(["*"], "credencial", ["nombreusuario", $this->nombreusuario], PDO::FETCH_NAMED)[0],
             ...BD::select(["*"], "usuario", ["id", $this->id], PDO::FETCH_NAMED)[0]
         ];
-        $this->num_batallas_ignoradas = $datos["num_batallas_ignoradas"];
-        $this->num_batallas_denunciadas = $datos["num_batallas_denunciadas"];
+        $this->password = $datos["password"];
+        $this->fechanacimiento = $datos["fechanacimiento"];
+        $this->foto = $datos["foto"];
+        $this->email = $datos["email"];
+        $this->modovis = $datos["modovis"];
+        $this->idioma = $datos["idioma"];
+        $this->rol = $datos["rol"];
+        $this->num_elementos_creados = $datos["num_elementos_creados"];
         $this->num_batallas_creadas = $datos["num_batallas_creadas"];
         $this->num_batallas_votadas = $datos["num_batallas_votadas"];
-        var_dump($datos);
+        $this->num_batallas_ignoradas = $datos["num_batallas_ignoradas"];
+        $this->num_batallas_denunciadas = $datos["num_batallas_denunciadas"];
+        $this->puntos_troll = $datos["puntos_troll"];
+    }
+
+    public static function login($nombreusuario)
+    {
+        $_SESSION[SESSION_USER] = $nombreusuario;
+        $_SESSION[SESSION_ID] = BD::select(["id_usuario"], "usuario_credencial", ["nombreusuario", $nombreusuario])[0][0];
+        BD::insertar("usuario_credencial", ["", $_SESSION[SESSION_ID], $nombreusuario, "loguear", getMomentoActual()]);
+    }
+
+    public static function registrarUsuario($datos)
+    {
+        //[$user, $pass, $fechaNac, $avatar, $mail]
+        BD::insertar("credencial", [$datos[0], md5($datos[1])]);
+        // Coger modovis e idioma
+        $modovis = "light";
+        if (isset($_SESSION["modovis"]) && $_SESSION["modovis"] == "dark") {
+            $modovis = "dark";
+        }
+        $idioma = "es";
+        if (isset($_COOKIE["lang"]) && $_COOKIE["lang"] == "en") {
+            $idioma = "en";
+        }
+        // Campos: id, fecha, foto, email, modovis, idioma, rol, elementos_creados, batallas_creadas, votadas, ignoradas, denunciadas, puntos_troll
+        $id = BD::insertar("usuario", ['', $datos[2], $datos[3], $datos[4], $modovis, $idioma, 'usuario', '0', '0', '0', '0', '0', '0']);
+        $momento = getMomentoActual();
+        // campos: id_usuario, nombre, accion, fechatime, 
+        BD::insertar("usuario_credencial", ['', $id, $datos[0], 'registrar', $momento]);
+        BD::insertar("usuario_credencial", ['', $id, $datos[0], 'loguear', $momento]);
+        return $id;
+    }
+
+    public function __get($var)
+    {
+        if (property_exists(__CLASS__, $var)) {
+            return $this->$var;
+        }
     }
 
     // Quita datos de batalla de la sesión para que muestre una nueva  

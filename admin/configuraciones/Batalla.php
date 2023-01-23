@@ -49,6 +49,7 @@ class Batalla
             if (count($registroBatalla) > 0) {
                 $batalla = new Batalla($registroBatalla[0][0]);
                 $_SESSION[SESSION_CURRENT_BATTLE] = $batalla->id;
+                $_SESSION[SESSION_BATTLE_VOTED];
             }
         }
         return $batalla;
@@ -70,11 +71,18 @@ class Batalla
         array_push($this->elements, new Elemento($id_elementos[1]));
     }
 
+    public function __get($var)
+    {
+        if (property_exists(__CLASS__, $var)) {
+            return $this->$var;
+        }
+    }
+
     public function removeUser(){
         $this->id_creator = null;
     }
 
-    public function printComplex() // RETOCAR
+    public function printComplex($usuario) // RETOCAR
     {
         $voted = $_SESSION[SESSION_BATTLE_VOTED];
         // $voted = false;
@@ -91,10 +99,8 @@ class Batalla
 
         $mostrar =
             "<form method='post' class='subirBatalla' id='subirBatalla' action='procesos/procesarVoto.php'>";
-        // $rol = selectFromUsuario(["rol"])[0];
-        $rol = "admin";
         $classAdmin = $opcionesAdmin = "";
-        if ($rol == "admin") {
+        if ($usuario->rol == "admin") {
             $classAdmin = "style='justify-content: space-between;'";
             $opcionesAdmin = "
                 <div class='desplegable' style='margin-right:0'>

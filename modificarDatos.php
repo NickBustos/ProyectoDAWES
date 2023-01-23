@@ -9,15 +9,19 @@
     <?php
     session_start();
     include "admin/configuraciones/funciones.php";
-    include getIdioma();
+    $usuario = null;
+    if (isset($_SESSION[SESSION_ID])) {
+        $usuario = new Usuario($_SESSION[SESSION_ID], $_SESSION[SESSION_USER]);
+    }
+    include getIdioma($usuario);
     /**
      * Inicia sesión.
      * Si no hay un tema definido en $_SESSION lo crea con el valor "claro".
      * Si el valor del tema es "noche" carga el css correspondiente.
      */
     $css = "<link rel='stylesheet' href='./css/archivo.css' />";
-    if (isset($_SESSION[SESSION_ID])) {
-        if (selectFromUsuario([TEMA])[0] === "dark") {
+    if ($usuario != null) {
+        if ($usuario->modovis === "dark") {
             $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
         }
     } else if (!isset($_SESSION[TEMA])) {
@@ -26,27 +30,24 @@
         $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
     }
     echo $css;
-    $conexion = new PDO(DSN, USER, PASSWORD); // La creamos aquí porque al final siempre la usamos, para tenerla preparada
     ?>
 </head>
 
 <body>
     <?php
 
-    if (!isset($_SESSION[SESSION_ID])) {
+    if ($usuario == null) {
         echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
         echo "<img src='imagenes/luigi.png'><br/>";
         exit();
     }
-
     // Coger información del usuario de bbdd
     $idUser = $_SESSION[SESSION_ID];
     $nameAct = $_SESSION[SESSION_USER];
-    $datosActuales = selectFromUsuario(["fechanacimiento", "foto", "email"]);
-    $dateAct = $datosActuales[0];
-    $fotoAct = $datosActuales[1];
-    $mailAct = $datosActuales[2];
-    $passAct = select(["password"], "credencial", ["nombreusuario", $_SESSION[SESSION_USER]])[0][0];
+    $dateAct = $usuario->fechanacimiento;
+    $fotoAct = $usuario->foto;
+    $mailAct = $usuario->email;
+    $passAct = $usuario->password;
 
     $newName = $newPass = $newDate = $newMail = $newFoto = "";
     $errorName = $errorFoto = $errorDate = $errorMail = $errorPass = "";
@@ -98,7 +99,7 @@
                 }
             }
             $sql .= " WHERE nombreusuario='{$nameAct}'";
-            $conexion->prepare($sql)->execute($credencialesGuardar);
+            BD::crearConexion()->prepare($sql)->execute($credencialesGuardar);
             if (in_array("nombreusuario", $tablasCredenciales)) {
                 $_SESSION[SESSION_USER] = $newName;
                 $nameAct = $newName;
@@ -147,7 +148,6 @@
         }
         // Lo mismo pero con la tabla usuario
         if (count($usuarioGuardar) > 0) {
-            echo "guardar";
             $sql = "UPDATE usuario SET ";
             for ($i = 0; $i < count($usuarioGuardar); $i++) {
                 $sql .= "{$tablasUsuario[$i]}=?";
@@ -156,7 +156,7 @@
                 }
             }
             $sql .= " WHERE id='{$_SESSION[SESSION_ID]}'";
-            $conexion->prepare($sql)->execute($usuarioGuardar);
+            BD::crearConexion()->prepare($sql)->execute($usuarioGuardar);
             if (in_array("fechanacimiento", $tablasUsuario)) {
                 $dateAct = $dateNew;
                 $errorDate = "Fecha Cambiada";
@@ -178,7 +178,7 @@
         delete("usuario", "id", $idUser);
         delete("usuario_credencial", "nombreusuario", $nameAct);
         header("Location: procesos/cerrarsesion.php");
-    }else if(isset($_POST["inicio"])){
+    } else if (isset($_POST["inicio"])) {
         header("Location: index.php");
     }
     ?>
@@ -198,23 +198,27 @@
                                             <form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' enctype='multipart/form-data'>
                                                 <div class="form-outline mb-4">
                                                     <!-- -------------------- Usuario ----------------------- -->
-                                                    Usuario:<input type="text" id="Mdatos" class="form-control" name='newName' value=<?php echo $nameAct; ?>><?php echo $errorName; ?>
+                                                    Usuario:<input type="text" id="Mdatos" class="form-control" name='newName' value='<?php echo $nameAct; ?>'>
+                                                    <?php echo $errorName; ?>
                                                 </div>
                                                 <br /> <br />
 
                                                 <!-- -------------------- Contraseña ----------------------- -->
                                                 <div class="form-outline mb-4">
-                                                    Password:<input name='newPass' type="password" id="Mdatos" class="form-control" value=""><?php echo $errorPass; ?>
+                                                    Password:<input name='newPass' type="password" id="Mdatos" class="form-control" value="">
+                                                    <?php echo $errorPass; ?>
                                                 </div>
                                                 <br /> <br />
                                                 <!-- -------------------- Fecha Nac ----------------------- -->
                                                 <div class="form-outline mb-4">
-                                                    FechaNac:<input type="date" name='newDate' id="Mdatos" class="form-control" value=<?php echo $dateAct; ?>><?php echo $errorDate; ?>
+                                                    FechaNac:<input type="date" name='newDate' id="Mdatos" class="form-control" value='<?php echo $dateAct; ?>'>
+                                                    <?php echo $errorDate; ?>
                                                 </div>
                                                 <br /> <br />
                                                 <!-- -------------------- Email ----------------------- -->
                                                 <div class="form-outline mb-4">
-                                                    Email<input type="email" name='newMail' id="Mdatos" class="form-control" value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>"><?php echo $errorMail; ?>
+                                                    Email<input type="email" name='newMail' id="Mdatos" class="form-control" value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>">
+                                                    <?php echo $errorMail; ?>
                                                 </div>
                                                 <br /> <br />
                                                 <!-- -------------------- Foto ----------------------- -->

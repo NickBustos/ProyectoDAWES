@@ -1,7 +1,7 @@
 <?php
 include "admin/templates/cabecera.php"; 
 //Si ha iniciado sesión no muestra nada
-if (isset($_SESSION[SESSION_ID])) {
+if ($usuario != null) {
     echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
     echo "<img src='imagenes/luigi.png'><br/>";
     echo "<a type='button' class='submitBatalla btn btn-primary btn-lg' href='home.php'>Volver</a>";
@@ -41,13 +41,7 @@ if (!empty($_POST)) {
             if (!empty($_password)) {
                 $_password = md5($_password);
                 if ($_password === $passReal) {
-                    $conexion = new PDO(DSN, USER, PASSWORD);
-                    $sql = "SELECT DISTINCT id_usuario FROM usuario_credencial WHERE nombreusuario='{$user}'";
-                    $resultado = $conexion->query($sql);
-                    $id = $resultado->fetch(PDO::FETCH_NUM)[0];
-                    insertar("usuario_credencial", ['', $id, $user, "loguear", getMomentoActual()]);
-                    $_SESSION[SESSION_ID] = $id;
-                    $_SESSION[SESSION_USER] = $user;
+                    Usuario::login($user);
                     header("Location: index.php");
                 } else {
                     $errorPassword = $lang["error_login_pass"];
@@ -89,22 +83,7 @@ if (!empty($_POST)) {
                                                 <input type="password" id="form2Example2" class="form-control" name="password" />
                                                 <label class="form-label" for="form2Example2"><?php echo $lang["password"]; ?></label>
                                             </div>
-
-                                            <!-- Esto no lo borramos porque tenemos pensado usarlo en el futuro -->
-                                            <!-- <div class="row mb-4">
-                                                <div class="col d-flex justify-content-center">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="" id="form2Example31" checked />
-                                                        <label class="form-check-label" for="form2Example31"> Recuerdame </label>
-                                                    </div>
-                                                </div> -->
-
-                                            <!-- Esto no lo borramos porque tenemos pensado usarlo en el futuro -->
-                                            <!-- <div class="col">
-                                                    <a href="#!">Olvidé la contraseña</a>
-                                                </div> -->
                                             <br>
-
                                             <!-- Submit button -->
                                             <div class="d-flex justify-content-center">
                                                 <input type="submit" class="btn btn-primary btn-lg">
