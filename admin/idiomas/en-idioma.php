@@ -64,7 +64,6 @@ $lang += array( //REGISTRARSE
     "avatar" => "Your avatar:",
     "registrado" => "¿You already have an account? Click <a href='iniciosesion.php'>here</a>",
     "error_vacio" => ERROR_IN . "The field cannot be empty" . ERROR_OUT,
-    "error_character_separator" => ERROR_IN . "It is not allowed: \"" . LINE_SEPARATOR . "\"" . ERROR_OUT,
     "error_pass_pattern" =>
     ERROR_IN . "The password must have at least:
     <ul>

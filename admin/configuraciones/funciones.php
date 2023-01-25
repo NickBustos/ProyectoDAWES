@@ -1,6 +1,11 @@
 <?php
 include 'config.php';
 include 'configDB.php';
+include 'BD.php';
+include 'Elemento.php';
+include 'Batalla.php';
+include 'Usuario.php';
+
 
 //------------------------------------- FECHAS --------------------------------------
 /**
@@ -277,11 +282,11 @@ function infoBatalla($idElemento, $info)
  * 2º En caso de que no haya iniciado sesion creamos la cookie.
  * 3º Nos devuelve el path, para directamente poner include getIdioma().
  */
-function getIdioma()
+function getIdioma($usuario)
 {
     $idioma = LANG_SPANISH;
-    if (isset($_SESSION[SESSION_ID])) {
-        $idioma = selectFromUsuario(["idioma"])[0];
+    if ($usuario != null) {
+        $idioma = $usuario->idioma;
     } else if (!isset($_COOKIE[LANG])) {
         setcookie(LANG, LANG_SPANISH, time() + 60 * 60, '/');
     } else if ($_COOKIE[LANG] == LANG_ENGLISH) {

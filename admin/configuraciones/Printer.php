@@ -1,5 +1,4 @@
 <?php
-require "Elemento.php";
 class Printer{
     public static function imprimir(){
         

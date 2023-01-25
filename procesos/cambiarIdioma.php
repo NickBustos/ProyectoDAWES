@@ -4,15 +4,10 @@ include_once '../admin/configuraciones/funciones.php';
 
 $idioma = LANG_SPANISH;
 if (isset($_SESSION[SESSION_ID])) {
-    //Inició sesion
-    $conexion = new PDO(DSN, USER, PASSWORD);
-    $sql = "SELECT idioma FROM usuario WHERE ID='{$_SESSION[SESSION_ID]}'";
-    $resultado = $conexion->query($sql);
-    $resultado->bindColumn(1, $idioma);
-    $resultado->fetch();
-    $idioma = getIdiomaContrario($idioma);
-    $sql = "UPDATE usuario SET idioma='{$idioma}' WHERE ID='{$_SESSION[SESSION_ID]}'";
-    $resultado = $conexion->exec($sql);
+    $sql = "SELECT idioma FROM usuario WHERE id=?";
+    $resultado = BD::realizarSql(BD::crearConexion(), $sql, [$_SESSION[SESSION_ID]])[0][0];
+    $idioma = getIdiomaContrario($resultado);
+    BD::update("usuario", ["idioma"], [$idioma], "id", $_SESSION[SESSION_ID]);
 } else{
     //No inicio sesion
     if (isset($_COOKIE[LANG])) {
@@ -22,4 +17,3 @@ if (isset($_SESSION[SESSION_ID])) {
     setCookie(LANG, $idioma, time() + 60*60, '/');
 }
 header('Location: ' . $_SERVER["HTTP_REFERER"]);
-exit();
