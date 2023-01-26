@@ -349,3 +349,4 @@ function default_error_manager()
 function startsWith($cadena, $string) {
     return substr_compare($cadena, $string, 0, strlen($string)) === 0;
 }
+//>>>>>>>>> Temporary merge branch 2

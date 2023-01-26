@@ -181,6 +181,23 @@ class Usuario
             unset($_SESSION[$dato]);
         }
     }
+
+    public function getBatallasCreadas()
+    {
+        return $this->num_batallas_creadas;
+    }
+    public function getBatallasIgnoradas()
+    {
+        return $this->num_batallas_ignoradas;
+    }
+    public function getBatallasDenunciadas()
+    {
+        return $this->num_batallas_denunciadas;
+    }
+    public function getBatallasVotadas()
+    {
+        return $this->num_batallas_denunciadas;
+    }
 }
 
 // $u = new Usuario(1, "Mario");
