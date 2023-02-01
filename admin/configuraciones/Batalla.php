@@ -5,6 +5,11 @@ class Batalla
     private $id_creator;
     private $elements;
 
+    /**
+     * Devuelve una batalla aleatoria,si ya se había devuelto una y no se había votado, la actual
+     * o null si no hay batallas disponibles
+     * Guarda y extrae la información de la sesión
+     */
     public static function getBatalla()
     {
         $batalla = null;
@@ -82,13 +87,16 @@ class Batalla
         $this->id_creator = null;
     }
 
-    public function printComplex($usuario) // RETOCAR
+    /**
+     * Imprime una batalla (llamando a printComplex de cada elemento)
+     */
+    public function printComplex($usuario)
     {
         $voted = $_SESSION[SESSION_BATTLE_VOTED];
         $nameDeBoton = "ignorar";
         if ($voted) $nameDeBoton = "siguiente";
 
-        $foto = "imagenes/nouser.png"; // CONSTANTES???
+        $foto = "imagenes/nouser.png";
         $name_user = "Usuario borrado";
 
         if ($this->id_creator != null) {
@@ -157,7 +165,3 @@ class Batalla
         return $mostrar;
     }
 }
-
-// $b = new Batalla(9);
-// echo $b->printComplex(false);
-// echo Batalla::getBatalla()->printComplex();

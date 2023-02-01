@@ -17,10 +17,19 @@ class BD
 
     // ----------------------------------------- GENERALES ----------------------------------------
 
+    /**
+     * Devuelve una conexión PDO
+     */
     public static function crearConexion(){
         return new PDO(BD::DSN, BD::USER, BD::PASSWORD);
     }
 
+    /**
+     * @param campos array con el nombre de las caolumnas o las operaciones sobre las que trabajar 
+     * @param tabla string con el nombre de la tabla
+     * @param where array de 2 de longitud donde el primer valor es el nombre de la columna y el segundo el valor que toma
+     * @param fetch constante de PDO para el tipo de extracción de datos
+     */
     public static function select($campos, $tabla, $where=[], $fetch=PDO::FETCH_NUM)
     {
         $conexion = BD::crearConexion();
@@ -31,6 +40,10 @@ class BD
         return BD::realizarSql($conexion, $sql, [], $fetch);
     }
 
+    /**
+     * @param tabla string con el nombre de la tabla
+     * @param datos array con el conjunto de valores de todas las columnas
+     */
     public static function insertar($tabla, $datos)
     {
         $conexion = BD::crearConexion();
@@ -51,6 +64,13 @@ class BD
         return $conexion->lastInsertId();
     }
 
+    /**
+     * @param tabla string con el nombre de la tabla
+     * @param setTablas array de strings con el nombre de las columnas a modificar
+     * @param setValores array de valores que toman las columnas anteriores
+     * @param wherecolumna string nombre de la columna
+     * @param wherevalor valor que toma la columna anterior
+     */
     public static function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor)
     {
         $conexion = BD::crearConexion();
@@ -65,6 +85,11 @@ class BD
         BD::realizarSql($conexion, $sql, $setValores);
     }
 
+    /**
+     * @param tabla string con el nombre de la tabla
+     * @param columna string con el nombre de la columna que permite identificar al elemento/s
+     * @param dato valor que toma la columna anterior
+     */
     public static function delete($tabla, $columna, $dato)
     {
         $conexion = BD::crearConexion();
@@ -72,6 +97,9 @@ class BD
         BD::realizarSql($conexion, $sql, [$dato]);
     }
 
+    /**
+     * Realiza una consulta sql preparada pasada por parámetro rellenando sus datos con el array datos
+     */
     public static function realizarSql($conexion, $sql, $datos, $fetch=PDO::FETCH_NUM)
     {
         $preparedSttm = $conexion->prepare($sql);
@@ -81,26 +109,20 @@ class BD
         }
     }
 
-    // ------------------------------------------ USUARIO -----------------------------------------
-    // REVISARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-
-    public static function selectFromUsuario($campos)
+    /**
+     * Actualiza uno de los datos de un usuario con un id concreto
+     */
+    public static function actualizarUsuario($campo, $actualizacion, $id)
     {
-        $conexion = BD::crearConexion();
-        $sql = "SELECT ";
-        for ($i = 0; $i < count($campos); $i++) {
-            $sql .= "{$campos[$i]}";
-            if ($i < count($campos) - 1) {
-                $sql .= ",";
-            }
-            $sql .= " ";
-        }
-        $sql .= " FROM usuario WHERE id='" . $_SESSION[SESSION_ID] . "'";
-        $resultado = $conexion->query($sql);
-        $registro = $resultado->fetch(PDO::FETCH_NUM);
-        return $registro;
+        BD::update("usuario", [$campo], [$actualizacion], "id", $id);
     }
 
+    // ------------------------------------------ USUARIO -----------------------------------------
+
+    /**
+     * Verifica si un nombre de usuario existe
+     * @return contraseña del usuario en cuestión o false si no lo encuentra
+     */
     public static function existe($user)
     {
         $conexion = BD::crearConexion();
@@ -112,12 +134,13 @@ class BD
         return false;
     }
 
+    /**
+     * Sube unos datos pasados como parámetro como un nuevo usuario a la base de datos
+     * @return id del usuario
+     */
     public static function subirUsuario($datos)
     {
-
         BD::insertar("credencial", [$datos[0], md5($datos[1])]);
-        // Coger modovis e idioma
-        // CLASE USUARIO ???
         $modovis = "light";
         if (isset($_SESSION["modovis"]) && $_SESSION["modovis"] == "dark") {
             $modovis = "dark";
@@ -135,18 +158,6 @@ class BD
         return $id;
     }
 
-    public static function actualizarUsuario($campo, $actualizacion, $id)
-    {
-        BD::update("usuario", [$campo], [$actualizacion], "id", $id);
-    }
 }
 
-// $bd = new BD(true);
-// $bd->select(["*"], "usuario");
-// BD::insertar("usuario", ["","","","","","","","","","","","",""]);
-// BD::update("usuario", ["email"], ["pepe"], "id", 9);
-// BD::delete("usuario", "id", 9);
-
-// var_dump(BD::realizarSql(BD::crearConexion(), "SELECT * FROM usuario", []));
-// var_dump(BD::select(["*"], "usuario", []));
 

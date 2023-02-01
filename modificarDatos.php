@@ -65,7 +65,7 @@
         $mailNew = $_POST["newMail"];
         if ($newName != $nameAct) {
             if (preg_match(PATTERN_USER, $newName)) {
-                if (existe($newName) == false) {
+                if (Usuario::existe($newName) == false) {
                     array_push($credencialesGuardar, $newName);
                     array_push($tablasCredenciales, "nombreusuario");
                 } else {
@@ -173,10 +173,10 @@
     }
     // Si ha dado a borrar elimina todos los datos del usuario, sale de la sesión y vuelve a index
     if (isset($_POST["delete"])) {
-        delete("usuario_credencial", "nombreusuario", $nameAct);
-        delete("credencial", "nombreusuario", $nameAct);
-        delete("usuario", "id", $idUser);
-        delete("usuario_credencial", "nombreusuario", $nameAct);
+        BD::delete("usuario_credencial", "nombreusuario", $nameAct);
+        BD::delete("credencial", "nombreusuario", $nameAct);
+        BD::delete("usuario", "id", $idUser);
+        BD::delete("usuario_credencial", "nombreusuario", $nameAct);
         header("Location: procesos/cerrarsesion.php");
     } else if (isset($_POST["inicio"])) {
         header("Location: index.php");
