@@ -69,6 +69,23 @@ class Usuario
         return $id;
     }
 
+    /**
+     * $user = nombre usuario que queremos ver si está usado
+     * En caso de que lo encuentre, nos devuelve la contraseña
+     * En caso de error nos devuelve false.
+     */
+    static function existe($user)
+    {
+        $conexion = new PDO(DSN, USER, PASSWORD);
+        $sql = "SELECT password FROM credencial WHERE nombreusuario = '{$user}'";
+        $resultado = $conexion->query($sql);
+        // return count($resultado->fetchAll(PDO::FETCH_NUM));
+        if ($linea = $resultado->fetch(PDO::FETCH_NUM)) {
+            return $linea[0];
+        }
+        return false;
+    }
+
     public function __get($var)
     {
         if (property_exists(__CLASS__, $var)) {
@@ -169,7 +186,6 @@ class Usuario
             "id_e" => $elemento->id,
             "mom" => getMomentoActual()
         ];
-        $_SESSION[SESSION_BATTLE_VOTED] = true; // Sacar???????????
         BD::realizarSql(BD::crearConexion(), $sql, $datos);
         $this->num_batallas_votadas++;
         BD::actualizarUsuario("num_batallas_votadas",  $this->num_batallas_votadas, $this->id);
@@ -178,11 +194,9 @@ class Usuario
     public function limpiarSesion($datossesion)
     {
         foreach ($datossesion as $dato) {
-            unset($_SESSION[$dato]);
+            if (isset($_SESSION[$dato])) {
+                unset($_SESSION[$dato]);
+            }
         }
     }
 }
-
-// $u = new Usuario(1, "Mario");
-// echo "<br/><br/><br/>";
-// var_dump($u);

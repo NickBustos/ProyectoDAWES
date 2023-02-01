@@ -35,7 +35,7 @@ if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
     $_password = htmlspecialchars($_POST["password"]);
     if (!empty($_user)) {
-        $passReal = existe($_user);
+        $passReal = Usuario::existe($_user);
         if ($passReal !== false) {
             $user = $_user;
             if (!empty($_password)) {

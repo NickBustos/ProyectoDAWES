@@ -5,10 +5,6 @@ include_once '../admin/configuraciones/funciones.php';
 if (isset($_POST)) {
     $usuario = new Usuario($_SESSION[SESSION_ID], $_SESSION[SESSION_USER]);
     
-    // $conexion = new PDO(DSN, USER, PASSWORD);
-    // $sql = "";
-    // $datos = [];
-    // $momento = getMomentoActual();
     $destino = "../index.php";
 
     // -------------------------------------------------------- SIGUIENTE --------------------------------------------------------
@@ -47,7 +43,8 @@ if (isset($_POST)) {
         }
         $batalla = new Batalla($_SESSION[SESSION_CURRENT_BATTLE]);
         $usuario->votarBatalla($batalla, new Elemento($_POST["elementoVotado"]));
-        $usuario->limpiarSesion([SESSION_CURRENT_BATTLE, SESSION_BATTLE_VOTED, SESSION_CREAR_ELEM_1, SESSION_CREAR_ELEM_2]);
+        $_SESSION[SESSION_BATTLE_VOTED] = true;
+        $usuario->limpiarSesion([SESSION_CREAR_ELEM_1, SESSION_CREAR_ELEM_2]);
         // ---------------------------------------------------- RETURN DE VOTAR ----------------------------------------------------
 
     } else if (isset($_POST["reiniciar"])) {

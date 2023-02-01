@@ -30,7 +30,7 @@ if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
     if (!empty($_user)) {
         if (preg_match(PATTERN_USER, $_user)) {
-            if (existe($_user) === false) {
+            if (Usuario::existe($_user) === false) {
                 $user = $_user;
             } else {
                 $errorUser = $lang["error_user_used"];

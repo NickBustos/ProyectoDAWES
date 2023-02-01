@@ -35,7 +35,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a href="#" class="navbar-brand">
+        <a href="index.php" class="navbar-brand">
             <img src="imagenes/logo.png" alt="Logo">
         </a>
         <ul class="nav navbar-nav">
