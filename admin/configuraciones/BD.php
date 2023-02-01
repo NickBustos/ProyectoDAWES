@@ -109,55 +109,6 @@ class BD
         }
     }
 
-    /**
-     * Actualiza uno de los datos de un usuario con un id concreto
-     */
-    public static function actualizarUsuario($campo, $actualizacion, $id)
-    {
-        BD::update("usuario", [$campo], [$actualizacion], "id", $id);
-    }
-
-    // ------------------------------------------ USUARIO -----------------------------------------
-
-    /**
-     * Verifica si un nombre de usuario existe
-     * @return contraseña del usuario en cuestión o false si no lo encuentra
-     */
-    public static function existe($user)
-    {
-        $conexion = BD::crearConexion();
-        $sql = "SELECT password FROM credencial WHERE nombreusuario = '{$user}'";
-        $resultado = $conexion->query($sql);
-        if ($linea = $resultado->fetch(PDO::FETCH_NUM)) {
-            return $linea[0];
-        }
-        return false;
-    }
-
-    /**
-     * Sube unos datos pasados como parámetro como un nuevo usuario a la base de datos
-     * @return id del usuario
-     */
-    public static function subirUsuario($datos)
-    {
-        BD::insertar("credencial", [$datos[0], md5($datos[1])]);
-        $modovis = "light";
-        if (isset($_SESSION["modovis"]) && $_SESSION["modovis"] == "dark") {
-            $modovis = "dark";
-        }
-        $idioma = "es";
-        if (isset($_COOKIE["lang"]) && $_COOKIE["lang"] == "en") {
-            $idioma = "en";
-        }
-        // Campos: id, fecha, foto, email, modovis, idioma, rol
-        $id = BD::insertar("usuario", ['', $datos[2], $datos[3], $datos[4], $modovis, $idioma, 'usuario', '0', '0', '0', '0', '0', '0']);
-        $momento = getMomentoActual();
-        // campos: id_usuario, nombre, accion, fechatime, 
-        BD::insertar("usuario_credencial", ['', $id, $datos[0], 'registrar', $momento]);
-        BD::insertar("usuario_credencial", ['', $id, $datos[0], 'loguear', $momento]);
-        return $id;
-    }
-
 }
 
 

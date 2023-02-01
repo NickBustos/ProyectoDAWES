@@ -103,10 +103,10 @@
             if (in_array("nombreusuario", $tablasCredenciales)) {
                 $_SESSION[SESSION_USER] = $newName;
                 $nameAct = $newName;
-                $errorName = "Nombre Cambiado";
+                $errorName = $lang["usuarioCambiado"];
             }
             if (in_array("password", $tablasCredenciales)) {
-                $errorPass = "Password Cambiado";
+                $errorPass = $lang["passwordCambiada"];
             }
         }
 
@@ -131,18 +131,15 @@
             !empty($_FILES) && !empty($_FILES["newFoto"])
             && !empty($_FILES["newFoto"]["tmp_name"])
         ) {
-            echo "hey foto";
             if ($_FILES["newFoto"]["type"] === "image/png") { //Comrpueba que el archivo es una imagen png
                 if ($_FILES['newFoto']['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 750 kilobytes
                     $fotoNew = getImage($_FILES["newFoto"]);
                     array_push($usuarioGuardar, $fotoNew);
                     array_push($tablasUsuario, "foto");
                 } else {
-                    echo "eeorroro";
                     $errorFoto = $lang["error_file_size"];
                 }
             } else {
-                echo "eeorroro";
                 $errorFoto = $lang["error_file_type"];
             }
         }
@@ -159,15 +156,15 @@
             BD::crearConexion()->prepare($sql)->execute($usuarioGuardar);
             if (in_array("fechanacimiento", $tablasUsuario)) {
                 $dateAct = $dateNew;
-                $errorDate = "Fecha Cambiada";
+                $errorDate =$lang["fechaCambiada"];
             }
             if (in_array("email", $tablasUsuario)) {
                 $mailAct = $mailNew;
-                $errorMail = "Mail Cambiado";
+                $errorMail = $lang["emailCambiado"];
             }
             if (in_array("foto", $tablasUsuario)) {
                 $fotoAct = $fotoNew;
-                $errorFoto = "Foto Cambiada";
+                $errorFoto = $lang["fotoCambiada"];
             }
         }
     }

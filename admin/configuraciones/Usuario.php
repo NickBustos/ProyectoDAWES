@@ -46,7 +46,10 @@ class Usuario
         $_SESSION[SESSION_ID] = BD::select(["id_usuario"], "usuario_credencial", ["nombreusuario", $nombreusuario])[0][0];
         BD::insertar("usuario_credencial", ["", $_SESSION[SESSION_ID], $nombreusuario, "loguear", getMomentoActual()]);
     }
-
+    /**
+     * Sube unos datos pasados como parámetro como un nuevo usuario a la base de datos
+     * @return id del usuario
+     */
     public static function registrarUsuario($datos)
     {
         //[$user, $pass, $fechaNac, $avatar, $mail]
@@ -69,17 +72,24 @@ class Usuario
         return $id;
     }
 
+    
     /**
-     * $user = nombre usuario que queremos ver si está usado
-     * En caso de que lo encuentre, nos devuelve la contraseña
-     * En caso de error nos devuelve false.
+     * Actualiza uno de los datos de un usuario con un id concreto
+     */
+    public static function actualizarUsuario($campo, $actualizacion, $id)
+    {
+        BD::update("usuario", [$campo], [$actualizacion], "id", $id);
+    }
+
+    /**
+     * Verifica si un nombre de usuario existe
+     * @return contraseña del usuario en cuestión o false si no lo encuentra
      */
     static function existe($user)
     {
-        $conexion = new PDO(DSN, USER, PASSWORD);
+        $conexion = BD::crearConexion();
         $sql = "SELECT password FROM credencial WHERE nombreusuario = '{$user}'";
         $resultado = $conexion->query($sql);
-        // return count($resultado->fetchAll(PDO::FETCH_NUM));
         if ($linea = $resultado->fetch(PDO::FETCH_NUM)) {
             return $linea[0];
         }
@@ -115,7 +125,7 @@ class Usuario
             BD::realizarSql(BD::crearConexion(), $sql, $datos);
             $this->limpiarSesion([SESSION_CURRENT_BATTLE, SESSION_BATTLE_VOTED]);
             $this->num_batallas_ignoradas++;
-            BD::actualizarUsuario("num_batallas_ignoradas", $this->num_batallas_ignoradas, $this->id);
+            Usuario::actualizarUsuario("num_batallas_ignoradas", $this->num_batallas_ignoradas, $this->id);
         } catch (PDOException $e) {
         }
     }
@@ -137,7 +147,7 @@ class Usuario
         try {
             BD::realizarSql(BD::crearConexion(), $sqlInsert, $datos);
             $this->num_batallas_denunciadas++;
-            BD::actualizarUsuario("num_batallas_denunciadas", $this->num_batallas_denunciadas, $this->id);
+            Usuario::actualizarUsuario("num_batallas_denunciadas", $this->num_batallas_denunciadas, $this->id);
             $denuncias = BD::realizarSql(BD::crearConexion(), $sqlSelect, [$batalla->id])[0][0];
             if ($denuncias >= 10 && $batalla->id_creator != null) { // CAMBIAR NUMERO
                 $puntos_troll = BD::select(["puntos_troll"], "usuario", ["id", $batalla->id_creator])[0][0];
@@ -149,7 +159,7 @@ class Usuario
                     BD::delete("usuario", "id", $batalla->id_creator);
                     $batalla->removeUser();
                 } else {
-                    BD::actualizarUsuario("puntos_troll", $puntos_troll, $batalla->id_creator);
+                    Usuario::actualizarUsuario("puntos_troll", $puntos_troll, $batalla->id_creator);
                 }
             }
             $this->limpiarSesion([SESSION_CURRENT_BATTLE, SESSION_BATTLE_VOTED]);
@@ -171,7 +181,7 @@ class Usuario
         $id_batalla = BD::insertar("batalla_elemento", ["", $id_elemento1, $id_elemento2]);
         BD::insertar("usuario_batalla", ["", $this->id, $id_batalla, "crear", getMomentoActual()]);
         $this->num_batallas_creadas++;
-        BD::actualizarUsuario("num_batallas_creadas", $this->num_batallas_creadas, $this->id);
+        Usuario::actualizarUsuario("num_batallas_creadas", $this->num_batallas_creadas, $this->id);
         return $id_batalla; // Para cogerla en $_SESSION[SESSION_CURRENT_BATTLE]
     }
 
@@ -188,7 +198,7 @@ class Usuario
         ];
         BD::realizarSql(BD::crearConexion(), $sql, $datos);
         $this->num_batallas_votadas++;
-        BD::actualizarUsuario("num_batallas_votadas",  $this->num_batallas_votadas, $this->id);
+        Usuario::actualizarUsuario("num_batallas_votadas",  $this->num_batallas_votadas, $this->id);
     }
 
     public function limpiarSesion($datossesion)
