@@ -76,7 +76,7 @@ class Usuario
      */
     static function existe($user)
     {
-        $conexion = new PDO(DSN, USER, PASSWORD);
+        $conexion = new PDO(BD::DSN, BD::USER, BD::PASSWORD);
         $sql = "SELECT password FROM credencial WHERE nombreusuario = '{$user}'";
         $resultado = $conexion->query($sql);
         // return count($resultado->fetchAll(PDO::FETCH_NUM));
