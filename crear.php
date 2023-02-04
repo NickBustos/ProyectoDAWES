@@ -47,13 +47,15 @@ if (isset($_POST["id1"])) {
     }
 
     if ($errorNombre == "" && $errorImg == "") {
-        $_SESSION[SESSION_CREAR_ELEM_1] = BD::insertar("elemento", ["", $nombre, $img, 0]);
-        BD::insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CREAR_ELEM_1], "crear", getMomentoActual()]);
+        // $_SESSION[SESSION_CREAR_ELEM_1] = BD::insertar("elemento", ["", $nombre, $img, 0]);
+        // BD::insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CREAR_ELEM_1], "crear", getMomentoActual()]);
 
-        $elementosCreados = $usuario->num_elementos_creados;
-        $elementosCreados++;
-        BD::actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
+        // $elementosCreados = $usuario->num_elementos_creados;
+        // $elementosCreados++;
+        // BD::actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
+        $_SESSION[SESSION_CREAR_ELEM_1] = $usuario->crearElemento($nombre, $img);
         $nombre = "";
+        
     }
     // ELEMENTO 2
 } else if (isset($_POST["id2"])) { // Existente
@@ -85,12 +87,7 @@ if (isset($_POST["id1"])) {
     }
 
     if ($errorNombre == "" && $errorImg == "") {
-        $_SESSION[SESSION_CREAR_ELEM_2] = BD::insertar("elemento", ["", $nombre, $img, 0]);
-        BD::insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CREAR_ELEM_2], "crear", getMomentoActual()]);
-
-        $elementosCreados = $usuario->num_elementos_creados;
-        $elementosCreados++;
-        BD::actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
+        $_SESSION[SESSION_CREAR_ELEM_2] = $usuario->crearElemento($nombre, $img);
     }
 }
 ?>

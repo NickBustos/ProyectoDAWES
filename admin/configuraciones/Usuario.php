@@ -176,6 +176,15 @@ class Usuario
         $this->limpiarSesion([SESSION_CURRENT_BATTLE, SESSION_BATTLE_VOTED]);
     }
 
+    public function crearElemento($nombre, $img){
+        $id_elemento = BD::insertar("elemento", ["", $nombre, $img, 0]);
+        BD::insertar("usuario_elemento", ["", $this->id, $id_elemento, "crear", getMomentoActual()]);
+        $elementosCreados = $this->num_elementos_creados;
+        $elementosCreados++;
+        Usuario::actualizarUsuario("num_elementos_creados", $elementosCreados, $this->id);
+        return $id_elemento;
+    }
+
     public function crearBatalla($id_elemento1, $id_elemento2)
     {
         $id_batalla = BD::insertar("batalla_elemento", ["", $id_elemento1, $id_elemento2]);
