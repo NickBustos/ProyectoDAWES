@@ -97,16 +97,7 @@ if ($idUsuario > -1) {
                 <p> <?= $lang["tituloDescripcion"] ?></p>
                 <?php
                 if ($usuario != null) {
-                    $totalBatallas = $usuario->num_batallas_creadas;
-                    if ($totalBatallas == "1") {
-                        echo  '<h6>' .
-                            $lang["esteUsuario"] . $totalBatallas . $lang["batalla"] .
-                            '</h6>';
-                    } else {
-                        echo  '<h6>' .
-                            $lang["esteUsuario"] . $totalBatallas . $lang["batallas"] .
-                            '</h6>';
-                    }
+                    echo $usuario->getTablaDatos($usuario->idioma);
                 }
                 ?>
             </div>
@@ -130,9 +121,9 @@ if ($idUsuario > -1) {
                                 $destino = htmlspecialchars($_GET["pagina"]);
                                 if (is_numeric($destino)) {
                                     $destino = floor($destino);
-                                   
+
                                     if ($destino >= 1 && $destino <= $paginas) {
-                                        
+
                                         $paginaActual = $destino;
                                     }
                                 }

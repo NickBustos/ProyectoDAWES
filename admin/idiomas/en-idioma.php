@@ -129,5 +129,7 @@ $lang += array(//MODIFICAR DATOS
     "passwordCambiada"=>"Password changed successfully",
     "fechaCambiada"=>"Date birth changed successfully",
     "emailCambiado"=>"Email changed successfully",
-    "fotoCambiada"=>"Photo  changed successfully"
+    "fotoCambiada"=>"Photo  changed successfully",
+    "change"=> "Change",
+    "delete_user" => "Delete user"
 );

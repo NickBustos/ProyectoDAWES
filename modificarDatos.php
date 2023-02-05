@@ -195,48 +195,48 @@
                                             <form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' enctype='multipart/form-data'>
                                                 <div class="form-outline mb-4">
                                                     <!-- -------------------- Usuario ----------------------- -->
-                                                    Usuario:<input type="text" id="Mdatos" class="form-control" name='newName' value='<?php echo $nameAct; ?>'>
-                                                    <?php echo $errorName; ?>
+                                                    <?= $lang["username"]; ?><input type="text" id="Mdatos" class="form-control" name='newName' value='<?php echo $nameAct; ?>'>
+                                                    <?= $errorName; ?>
                                                 </div>
                                                 <br /> <br />
 
                                                 <!-- -------------------- Contraseña ----------------------- -->
                                                 <div class="form-outline mb-4">
-                                                    Password:<input name='newPass' type="password" id="Mdatos" class="form-control" value="">
-                                                    <?php echo $errorPass; ?>
+                                                    <?= $lang["password"]; ?><input name='newPass' type="password" id="Mdatos" class="form-control" value="">
+                                                    <?= $errorPass; ?>
                                                 </div>
                                                 <br /> <br />
                                                 <!-- -------------------- Fecha Nac ----------------------- -->
                                                 <div class="form-outline mb-4">
-                                                    FechaNac:<input type="date" name='newDate' id="Mdatos" class="form-control" value='<?php echo $dateAct; ?>'>
-                                                    <?php echo $errorDate; ?>
+                                                    <?= $lang["fecha"]; ?>:<input type="date" name='newDate' id="Mdatos" class="form-control" value='<?php echo $dateAct; ?>'>
+                                                    <?= $errorDate; ?>
                                                 </div>
                                                 <br /> <br />
                                                 <!-- -------------------- Email ----------------------- -->
                                                 <div class="form-outline mb-4">
-                                                    Email<input type="email" name='newMail' id="Mdatos" class="form-control" value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>">
-                                                    <?php echo $errorMail; ?>
+                                                    <?= $lang["correo"]; ?><input type="email" name='newMail' id="Mdatos" class="form-control" value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>">
+                                                    <?= $errorMail; ?>
                                                 </div>
                                                 <br /> <br />
                                                 <!-- -------------------- Foto ----------------------- -->
                                                 <div class="LogoMdatos">
-                                                    <img src='<?php echo $fotoAct; ?>' width='200px' height='200px'>
+                                                    <img src='<?= $fotoAct; ?>' width='200px' height='200px'>
                                                     <input type="file" name="newFoto"><br /><?php echo $errorFoto; ?>
                                                 </div>
                                                 <br /> <br /> <br />
                                                 <!-- -------------------- Boton ----------------------- -->
                                                 <button type="submit" class='modificarDatos btn btn-primary btn-lg'>
-                                                    <p class="text-center h1 fw-bold">Enviar</p>
+                                                    <p class="text-center h1 fw-bold"><?= $lang["change"]?></p>
                                                 </button>
                                                 <br /> <br /> <br />
                                                 <!-- -------------------- Boton ----------------------- -->
                                                 <button type="submit" class='modificarDatosBorrar' name="delete">
-                                                    <p class="text-center h1 fw-bold">Borrar Cuenta</p>
+                                                    <p class="text-center h1 fw-bold"><?= $lang["delete_user"]?></p>
                                                 </button>
                                                 <br /> <br /> <br />
                                                 <!-- -------------------- Boton ----------------------- -->
                                                 <button type="submit" class='modificarDatos btn btn-primary btn-lg' name="inicio">
-                                                    <p class="text-center h1 fw-bold">Inicio</p>
+                                                    <p class="text-center h1 fw-bold"><?= $lang["inicio"]?></p>
                                                 </button>
                                             </form>
                                         </div>

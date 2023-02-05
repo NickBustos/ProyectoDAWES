@@ -43,6 +43,12 @@
     }
 }
 
+.tablaDatos {
+    border:solid lightgrey 5px;
+    border-radius: 25px;
+    text-align: left;
+}
+
 .modificarDatos{
     display:block;
     width:100%;

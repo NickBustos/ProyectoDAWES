@@ -72,7 +72,7 @@ class Usuario
         return $id;
     }
 
-    
+
     /**
      * Actualiza uno de los datos de un usuario con un id concreto
      */
@@ -176,7 +176,8 @@ class Usuario
         $this->limpiarSesion([SESSION_CURRENT_BATTLE, SESSION_BATTLE_VOTED]);
     }
 
-    public function crearElemento($nombre, $img){
+    public function crearElemento($nombre, $img)
+    {
         $id_elemento = BD::insertar("elemento", ["", $nombre, $img, 0]);
         BD::insertar("usuario_elemento", ["", $this->id, $id_elemento, "crear", getMomentoActual()]);
         $elementosCreados = $this->num_elementos_creados;
@@ -208,6 +209,33 @@ class Usuario
         BD::realizarSql(BD::crearConexion(), $sql, $datos);
         $this->num_batallas_votadas++;
         Usuario::actualizarUsuario("num_batallas_votadas",  $this->num_batallas_votadas, $this->id);
+    }
+
+    public function getTablaDatos($language)
+    {
+        require_once "admin/idiomas/{$language}-funciones.php";
+        $datos = [
+            $lang["bat_created"] => $this->num_elementos_creados,
+            $lang["ele_created"] => $this->num_batallas_creadas,
+            $lang["bat_votted"] => $this->num_batallas_votadas,
+            $lang["bat_ignored"] => $this->num_batallas_ignoradas,
+            $lang["bat_reported"] => $this->num_batallas_denunciadas,
+            $lang["troll_points"] => $this->puntos_troll
+        ];
+        $tabla = 
+            "<div class='container-sm tablaDatos text-left'>
+                <table class='table'>";
+        foreach ($datos as $key => $dato) {
+            $tabla .=
+                "<tr>
+                    <td>{$key}</td>
+                    <td>{$dato}</td>
+                </tr>";
+        }
+        $tabla .= 
+            "   </table>
+            </div>";
+        return $tabla;
     }
 
     public function limpiarSesion($datossesion)

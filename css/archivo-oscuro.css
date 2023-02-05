@@ -48,6 +48,11 @@
   }
 }
 
+.tablaDatos {
+  border:solid lightgrey 5px;
+  border-radius: 25px;
+}
+
 .modificarDatos {
   display: block;
   width: 100%;
