@@ -2,7 +2,7 @@
 include_once "admin/templates/cabecera.php";
 
 //Si no ha iniciado sesión no muestra nada
-if (!isset($_SESSION[SESSION_ID])) {
+if ($usuario == null) {
     echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
     echo "<img src='imagenes/luigi.png'><br/>";
     exit();
@@ -47,13 +47,9 @@ if (isset($_POST["id1"])) {
     }
 
     if ($errorNombre == "" && $errorImg == "") {
-        $_SESSION[SESSION_CREAR_ELEM_1] = insertar("elemento", ["", $nombre, $img, 0]);
-        insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CREAR_ELEM_1], "crear", getMomentoActual()]);
-
-        $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
-        $elementosCreados++;
-        actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
+        $_SESSION[SESSION_CREAR_ELEM_1] = $usuario->crearElemento($nombre, $img);
         $nombre = "";
+        
     }
     // ELEMENTO 2
 } else if (isset($_POST["id2"])) { // Existente
@@ -85,12 +81,7 @@ if (isset($_POST["id1"])) {
     }
 
     if ($errorNombre == "" && $errorImg == "") {
-        $_SESSION[SESSION_CREAR_ELEM_2] = insertar("elemento", ["", $nombre, $img, 0]);
-        insertar("usuario_elemento", ["", $_SESSION[SESSION_ID], $_SESSION[SESSION_CREAR_ELEM_2], "crear", getMomentoActual()]);
-
-        $elementosCreados = selectFromUsuario(["num_elementos_creados"])[0];
-        $elementosCreados++;
-        actualizarUsuario("num_elementos_creados", $elementosCreados, $_SESSION[SESSION_ID]);
+        $_SESSION[SESSION_CREAR_ELEM_2] = $usuario->crearElemento($nombre, $img);
     }
 }
 ?>
@@ -106,22 +97,19 @@ if (isset($_POST["id1"])) {
                                     <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?= (isset($_SESSION[SESSION_CREAR_ELEM_2])) ? $lang["upload"] : $lang["subirBatalla"]; ?></p>
                                     <form method='post' class='subirBatalla' id='subirBatalla' enctype="multipart/form-data" action='<?= (isset($_SESSION[SESSION_CREAR_ELEM_2])) ? "procesos/procesarVoto.php" : $_SERVER["PHP_SELF"]; ?>' <?= (isset($_SESSION[SESSION_CREAR_ELEM_2])) ? "" : "style='border-bottom:0; border-radius:0; padding-bottom:0px;'"; ?>>
                                         <header class='rowBatalla headerBatalla'>
-                                            <img class='imagenUser' src='<?= selectFromUsuario(["foto"])[0]; ?>'>
+                                            <img class='imagenUser' src='<?= $usuario->foto; ?>'>
                                             <p class='text-center fw-bold h1'><?= $_SESSION[SESSION_USER]; ?></p>
                                         </header>
                                         <?php
                                         if (isset($_SESSION[SESSION_CREAR_ELEM_2])) {
                                             $sql = "SELECT nombre, foto FROM elemento WHERE id=?";
-                                            $preparedSttm = $conexion->prepare($sql);
-                                            $preparedSttm->execute([$_SESSION[SESSION_CREAR_ELEM_1]]);
-                                            $elemento1 = $preparedSttm->fetch(PDO::FETCH_NUM);
+                                            $elemento1 = BD::realizarSql(BD::crearConexion(), $sql, [$_SESSION[SESSION_CREAR_ELEM_1]])[0];
                                             $nombre1 = $elemento1[0];
                                             $img1 = $elemento1[1];
 
                                             $sql = "SELECT nombre, foto FROM elemento WHERE id=?";
-                                            $preparedSttm = $conexion->prepare($sql);
-                                            $preparedSttm->execute([$_SESSION[SESSION_CREAR_ELEM_2]]);
-                                            $elemento2 = $preparedSttm->fetch(PDO::FETCH_NUM);
+
+                                            $elemento2 = BD::realizarSql(BD::crearConexion(), $sql, [$_SESSION[SESSION_CREAR_ELEM_2]])[0];
                                             $nombre2 = $elemento2[0];
                                             $img2 = $elemento2[1];
                                         ?>
@@ -160,19 +148,19 @@ if (isset($_POST["id1"])) {
                                 <?php } else { ?>
                                     <div class='rowBatalla'>
                                         <div class='bando' style='border:0px'>
-                                            <p class='text-center h1 fw-bold mt-4'><?php echo (isset($_SESSION["crearElem1"])) ? $lang["elemento2"] : $lang["elemento1"]; ?></p>
+                                            <p class='text-center h1 fw-bold mt-4'><?php echo (isset($_SESSION[SESSION_CREAR_ELEM_1])) ? $lang["elemento2"] : $lang["elemento1"]; ?></p>
                                             <div class='voteBatalla'>
-                                                <label class='form-label' for='<?= (isset($_SESSION["crearElem1"])) ? "nombre2" : "nombre1"; ?>'>
+                                                <label class='form-label' for='<?= (isset($_SESSION[SESSION_CREAR_ELEM_1])) ? "nombre2" : "nombre1"; ?>'>
                                                     <?= $lang["nombre"]; ?>
                                                 </label>
-                                                <input class='form-control' type="text" name="<?= (isset($_SESSION["crearElem1"])) ? "nombre2" : "nombre1"; ?>" value="<?= $nombre; ?>">
+                                                <input class='form-control' type="text" name="<?= (isset($_SESSION[SESSION_CREAR_ELEM_1])) ? "nombre2" : "nombre1"; ?>" value="<?= $nombre; ?>">
                                                 <?= $errorNombre; ?>
                                                 <br />
 
-                                                <label class='form-label' for='<?= (isset($_SESSION["crearElem1"])) ? "img2" : "img1"; ?>'>
+                                                <label class='form-label' for='<?= (isset($_SESSION[SESSION_CREAR_ELEM_1])) ? "img2" : "img1"; ?>'>
                                                     <?= $lang["imagen"]; ?>
                                                 </label>
-                                                <input class='form-control' type="file" name="<?= (isset($_SESSION["crearElem1"])) ? "img2" : "img1"; ?>">
+                                                <input class='form-control' type="file" name="<?= (isset($_SESSION[SESSION_CREAR_ELEM_1])) ? "img2" : "img1"; ?>">
                                                 <?= $errorImg; ?>
                                                 <br />
                                                 <input type="submit" class='submitBatalla btn btn-primary btn-lg'>
@@ -180,12 +168,16 @@ if (isset($_POST["id1"])) {
                                         </div>
                                     </div>
                                     <?php
-                                            $sql = "SELECT COUNT(*) FROM elemento";
-                                            $numElementos = $conexion->query($sql)->fetch(PDO::FETCH_NUM)[0];
-
-                                            if (isset($_SESSION["crearElem1"])) {
-                                                $numElementos--;
+                                            $sql = "SELECT COUNT(*) FROM elemento ";
+                                            if (isset($_SESSION[SESSION_CREAR_ELEM_1])) {
+                                                $sql .= "WHERE id!='{$_SESSION[SESSION_CREAR_ELEM_1]}' AND id NOT IN 
+                                                (SELECT id_elemento2 AS ID FROM batalla_elemento WHERE id_elemento1='{$_SESSION[SESSION_CREAR_ELEM_1]}'
+                                                UNION
+                                                SELECT id_elemento1 AS ID FROM batalla_elemento WHERE id_elemento2='{$_SESSION[SESSION_CREAR_ELEM_1]}')";
+                                                $id = "id2";
                                             }
+                                            
+                                            $numElementos = BD::realizarSql(BD::crearConexion(), $sql, [])[0][0];
 
                                             if ($numElementos > 0) { // PAGINACIÓN
                                                 $paginas = ceil($numElementos / ELEMENTS_PAGE);
@@ -204,15 +196,15 @@ if (isset($_POST["id1"])) {
 
                                                 $id = "id1";
                                                 $sql = "SELECT id, nombre, foto FROM elemento ";
-                                                if (isset($_SESSION["crearElem1"])) {
-                                                    $sql .= "WHERE id!={$_SESSION["crearElem1"]} AND id NOT IN 
-                                                    (SELECT id_elemento2 AS ID FROM batalla_elemento WHERE id_elemento1={$_SESSION["crearElem1"]}
+                                                if (isset($_SESSION[SESSION_CREAR_ELEM_1])) {
+                                                    $sql .= "WHERE id!='{$_SESSION[SESSION_CREAR_ELEM_1]}' AND id NOT IN 
+                                                    (SELECT id_elemento2 AS ID FROM batalla_elemento WHERE id_elemento1='{$_SESSION[SESSION_CREAR_ELEM_1]}'
                                                                 UNION
-                                                                SELECT id_elemento1 AS ID FROM batalla_elemento WHERE id_elemento2={$_SESSION["crearElem1"]})";
+                                                                SELECT id_elemento1 AS ID FROM batalla_elemento WHERE id_elemento2='{$_SESSION[SESSION_CREAR_ELEM_1]}')";
                                                     $id = "id2";
                                                 }
                                                 $sql .= "ORDER BY nombre LIMIT {$offset}, " . ELEMENTS_PAGE;
-                                                $elementos = $conexion->query($sql)->fetchAll(PDO::FETCH_NUM);
+                                                $elementos = BD::realizarSql(BD::crearConexion(), $sql, []);
                                                 echo "
                                                 </form>
                                                 <div class='subirBatalla' style='border-top:0; border-radius:0; padding-top:0px;'>

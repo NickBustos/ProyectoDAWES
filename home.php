@@ -10,8 +10,8 @@ include "admin/templates/cabecera.php";
        * Comprueba que la sesión tenga un usuario (ha iniciado sesión).
        * En ese caso te muestra la página de sesión iniciada (una batalla).
        */
-      if (isset($_SESSION[SESSION_ID])) {
-        include "admin/templates/batalla.php";
+      if ($usuario != null) {
+        include "admin/templates/batallaPOO.php";
       } else {
         echo "
           <div class='rounded-circle'>

@@ -122,3 +122,13 @@ $lang += array( //PERFIL
     "bat_denunciadas_3"=>"Vigilante",
     "usuarioBorrado"=>"Usuario eliminado"
 );
+
+$lang += array(//MODIFICAR DATOS
+    "usuarioCambiado"=>"Usuario cambiado con éxito",
+    "passwordCambiada"=>"Contraseña cambiada con éxito",
+    "fechaCambiada"=>"Fecha de nacimiento cambiada con éxito",
+    "emailCambiado"=>"Email cambiado con éxito",
+    "fotoCambiada"=>"Foto cambiada con éxito",
+    "change"=> "Cambiar",
+    "delete_user" => "Borrar usuario"
+);

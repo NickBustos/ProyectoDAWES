@@ -9,15 +9,19 @@
     <?php
     session_start();
     include "admin/configuraciones/funciones.php";
-    include getIdioma();
+    $usuario = null;
+    if (isset($_SESSION[SESSION_ID])) {
+        $usuario = new Usuario($_SESSION[SESSION_ID], $_SESSION[SESSION_USER]);
+    }
+    include getIdioma($usuario);
     /**
      * Inicia sesión.
      * Si no hay un tema definido en $_SESSION lo crea con el valor "claro".
      * Si el valor del tema es "noche" carga el css correspondiente.
      */
     $css = "<link rel='stylesheet' href='./css/archivo.css' />";
-    if (isset($_SESSION[SESSION_ID])) {
-        if (selectFromUsuario([TEMA])[0] === "dark") {
+    if ($usuario != null) {
+        if ($usuario->modovis === "dark") {
             $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
         }
     } else if (!isset($_SESSION[TEMA])) {
@@ -26,27 +30,24 @@
         $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
     }
     echo $css;
-    $conexion = new PDO(DSN, USER, PASSWORD); // La creamos aquí porque al final siempre la usamos, para tenerla preparada
     ?>
 </head>
 
 <body>
     <?php
 
-    if (!isset($_SESSION[SESSION_ID])) {
+    if ($usuario == null) {
         echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
         echo "<img src='imagenes/luigi.png'><br/>";
         exit();
     }
-
     // Coger información del usuario de bbdd
     $idUser = $_SESSION[SESSION_ID];
     $nameAct = $_SESSION[SESSION_USER];
-    $datosActuales = selectFromUsuario(["fechanacimiento", "foto", "email"]);
-    $dateAct = $datosActuales[0];
-    $fotoAct = $datosActuales[1];
-    $mailAct = $datosActuales[2];
-    $passAct = select(["password"], "credencial", ["nombreusuario", $_SESSION[SESSION_USER]])[0][0];
+    $dateAct = $usuario->fechanacimiento;
+    $fotoAct = $usuario->foto;
+    $mailAct = $usuario->email;
+    $passAct = $usuario->password;
 
     $newName = $newPass = $newDate = $newMail = $newFoto = "";
     $errorName = $errorFoto = $errorDate = $errorMail = $errorPass = "";
@@ -64,7 +65,7 @@
         $mailNew = $_POST["newMail"];
         if ($newName != $nameAct) {
             if (preg_match(PATTERN_USER, $newName)) {
-                if (existe($newName) == false) {
+                if (Usuario::existe($newName) == false) {
                     array_push($credencialesGuardar, $newName);
                     array_push($tablasCredenciales, "nombreusuario");
                 } else {
@@ -98,14 +99,14 @@
                 }
             }
             $sql .= " WHERE nombreusuario='{$nameAct}'";
-            $conexion->prepare($sql)->execute($credencialesGuardar);
+            BD::crearConexion()->prepare($sql)->execute($credencialesGuardar);
             if (in_array("nombreusuario", $tablasCredenciales)) {
                 $_SESSION[SESSION_USER] = $newName;
                 $nameAct = $newName;
-                $errorName = "Nombre Cambiado";
+                $errorName = $lang["usuarioCambiado"];
             }
             if (in_array("password", $tablasCredenciales)) {
-                $errorPass = "Password Cambiado";
+                $errorPass = $lang["passwordCambiada"];
             }
         }
 
@@ -130,24 +131,20 @@
             !empty($_FILES) && !empty($_FILES["newFoto"])
             && !empty($_FILES["newFoto"]["tmp_name"])
         ) {
-            echo "hey foto";
             if ($_FILES["newFoto"]["type"] === "image/png") { //Comrpueba que el archivo es una imagen png
                 if ($_FILES['newFoto']['size'] <= 750000) { //Comprueba que el archivo pesa menos de un 750 kilobytes
                     $fotoNew = getImage($_FILES["newFoto"]);
                     array_push($usuarioGuardar, $fotoNew);
                     array_push($tablasUsuario, "foto");
                 } else {
-                    echo "eeorroro";
                     $errorFoto = $lang["error_file_size"];
                 }
             } else {
-                echo "eeorroro";
                 $errorFoto = $lang["error_file_type"];
             }
         }
         // Lo mismo pero con la tabla usuario
         if (count($usuarioGuardar) > 0) {
-            echo "guardar";
             $sql = "UPDATE usuario SET ";
             for ($i = 0; $i < count($usuarioGuardar); $i++) {
                 $sql .= "{$tablasUsuario[$i]}=?";
@@ -156,29 +153,29 @@
                 }
             }
             $sql .= " WHERE id='{$_SESSION[SESSION_ID]}'";
-            $conexion->prepare($sql)->execute($usuarioGuardar);
+            BD::crearConexion()->prepare($sql)->execute($usuarioGuardar);
             if (in_array("fechanacimiento", $tablasUsuario)) {
                 $dateAct = $dateNew;
-                $errorDate = "Fecha Cambiada";
+                $errorDate =$lang["fechaCambiada"];
             }
             if (in_array("email", $tablasUsuario)) {
                 $mailAct = $mailNew;
-                $errorMail = "Mail Cambiado";
+                $errorMail = $lang["emailCambiado"];
             }
             if (in_array("foto", $tablasUsuario)) {
                 $fotoAct = $fotoNew;
-                $errorFoto = "Foto Cambiada";
+                $errorFoto = $lang["fotoCambiada"];
             }
         }
     }
     // Si ha dado a borrar elimina todos los datos del usuario, sale de la sesión y vuelve a index
     if (isset($_POST["delete"])) {
-        delete("usuario_credencial", "nombreusuario", $nameAct);
-        delete("credencial", "nombreusuario", $nameAct);
-        delete("usuario", "id", $idUser);
-        delete("usuario_credencial", "nombreusuario", $nameAct);
+        BD::delete("usuario_credencial", "nombreusuario", $nameAct);
+        BD::delete("credencial", "nombreusuario", $nameAct);
+        BD::delete("usuario", "id", $idUser);
+        BD::delete("usuario_credencial", "nombreusuario", $nameAct);
         header("Location: procesos/cerrarsesion.php");
-    }else if(isset($_POST["inicio"])){
+    } else if (isset($_POST["inicio"])) {
         header("Location: index.php");
     }
     ?>
@@ -198,44 +195,48 @@
                                             <form method='post' action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>' enctype='multipart/form-data'>
                                                 <div class="form-outline mb-4">
                                                     <!-- -------------------- Usuario ----------------------- -->
-                                                    Usuario:<input type="text" id="Mdatos" class="form-control" name='newName' value=<?php echo $nameAct; ?>><?php echo $errorName; ?>
+                                                    <?= $lang["username"]; ?><input type="text" id="Mdatos" class="form-control" name='newName' value='<?php echo $nameAct; ?>'>
+                                                    <?= $errorName; ?>
                                                 </div>
                                                 <br /> <br />
 
                                                 <!-- -------------------- Contraseña ----------------------- -->
                                                 <div class="form-outline mb-4">
-                                                    Password:<input name='newPass' type="password" id="Mdatos" class="form-control" value=""><?php echo $errorPass; ?>
+                                                    <?= $lang["password"]; ?><input name='newPass' type="password" id="Mdatos" class="form-control" value="">
+                                                    <?= $errorPass; ?>
                                                 </div>
                                                 <br /> <br />
                                                 <!-- -------------------- Fecha Nac ----------------------- -->
                                                 <div class="form-outline mb-4">
-                                                    FechaNac:<input type="date" name='newDate' id="Mdatos" class="form-control" value=<?php echo $dateAct; ?>><?php echo $errorDate; ?>
+                                                    <?= $lang["fecha"]; ?>:<input type="date" name='newDate' id="Mdatos" class="form-control" value='<?php echo $dateAct; ?>'>
+                                                    <?= $errorDate; ?>
                                                 </div>
                                                 <br /> <br />
                                                 <!-- -------------------- Email ----------------------- -->
                                                 <div class="form-outline mb-4">
-                                                    Email<input type="email" name='newMail' id="Mdatos" class="form-control" value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>"><?php echo $errorMail; ?>
+                                                    <?= $lang["correo"]; ?><input type="email" name='newMail' id="Mdatos" class="form-control" value=<?php echo $mailAct; ?> min="<?= DATE_FIRST; ?>" max="<?= DATE_TODAY; ?>">
+                                                    <?= $errorMail; ?>
                                                 </div>
                                                 <br /> <br />
                                                 <!-- -------------------- Foto ----------------------- -->
                                                 <div class="LogoMdatos">
-                                                    <img src='<?php echo $fotoAct; ?>' width='200px' height='200px'>
+                                                    <img src='<?= $fotoAct; ?>' width='200px' height='200px'>
                                                     <input type="file" name="newFoto"><br /><?php echo $errorFoto; ?>
                                                 </div>
                                                 <br /> <br /> <br />
                                                 <!-- -------------------- Boton ----------------------- -->
                                                 <button type="submit" class='modificarDatos btn btn-primary btn-lg'>
-                                                    <p class="text-center h1 fw-bold">Enviar</p>
+                                                    <p class="text-center h1 fw-bold"><?= $lang["change"]?></p>
                                                 </button>
                                                 <br /> <br /> <br />
                                                 <!-- -------------------- Boton ----------------------- -->
                                                 <button type="submit" class='modificarDatosBorrar' name="delete">
-                                                    <p class="text-center h1 fw-bold">Borrar Cuenta</p>
+                                                    <p class="text-center h1 fw-bold"><?= $lang["delete_user"]?></p>
                                                 </button>
                                                 <br /> <br /> <br />
                                                 <!-- -------------------- Boton ----------------------- -->
                                                 <button type="submit" class='modificarDatos btn btn-primary btn-lg' name="inicio">
-                                                    <p class="text-center h1 fw-bold">Inicio</p>
+                                                    <p class="text-center h1 fw-bold"><?= $lang["inicio"]?></p>
                                                 </button>
                                             </form>
                                         </div>
