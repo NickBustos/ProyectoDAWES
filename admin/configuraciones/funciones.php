@@ -122,7 +122,7 @@ function default_error_manager()
 
 /**
  * Verifica si un string se encuentra al inicio de una cadena.
- * Esta funcion se realiza porque aunque existe una en la versión web no.
+ * Esta funcion se realiza porque aunque existe una en la versión web no funciona.
  */
 function startsWith($cadena, $string) {
     return substr_compare($cadena, $string, 0, strlen($string)) === 0;

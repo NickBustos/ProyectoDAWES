@@ -130,27 +130,12 @@ if ($idUsuario > -1) {
                             }
                             $offset = ($paginaActual - 1) * ELEMENTS_PAGE;
 
-                            $sql =
-                                "SELECT id_batalla FROM usuario_batalla 
-                                WHERE id_usuario = '{$idUsuario}' AND accion LIKE ('crear')
-                                ORDER BY id_batalla LIMIT {$offset}, " . ELEMENTS_PAGE;
-                            $batallas = BD::realizarSql(BD::crearConexion(), $sql, []);
+                            $batallas = $usuario->getAllBatallas($offset, ELEMENTS_PAGE);
 
                             foreach ($batallas as $batalla) {
-                                $idsElementos = BD::select(["id_elemento1", "id_elemento2"], "batalla_elemento", ["id_batalla", $batalla[0]])[0];
-                                $infoElemento1 = BD::select(["nombre, foto"], "elemento", ["id", $idsElementos[0]])[0];
-                                $infoElemento2 = BD::select(["nombre, foto"], "elemento", ["id", $idsElementos[1]])[0];
-                                echo
-                                "<div>
-                                    <img class='imagenUser' src='{$infoElemento1[1]}'>
-                                    <span class='btn-circle btn-or'>OR</span>
-                                    <img class='imagenUser' src='{$infoElemento2[1]}'>
-                                    <div class='card-body'>
-                                        <p class='card-text'>{$infoElemento1[0]} vs {$infoElemento2[0]}</p>
-                                    </div>
-                                </div>";
+                                $batalla = new Batalla($batalla[0]);
+                                echo $batalla->printSimple();
                             }
-
                 ?>
 
                 <?php

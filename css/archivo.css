@@ -48,6 +48,9 @@
     border-radius: 25px;
     text-align: left;
 }
+.table tbody tr td:nth-child(2){
+    text-align: right;
+}
 
 .modificarDatos{
     display:block;

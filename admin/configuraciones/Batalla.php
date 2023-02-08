@@ -83,7 +83,8 @@ class Batalla
         }
     }
 
-    public function removeUser(){
+    public function removeUser()
+    {
         $this->id_creator = null;
     }
 
@@ -163,5 +164,24 @@ class Batalla
             "</div>
             </form>&nbsp";
         return $mostrar;
+    }
+
+    /**
+     * Imprime batalla para la página perfil.php
+     */
+    public function printSimple()
+    {
+        $elemento1 = $this->elements[0];
+        $elemento2 = $this->elements[1];
+        $print = 
+        "<div>
+            <img class='imagenUser' src='{$elemento1->foto}'>
+            <span class='btn-circle btn-or'>OR</span>
+            <img class='imagenUser' src='{$elemento2->foto}'>
+            <div class='card-body'>
+                <p class='card-text'>{$elemento1->nombre} vs {$elemento2->nombre}</p>
+            </div>
+        </div>";
+        return $print;
     }
 }

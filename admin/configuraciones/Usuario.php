@@ -76,7 +76,6 @@ class Usuario
         return $id;
     }
 
-
     /**
      * Actualiza uno de los datos de un usuario con un id concreto
      */
@@ -89,7 +88,7 @@ class Usuario
      * Verifica si un nombre de usuario existe
      * @return contraseña del usuario en cuestión o false si no lo encuentra
      */
-    static function existe($user)
+    public static function existe($user)
     {
         $conexion = BD::crearConexion();
         $sql = "SELECT password FROM credencial WHERE nombreusuario = '{$user}'";
@@ -153,10 +152,10 @@ class Usuario
             $this->num_batallas_denunciadas++;
             Usuario::actualizarUsuario("num_batallas_denunciadas", $this->num_batallas_denunciadas, $this->id);
             $denuncias = BD::realizarSql(BD::crearConexion(), $sqlSelect, [$batalla->id])[0][0];
-            if ($denuncias >= 10 && $batalla->id_creator != null) { // CAMBIAR NUMERO
+            if ($denuncias >= 10 && $batalla->id_creator != null) {
                 $puntos_troll = BD::select(["puntos_troll"], "usuario", ["id", $batalla->id_creator])[0][0];
                 $puntos_troll++;
-                if ($puntos_troll >= 10) {
+                if ($puntos_troll >= 10) { // CAMBIAR NUMERO
                     $nombreusuario = BD::select(["nombreusuario"], "usuario_credencial", ["id_usuario", $batalla->id_creator])[0][0];
                     BD::delete("usuario_credencial", "id", $batalla->id_creator);
                     BD::delete("credencial", "nombreusuario", $nombreusuario);
@@ -242,6 +241,22 @@ class Usuario
         return $tabla;
     }
 
+    /**
+     * Devuelve el id de un numero ($elementos) indicado de batallas creadas 
+     * por un usuario empezando por otro numero indicado ($offset)
+     */
+    public function getAllBatallas($offset, $elements){
+        $sql =
+            "SELECT id_batalla FROM usuario_batalla 
+            WHERE id_usuario = '{$this->id}' AND accion LIKE ('crear')
+            ORDER BY id_batalla LIMIT {$offset}, " . $elements;
+        return BD::realizarSql(BD::crearConexion(), $sql, []);
+    }
+
+    /**
+     * Usado para eliminar datos de la sesión de un usuario
+     * (Como la batalla en uso)
+     */
     public function limpiarSesion($datossesion)
     {
         foreach ($datossesion as $dato) {
