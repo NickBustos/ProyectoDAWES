@@ -21,10 +21,14 @@ class Usuario
     {
         $this->id = $id;
         $this->nombreusuario = $nombreusuario;
-        $datos = [
-            ...BD::select(["*"], "credencial", ["nombreusuario", $this->nombreusuario], PDO::FETCH_NAMED)[0],
-            ...BD::select(["*"], "usuario", ["id", $this->id], PDO::FETCH_NAMED)[0]
-        ];
+        // $datos = [
+        //     ...BD::select(["*"], "credencial", ["nombreusuario", $this->nombreusuario], PDO::FETCH_NAMED)[0],
+        //     ...BD::select(["*"], "usuario", ["id", $this->id], PDO::FETCH_NAMED)[0]
+        // ];
+        $datos = array_merge(
+            BD::select(["*"], "credencial", ["nombreusuario", $this->nombreusuario], PDO::FETCH_NAMED)[0],
+            BD::select(["*"], "usuario", ["id", $this->id], PDO::FETCH_NAMED)[0]
+        );
         $this->password = $datos["password"];
         $this->fechanacimiento = $datos["fechanacimiento"];
         $this->foto = $datos["foto"];

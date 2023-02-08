@@ -6,14 +6,14 @@ class BD
     const PASSWORD = "";
     const NAME = "dbbatallas";
     const DRIVER = "mysql"; //PARA PDO
-    const DSN = BD::DRIVER . ":host=" . BD::HOST . ";dbname=" . BD::NAME;
+    const DSN = self::DRIVER . ":host=" . self::HOST . ";dbname=" . self::NAME;
 
     // const HOST = "sql307.byethost22.com";// o 127.0.0.1
     // const USER = "b22_32770819";
     // const PASSWORD = "grupoDAWES";
     // const BD = "b22_32770819_dbbatallas";
     // const DRIVER = "mysql"; //PARA PDO
-    // const DSN = DRIVER . ":host=" . HOST . ";dbname=" . BD;
+    // const DSN = self::DRIVER . ":host=" . self::HOST . ";dbname=" . self::NAME;
 
     // ----------------------------------------- GENERALES ----------------------------------------
 
@@ -21,7 +21,7 @@ class BD
      * Devuelve una conexión PDO
      */
     public static function crearConexion(){
-        return new PDO(BD::DSN, BD::USER, BD::PASSWORD);
+        return new PDO(self::DSN, self::USER, self::PASSWORD);
     }
 
     /**
@@ -32,12 +32,12 @@ class BD
      */
     public static function select($campos, $tabla, $where=[], $fetch=PDO::FETCH_NUM)
     {
-        $conexion = BD::crearConexion();
+        $conexion = self::crearConexion();
         $sql = "SELECT " . implode(", ", $campos) . " FROM {$tabla} ";
         if (count($where) > 0) {
             $sql .= "WHERE {$where[0]}='{$where[1]}'";
         }
-        return BD::realizarSql($conexion, $sql, [], $fetch);
+        return self::realizarSql($conexion, $sql, [], $fetch);
     }
 
     /**
@@ -46,7 +46,7 @@ class BD
      */
     public static function insertar($tabla, $datos)
     {
-        $conexion = BD::crearConexion();
+        $conexion = self::crearConexion();
         $sql = "INSERT INTO {$tabla} VALUES (";
         for ($i = 0; $i < count($datos); $i++) {
             $sql .= ":{$i}";
@@ -92,9 +92,9 @@ class BD
      */
     public static function delete($tabla, $columna, $dato)
     {
-        $conexion = BD::crearConexion();
+        $conexion = self::crearConexion();
         $sql = "DELETE FROM {$tabla} WHERE {$columna} = ? ";
-        BD::realizarSql($conexion, $sql, [$dato]);
+        self::realizarSql($conexion, $sql, [$dato]);
     }
 
     /**
