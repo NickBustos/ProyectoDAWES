@@ -9,16 +9,19 @@
     <?php
     session_start();
     include "admin/configuraciones/funciones.php";
-    include getIdioma();
-
+    $usuario = null;
+    if(isset($_SESSION[SESSION_ID])){
+        $usuario = new Usuario($_SESSION[SESSION_ID], $_SESSION[SESSION_USER]);
+    }
+    include getIdioma($usuario);
     /**
      * Inicia sesión.
      * Si no hay un tema definido en $_SESSION lo crea con el valor "claro".
      * Si el valor del tema es "noche" carga el css correspondiente.
      */
     $css = "<link rel='stylesheet' href='./css/archivo.css' />";
-    if (isset($_SESSION[SESSION_ID])) {
-        if (selectFromUsuario([TEMA])[0] === "dark") {
+    if ($usuario != null) {
+        if ($usuario->modovis === "dark") {
             $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
         }
     } else if (!isset($_SESSION[TEMA])) {
@@ -27,14 +30,12 @@
         $css = '<link rel="stylesheet" type="text/css" href="./css/archivo-oscuro.css">';
     }
     echo $css;
-
-    $conexion = new PDO(DSN, USER, PASSWORD); // La creamos aquí porque al final siempre la usamos, para tenerla preparada
     ?>
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a href="#" class="navbar-brand">
+        <a href="index.php" class="navbar-brand">
             <img src="imagenes/logo.png" alt="Logo">
         </a>
         <ul class="nav navbar-nav">
@@ -52,7 +53,7 @@
             </li>
 
             <?php
-            if (isset($_SESSION[SESSION_ID])) {
+            if ($usuario != null) {
                 echo
                 "<li class='nav-item' style='margin: auto;'>
                     <a class='nav-link' href='crear.php'>{$lang['subirBatalla']}</a>
@@ -67,8 +68,8 @@
                  * Por defecto muestra la imagen nouser.png
                  * Si esta iniciada la sesión coge la imagen del avatar del usuario.
                  */
-                if (isset($_SESSION[SESSION_ID])) {
-                    echo selectFromUsuario(["foto"])[0];
+                if ($usuario != null) {
+                    echo $usuario->foto;
                 } else {
                     echo "imagenes/nouser.png";
                 }
@@ -78,7 +79,7 @@
                 /**
                  * Si el usuario ha iniciado sesión muestra la opción de entrar a su pagina personal.
                  */
-                if (isset($_SESSION[SESSION_ID])) {
+                if ($usuario != null) {
                     echo "<a href='perfil.php'> " . $lang['paginaPersonal'] . "</a>";
                 }
                 ?>
@@ -87,8 +88,8 @@
                  * Muestra el mensaje correspondiente para cambiar el tema y el idioma.
                  */
                 $mensaje = "<a href='procesos/cambiarTema.php'>" . $lang["modoN"] . "</a>";
-                if (isset($_SESSION[SESSION_ID])) {
-                    if (selectFromUsuario([TEMA])[0] === TEMA_DARK) {
+                if ($usuario != null) {
+                    if ($usuario->modovis === TEMA_DARK) {
                         $mensaje = "<a href='procesos/cambiarTema.php'>" . $lang["modoC"] . "</a>";
                     }
                 } else if (isset($_SESSION["modovis"]) && $_SESSION["modovis"] === "dark") {
@@ -102,7 +103,7 @@
                 /**
                  * Si el usuario ha iniciado sesión muestra la opción de cerrar sesión.
                  */
-                if (isset($_SESSION[SESSION_ID])) {
+                if ($usuario != null) {
                     echo "<a href='modificarDatos.php'>" . $lang['modificarDatos'] . "</a>";
                     echo "<a href='procesos/cerrarsesion.php'> " . $lang['cerrar'] . "</a>";
                 }

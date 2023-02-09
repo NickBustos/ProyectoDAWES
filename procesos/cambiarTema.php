@@ -4,15 +4,10 @@ include_once '../admin/configuraciones/funciones.php';
 
 $tema=TEMA_LIGHT;
 if(isset($_SESSION[SESSION_ID])){
-    //Inició sesion
-    $conexion=new PDO(DSN, USER, PASSWORD);
-    $sql = "SELECT modovis FROM usuario WHERE ID='{$_SESSION[SESSION_ID]}'";
-    $resultado = $conexion->query($sql);
-    $resultado->bindColumn(1, $tema);
-    $resultado->fetch();
-    $tema = getTemaContrario($tema);
-    $sql = "UPDATE usuario SET modovis='{$tema}' WHERE ID='{$_SESSION[SESSION_ID]}'";
-    $resultado = $conexion->exec($sql);
+    $sql = "SELECT modovis FROM usuario WHERE id=?";
+    $resultado = BD::realizarSql(BD::crearConexion(), $sql, [$_SESSION[SESSION_ID]])[0][0];
+    $tema = getTemaContrario($resultado);
+    BD::update("usuario", ["modovis"], [$tema], "id", $_SESSION[SESSION_ID]);
 }else {
     //No ha iniciado sesión
     if(isset($_SESSION[TEMA])){
@@ -22,5 +17,4 @@ if(isset($_SESSION[SESSION_ID])){
     $_SESSION[TEMA] = $tema;
 }
 header('Location: ' . $_SERVER["HTTP_REFERER"]);
-// var_dump($tema);
 ?>

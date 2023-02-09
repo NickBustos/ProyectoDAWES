@@ -1,7 +1,7 @@
 <?php
 include "admin/templates/cabecera.php";
 // Si ha iniciado sesión
-if (isset($_SESSION[SESSION_ID])) {
+if ($usuario != null) {
     echo "<h1 style='text-align:center;'>¿Qué haces?</h1><br/>";
     echo "<img src='imagenes/luigi.png'><br/>";
     echo "<a type='button' class='submitBatalla btn btn-primary btn-lg' href='home.php'>Volver</a>";
@@ -30,7 +30,7 @@ if (!empty($_POST)) {
     $_user = htmlspecialchars($_POST["user"]);
     if (!empty($_user)) {
         if (preg_match(PATTERN_USER, $_user)) {
-            if (existe($_user) === false) {
+            if (Usuario::existe($_user) === false) {
                 $user = $_user;
             } else {
                 $errorUser = $lang["error_user_used"];
@@ -108,7 +108,7 @@ if (!empty($_POST)) {
      * Guardando los datos en la base de datos, guardando id y usuario en sesion y redirecciona a index.
      */
     if (!empty($user) && !empty($pass) && !empty($fechaNac) && !empty($mail) && !empty($avatar)) {
-        $id = subirUsuario([$user, $pass, $fechaNac, $avatar, $mail]);
+        $id = Usuario::registrarUsuario([$user, $pass, $fechaNac, $avatar, $mail]);
         $_SESSION[SESSION_ID] = $id;
         $_SESSION[SESSION_USER] = $user;
         header("Location: index.php");
@@ -202,21 +202,11 @@ if (!empty($_POST)) {
                                             <label for="formFile" class="form-label"><?php echo $lang["avatar"]; ?></label>
                                             <br>
 
-                                            <!-- Esto no lo borramos porque tenemos pensado usarlo en el futuro -->
-                                            <!-- <div class="form-check d-flex justify-content-center mb-5">
-                                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                                                <label class="form-check-label" for="form2Example3">
-                                                    Acepto los <a href="#!">términos y condiciones</a>
-                                                </label>
-                                            </div> -->
-
-
                                             <!-- Botón registrarse -->
 
                                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
                                                 <input type="submit" class="btn btn-primary btn-lg">
                                             </div>
-
 
                                             <!-- Inicio de sesión -->
 

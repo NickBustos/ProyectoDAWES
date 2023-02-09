@@ -12,15 +12,17 @@ class Elemento
         $this->foto = BD::select(["foto"], "elemento", ["id", $this->id])[0][0];
     }
 
-    public function getNombre(){
-        return $this->nombre;
+    public function __get($var)
+    {
+        if (property_exists(__CLASS__, $var)) {
+            return $this->$var;
+        }
     }
 
-    public function getFoto(){
-        return $this->foto;
-    }
-
-    public function getVotos($batalla)// revisar
+    /**
+     * Devuelve los votos de un elemento en una batalla específica
+     */
+    public function getVotos($batalla)
     {
         $sql = "SELECT COUNT(*) FROM voto 
                 WHERE id_elemento=?
@@ -28,6 +30,11 @@ class Elemento
         return BD::realizarSql(BD::crearConexion(), $sql, [$this->id, $batalla])[0][0];
     }
 
+    /**
+     * Imprime el elemento.
+     * @param $voted indica si se ha votado ya o no
+     * @param $batalla el id de la batalla de la que forma parte
+     */
     public function printComplex($voted, $batalla = -1)
     {
         if($voted){ // Si ha votado se muestran votos en vez de botones
@@ -36,7 +43,7 @@ class Elemento
         }else{
             $infoDiv = 
                 "<button name='elementoVotado' type='submit' class='submitBatalla btn btn-primary btn-lg' value='{$this->id}'>
-                    <img class='imagenUser' src='../../imagenes/thumbsUp.png'>
+                    <img class='imagenUser' src='imagenes/thumbsUp.png'>
                 </button>";
         }
         $infoBando =
@@ -50,5 +57,4 @@ class Elemento
         return $infoBando;
     }
 }
-// $e = new Elemento(9, new BD(true));
-// echo $e->printComplex(true, 3);
+

@@ -5,6 +5,11 @@ class Batalla
     private $id_creator;
     private $elements;
 
+    /**
+     * Devuelve una batalla aleatoria,si ya se había devuelto una y no se había votado, la actual
+     * o null si no hay batallas disponibles
+     * Guarda y extrae la información de la sesión
+     */
     public static function getBatalla()
     {
         $batalla = null;
@@ -49,6 +54,7 @@ class Batalla
             if (count($registroBatalla) > 0) {
                 $batalla = new Batalla($registroBatalla[0][0]);
                 $_SESSION[SESSION_CURRENT_BATTLE] = $batalla->id;
+                $_SESSION[SESSION_BATTLE_VOTED] = false;
             }
         }
         return $batalla;
@@ -70,18 +76,28 @@ class Batalla
         array_push($this->elements, new Elemento($id_elementos[1]));
     }
 
-    public function removeUser(){
+    public function __get($var)
+    {
+        if (property_exists(__CLASS__, $var)) {
+            return $this->$var;
+        }
+    }
+
+    public function removeUser()
+    {
         $this->id_creator = null;
     }
 
-    public function printComplex() // RETOCAR
+    /**
+     * Imprime una batalla (llamando a printComplex de cada elemento)
+     */
+    public function printComplex($usuario)
     {
         $voted = $_SESSION[SESSION_BATTLE_VOTED];
-        // $voted = false;
         $nameDeBoton = "ignorar";
         if ($voted) $nameDeBoton = "siguiente";
 
-        $foto = "../../imagenes/nouser.png"; // CONSTANTES???
+        $foto = "imagenes/nouser.png";
         $name_user = "Usuario borrado";
 
         if ($this->id_creator != null) {
@@ -91,14 +107,12 @@ class Batalla
 
         $mostrar =
             "<form method='post' class='subirBatalla' id='subirBatalla' action='procesos/procesarVoto.php'>";
-        // $rol = selectFromUsuario(["rol"])[0];
-        $rol = "admin";
         $classAdmin = $opcionesAdmin = "";
-        if ($rol == "admin") {
+        if ($usuario->rol == "admin") {
             $classAdmin = "style='justify-content: space-between;'";
             $opcionesAdmin = "
                 <div class='desplegable' style='margin-right:0'>
-                    <img class='imagenUser' src='../../imagenes/options.png'>
+                    <img class='imagenUser' src='imagenes/options.png'>
                     <div class='contenido-desplegable' style='margin-left:0'>
                         <button type='submit' name='deleteBattle' style='background: none; color: white; border: none; padding: 0; font: inherit; cursor: pointer; outline: inherit;'>
                             DELETE
@@ -106,7 +120,6 @@ class Batalla
                     </div>
                 </div>";
         }
-        $mostrar = "";
         if ($this->id_creator == null) {
             $mostrar .=
                 "<header class='rowBatalla headerBatalla' {$classAdmin}>
@@ -139,12 +152,12 @@ class Batalla
             "</div>
             <div class='rowBatalla'>
                 <button type='submit' class='submitBatalla btn btn-primary btn-lg' name='{$nameDeBoton}'>
-                    <img class='imagenUser' src='../../imagenes/next.png'>
+                    <img class='imagenUser' src='imagenes/next.png'>
                 </button>";
         if (!$voted) {
             $mostrar .=
                 "<button type='submit' class='submitBatalla btn btn-secondary btn-lg' name='denunciar'>
-                    <img class='imagenUser' src='../../imagenes/denunciar.png'>
+                    <img class='imagenUser' src='imagenes/denunciar.png'>
                 </button>";
         }
         $mostrar .=
@@ -152,8 +165,23 @@ class Batalla
             </form>&nbsp";
         return $mostrar;
     }
-}
 
-// $b = new Batalla(9);
-// echo $b->printComplex(false);
-// echo Batalla::getBatalla()->printComplex();
+    /**
+     * Imprime batalla para la página perfil.php
+     */
+    public function printSimple()
+    {
+        $elemento1 = $this->elements[0];
+        $elemento2 = $this->elements[1];
+        $print = 
+        "<div>
+            <img class='imagenUser' src='{$elemento1->foto}'>
+            <span class='btn-circle btn-or'>OR</span>
+            <img class='imagenUser' src='{$elemento2->foto}'>
+            <div class='card-body'>
+                <p class='card-text'>{$elemento1->nombre} vs {$elemento2->nombre}</p>
+            </div>
+        </div>";
+        return $print;
+    }
+}
