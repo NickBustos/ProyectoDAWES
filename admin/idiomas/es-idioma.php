@@ -63,7 +63,6 @@ $lang += array( //REGISTRARSE
     "avatar" => "Introduce tu avatar:",
     "registrado" => "¿Ya tienes una cuenta? Haz clíck <a href='iniciosesion.php'>aquí</a>",
     "error_vacio" => ERROR_IN . "El campo no puede estar vacío" . ERROR_OUT,
-    "error_character_separator" => ERROR_IN . "No se acepta \"" . LINE_SEPARATOR . "\"" . ERROR_OUT,
     "error_pass_pattern" =>
     ERROR_IN . "La contraseña debe tener mínimo:
     <ul>

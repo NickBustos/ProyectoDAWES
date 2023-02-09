@@ -1,6 +1,5 @@
 <?php
 include 'admin/templates/cabecera.php';
-include 'admin/configuraciones/Persona.php';
 // Iniciamos el id a -1 para el caso de que el usuario no haya iniciado sesión y no esté mirando ningún perfil
 $idUsuario = -1;
 // Si a iniciado sesión se coge su id
@@ -17,7 +16,6 @@ if (isset($_GET) && !empty($_GET) && isset($_GET["usuario"])) {
 // Si hay usuario guarda todos sus datos en el array $datosusuario
 
 
-//usuario = new Persona(select(["nombreusuario"]
 $datosUsuario = [];
 if ($idUsuario > -1) {
     $datosUsuario = select(["nombreusuario"], "usuario_credencial", ["id_usuario", $idUsuario])[0];
@@ -47,16 +45,21 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
             <br>
             <div class="medallas">
                 <?php
+                $prueba = select(["nombreusuario"], "usuario_credencial", ["id_usuario", $idUsuario])[0];
+                echo "<br><br><br>";
+                $usuarioN = new Usuario($idUsuario, $prueba[0]);
+
+
                 if ($idUsuario !== -1) {
                     // MEDALLAS
                     $nivelCreador = "";
-                    if ($datosUsuario[PERFIL_BATALLAS_CREADAS] >= 1000) {
+                    if ($usuarioN->getBatallasCreadas() >= 1000) {
                         //vicioso
                         $nivelCreador = $lang["bat_creadas_3"];
-                    } else if ($datosUsuario[PERFIL_BATALLAS_CREADAS] >= 100) {
+                    } else if ($usuarioN->getBatallasCreadas() >= 100) {
                         //adicto
                         $nivelCreador =  $lang["bat_creadas_2"];
-                    } else if ($datosUsuario[PERFIL_BATALLAS_CREADAS] >= 10) {
+                    } else if ($usuarioN->getBatallasCreadas() >= 10) {
                         //comprometido
                         $nivelCreador = $lang["bat_creadas_1"];
                     }
@@ -64,13 +67,13 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
                     if (!empty($nivelCreador)) echo "<table class='medallaTabla'><tr><td>{$nivelCreador}</td></tr><tr><td><img src='https://cdn-icons-png.flaticon.com/512/3176/3176294.png' alt=''></td></tr></table>";
 
                     $nivelVotos = "";
-                    if ($datosUsuario[PERFIL_BATALLAS_VOTADAS] >= 1000) {
+                    if ($usuarioN->getBatallasVotadas() >= 1000) {
                         //actvista
                         $nivelVotos = $lang["bat_votadas_3"];
-                    } else if ($datosUsuario[PERFIL_BATALLAS_VOTADAS] >= 100) {
+                    } else if ($usuarioN->getBatallasVotadas() >= 100) {
                         //sindicalista
                         $nivelVotos = $lang["bat_votadas_2"];
-                    } else if ($datosUsuario[PERFIL_BATALLAS_VOTADAS] >= 10) {
+                    } else if ($usuarioN->getBatallasVotadas() >= 10) {
                         //votante
                         $nivelVotos = $lang["bat_votadas_1"];
                     }
@@ -78,13 +81,13 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
                     if (!empty($nivelVotos)) echo "<table class='medallaTabla'><tr><td>{$nivelVotos}</td></tr><tr><td><img src='https://cdn-icons-png.flaticon.com/512/5551/5551284.png' alt=''></td></tr></table>";
 
                     $nivelDenuncias = "";
-                    if ($datosUsuario[PERFIL_BATALLAS_DENUNCIADAS] >= 1000) {
+                    if ($usuarioN->getBatallasDenunciadas() >= 1000) {
                         //policia
                         $nivelDenuncias = $lang["bat_denunciadas_3"];
-                    } else if ($datosUsuario[PERFIL_BATALLAS_DENUNCIADAS] >= 100) {
+                    } else if ($usuarioN->getBatallasDenunciadas() >= 100) {
                         //moderador
                         $nivelDenuncias = $lang["bat_denunciadas_2"];
-                    } else if ($datosUsuario[PERFIL_BATALLAS_DENUNCIADAS] >= 10) {
+                    } else if ($usuarioN->getBatallasDenunciadas() >= 10) {
                         //vigilante
                         $nivelDenuncias = $lang["bat_denunciadas_1"];
                     }
@@ -105,7 +108,8 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
                 <p> <?= $lang["tituloDescripcion"] ?></p>
                 <?php
                 if ($idUsuario !== -1) {
-                    $totalBatallas = $datosUsuario[PERFIL_BATALLAS_CREADAS];
+                    $totalBatallas = $usuarioN->getBatallasCreadas();
+                    var_dump($totalBatallas);
                     if ($totalBatallas == "1") {
                         echo  '<h6>' .
                             $lang["esteUsuario"] . $totalBatallas . $lang["batalla"] .
@@ -123,7 +127,7 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
             <div class="row-center">
                 <?php
                 if ($idUsuario !== -1) {
-                    $totalBatallas = $datosUsuario[PERFIL_BATALLAS_CREADAS];
+                    $totalBatallas = $usuarioN->getBatallasCreadas();
                     echo "<br>";
                     if ($totalBatallas == "0") {
                         echo  '<h4>' .
@@ -146,70 +150,61 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
                             $offset = ($paginaActual - 1) * ELEMENTS_PAGE;
                             //$sql = "SELECT id FROM usuario_batalla WHERE id = '" . $idUsuario . "  LIMIT BY " . ELEMENTS_PAGE . "'";
                             $id = "id1";
-                            $sql = "SELECT id FROM usuario_batalla ";
-                            if (isset($_SESSION[SESSION_ID])) {
-                                $sql .= "WHERE id_usuario = '" . $_SESSION[SESSION_ID] . "' AND accion LIKE ('crear')";
+                            $sql = "SELECT id_batalla FROM usuario_batalla ";
+                            if ($idUsuario !== -1) {
+                                $sql .= "WHERE id_usuario = '" . $idUsuario . "' AND accion LIKE ('crear')";
                                 $id = "id2";
                             }
                             $sql .= " ORDER BY id_batalla LIMIT {$offset}, " . ELEMENTS_PAGE;
-                            $elementos = $conexion->query($sql)->fetchAll(PDO::FETCH_NUM);
+                            $batallas = $conexion->query($sql)->fetchAll(PDO::FETCH_NUM);
 
-                            echo "
-                            </form>
-                            <div>
-                            <div>
-                            <div>";
-                            // Por cada elemento crea un formulario con un boton de submit que es la imagen del elemento
                             if ($paginaActual == 1) {
                                 $acum = 0;
                             } else {
                                 $acum = $paginaActual + 2;
                             }
 
+                            foreach ($batallas as $batalla) {
+                                $idsElementos = select(["id_elemento1", "id_elemento2"], "batalla_elemento", ["id_batalla", $batalla[0]])[0];
+                                $infoElemento1 = select(["nombre, foto"], "elemento", ["id", $idsElementos[0]])[0];
+                                $infoElemento2 = select(["nombre, foto"], "elemento", ["id", $idsElementos[1]])[0];
+                                echo
+                                "<div>
+                                    <img class='imagenUser' src='{$infoElemento1[1]}'>
+                                    <span class='btn-circle btn-or'>OR</span>
+                                    <img class='imagenUser' src='{$infoElemento2[1]}'>
+                                    <div class='card-body'>
+                                        <p class='card-text'>{$infoElemento1[0]} vs {$infoElemento2[0]}</p>
+                                    </div>
+                                </div>";
+                            }
 
-                            foreach ($elementos as $elemento) {
-                                $imagenBatallaU = '<div class="filaBatallas" style="margin-left:25px; margin-right:25px">
-                                <div class="row-center">
-                                    <div class="card-group">
-                                        <div class="card">
-                                            <img class="imagenUser" src="'
-                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "foto")[0] . '">
-                                            <span class="btn-circle btn-or">OR</span> 
-                                            <img class="imagenUser" src="'
-                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "foto")[0] . '">
-                                            <div class="card-body">
-                                                <h4 class="card-title">Batalla #' . $acum + 1 . '</h4>
-                                                <p class="card-text">'
-                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento1"], "nombre")[0] .
-                                    ' vs '
-                                    . infoBatalla(buscarBatalla($idUsuario)[$acum]["id_elemento2"], "nombre")[0] .
-                                    '</p>
-                                            </div>
-                                        </div>';
-                                $acum = $acum + 1;
-                                echo $imagenBatallaU;
                 ?>
 
                 <?php
-                                // PAGINACION
-                            }
-                            echo "</div></div><br/>";
+                            // PAGINACION
                             if ($paginas > 1) {
 
-                                $enlaces = "<div class='rowBatalla text-center fw-bold h1'>
+                                $origen = htmlspecialchars($_SERVER["PHP_SELF"]) . "?";
+                                if (!empty($_GET)) {
+                                    $origen .= "usuario={$idUsuario}&";
+                                }
+                                $enlaces = "
+                                <div class='rowBatalla text-center fw-bold h1'>
                                 <div class='bando' style='display:inline-block; border:0'>";
                                 if ($paginaActual > 1) {
                                     $anterior = $paginaActual - 1;
-                                    $enlaces .= "<a href='{$_SERVER["PHP_SELF"]}?pagina={$anterior}'><</a>";
+                                    $enlaces .= "<a href='{$origen}pagina={$anterior}'><</a>";
                                 }
                                 for ($i = 1; $i <= $paginas; $i++) {
-                                    $enlaces .= "<a href='{$_SERVER["PHP_SELF"]}?pagina={$i}'> {$i} </a>";
+                                    $enlaces .= "<a href='{$origen}?pagina={$i}'> {$i} </a>";
                                 }
                                 if ($paginaActual < $paginas) {
                                     $siguiente = $paginaActual + 1;
-                                    $enlaces .= "<a href='{$_SERVER["PHP_SELF"]}?pagina={$siguiente}'>></a>";
+                                    $enlaces .= "<a href='{$origen}?pagina={$siguiente}'>></a>";
                                 }
-                                $enlaces .= "</div></div></div>";
+                                $enlaces .=
+                                    "</div></div>";
                                 echo $enlaces;
                             }
                         }
@@ -224,7 +219,7 @@ num_batallas_ignoradas, num_batallas_denunciadas, puntos_troll]
 
 
             </div>
-        </div><br><br>'
+        </div><br><br>
 
     </div>
 </section>

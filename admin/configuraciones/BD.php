@@ -1,5 +1,4 @@
 <?php
-
 class BD
 {
     const HOST = "localhost"; // o 127.0.0.1
@@ -16,45 +15,25 @@ class BD
     // const DRIVER = "mysql"; //PARA PDO
     // const DSN = DRIVER . ":host=" . HOST . ";dbname=" . BD;
 
-    private $conexion;
-
-    public function __construct($conect)
-    {
-        if ($conect) {
-            $this->startConexion();
-        }
-    }
-
-    public function startConexion()
-    {
-        $this->conexion = new PDO(BD::DSN, BD::USER, BD::PASSWORD);
-    }
-
-    public function isConnected()
-    {
-        return (isset($this->conexion));
-    }
-
-    public function getConexion()
-    {
-        return $this->conexion;
-    }
-
     // ----------------------------------------- GENERALES ----------------------------------------
 
-    public function select($campos, $tabla, $where=[])
+    public static function crearConexion(){
+        return new PDO(BD::DSN, BD::USER, BD::PASSWORD);
+    }
+
+    public static function select($campos, $tabla, $where=[], $fetch=PDO::FETCH_NUM)
     {
+        $conexion = BD::crearConexion();
         $sql = "SELECT " . implode(", ", $campos) . " FROM {$tabla} ";
         if (count($where) > 0) {
             $sql .= "WHERE {$where[0]}='{$where[1]}'";
         }
-        $resultado = $this->conexion->query($sql);
-        $registros = $resultado->fetchAll(PDO::FETCH_NUM);
-        return $registros;
+        return BD::realizarSql($conexion, $sql, [], $fetch);
     }
 
-    public function insertar($tabla, $datos)
+    public static function insertar($tabla, $datos)
     {
+        $conexion = BD::crearConexion();
         $sql = "INSERT INTO {$tabla} VALUES (";
         for ($i = 0; $i < count($datos); $i++) {
             $sql .= ":{$i}";
@@ -64,16 +43,17 @@ class BD
                 $sql .= ")";
             }
         }
-        $preparedSttm = $this->conexion->prepare($sql);
+        $preparedSttm = $conexion->prepare($sql);
         foreach ($datos as $key => &$val) {
             $preparedSttm->bindParam(":{$key}", $val);
         }
         $preparedSttm->execute();
-        return $this->conexion->lastInsertId();
+        return $conexion->lastInsertId();
     }
 
-    public function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor)
+    public static function update($tabla, $setTablas, $setValores, $whereColumna, $whereValor)
     {
+        $conexion = BD::crearConexion();
         $sql = "UPDATE {$tabla} SET";
         for ($i = 0; $i < count($setTablas); $i++) {
             $sql .= " {$setTablas[$i]}=?";
@@ -82,26 +62,31 @@ class BD
             }
             $sql .= " WHERE {$whereColumna}='{$whereValor}'";
         }
-        $this->conexion->prepare($sql)->execute($setValores);
+        BD::realizarSql($conexion, $sql, $setValores);
     }
 
-    public function delete($tabla, $columna, $dato)
+    public static function delete($tabla, $columna, $dato)
     {
+        $conexion = BD::crearConexion();
         $sql = "DELETE FROM {$tabla} WHERE {$columna} = ? ";
-        $this->conexion->prepare($sql)->execute([$dato]);
+        BD::realizarSql($conexion, $sql, [$dato]);
     }
 
-    public function realizarSql($sql, $datos)
+    public static function realizarSql($conexion, $sql, $datos, $fetch=PDO::FETCH_NUM)
     {
-        $preparedSttm = $this->conexion->prepare($sql);
+        $preparedSttm = $conexion->prepare($sql);
         $preparedSttm->execute($datos);
+        if(startsWith($sql, "SELECT")){
+            return $preparedSttm->fetchAll($fetch);
+        }
     }
 
     // ------------------------------------------ USUARIO -----------------------------------------
+    // REVISARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 
-    public function selectFromUsuario($campos)
+    public static function selectFromUsuario($campos)
     {
-        $conexion = new PDO(DSN, USER, PASSWORD);
+        $conexion = BD::crearConexion();
         $sql = "SELECT ";
         for ($i = 0; $i < count($campos); $i++) {
             $sql .= "{$campos[$i]}";
@@ -116,24 +101,22 @@ class BD
         return $registro;
     }
 
-    public function existe($user)
+    public static function existe($user)
     {
+        $conexion = BD::crearConexion();
         $sql = "SELECT password FROM credencial WHERE nombreusuario = '{$user}'";
-        $resultado = $this->conexion->query($sql);
+        $resultado = $conexion->query($sql);
         if ($linea = $resultado->fetch(PDO::FETCH_NUM)) {
             return $linea[0];
         }
         return false;
     }
 
-    public function subirUsuario($datos)
+    public static function subirUsuario($datos)
     {
 
-        $this->insertar("credencial", [$datos[0], md5($datos[1])]);
+        BD::insertar("credencial", [$datos[0], md5($datos[1])]);
         // Coger modovis e idioma
-
-
-
         // CLASE USUARIO ???
         $modovis = "light";
         if (isset($_SESSION["modovis"]) && $_SESSION["modovis"] == "dark") {
@@ -144,47 +127,26 @@ class BD
             $idioma = "en";
         }
         // Campos: id, fecha, foto, email, modovis, idioma, rol
-        $id = $this->insertar("usuario", ['', $datos[2], $datos[3], $datos[4], $modovis, $idioma, 'usuario', '0', '0', '0', '0', '0', '0']);
-
-
-
+        $id = BD::insertar("usuario", ['', $datos[2], $datos[3], $datos[4], $modovis, $idioma, 'usuario', '0', '0', '0', '0', '0', '0']);
         $momento = getMomentoActual();
         // campos: id_usuario, nombre, accion, fechatime, 
-        $this->insertar("usuario_credencial", ['', $id, $datos[0], 'registrar', $momento]);
-        $this->insertar("usuario_credencial", ['', $id, $datos[0], 'loguear', $momento]);
+        BD::insertar("usuario_credencial", ['', $id, $datos[0], 'registrar', $momento]);
+        BD::insertar("usuario_credencial", ['', $id, $datos[0], 'loguear', $momento]);
         return $id;
     }
 
-    public function actualizarUsuario($campo, $actualizacion, $id)
+    public static function actualizarUsuario($campo, $actualizacion, $id)
     {
-        $this->update("usuario", [$campo], [$actualizacion], "id", $id);
-    }
-
-    //------------------------------------------ BATALLA ------------------------------------------
-
-    public function buscarBatalla($idUsuario)
-    {
-        $query =
-            'SELECT id_elemento1, id_elemento2 
-        FROM batalla_elemento 
-        WHERE id_batalla = ANY 
-            ( SELECT id_batalla FROM usuario_batalla WHERE id_usuario = ' . $idUsuario . ' AND accion LIKE ("crear"));';
-        $resultado = $this->conexion->query($query);
-        $arr = array();
-        while ($row = $resultado->fetch(PDO::FETCH_ASSOC)) {
-            $arr[] = $row;
-        }
-        return $arr;
-    }
-
-    public function infoBatalla($idElemento, $info)
-    {
-        $query = "SELECT " . $info . " FROM elemento WHERE id = '" . $idElemento . "'";
-        $resultado = $this->conexion->query($query);
-        $registro = $resultado->fetchAll(PDO::FETCH_COLUMN);
-        return $registro;
+        BD::update("usuario", [$campo], [$actualizacion], "id", $id);
     }
 }
 
-$bd = new BD(true);
-$bd->select(["*"], "usuario");
+// $bd = new BD(true);
+// $bd->select(["*"], "usuario");
+// BD::insertar("usuario", ["","","","","","","","","","","","",""]);
+// BD::update("usuario", ["email"], ["pepe"], "id", 9);
+// BD::delete("usuario", "id", 9);
+
+// var_dump(BD::realizarSql(BD::crearConexion(), "SELECT * FROM usuario", []));
+// var_dump(BD::select(["*"], "usuario", []));
+
